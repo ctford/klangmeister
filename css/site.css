@@ -1,0 +1,110 @@
+body {
+  font-family: Georgia, Times, serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-top: 12px;
+  padding-left: 40px;
+  padding-right: 40px;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1.125em;
+  color: #333;
+  line-height: 1.5em;
+  text-align: justify;
+}
+
+h1, h2, h3 {
+  color: #000;
+}
+
+@font-face {
+  font-family: AlteSchwabacher;
+  src: url(AlteSchwabacher.ttf);
+}
+
+h1 {
+  font-size: 3em;
+  text-align: center;
+  font-family: AlteSchwabacher;
+  padding-top: 0.5em;
+}
+
+h1 a {
+  color: #000;
+  text-decoration: none;
+}
+
+a {
+  color: #D33682;
+}
+
+#menu {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
+}
+
+@media (min-width: 45em) {
+  #menu li {
+    display: inline;
+  }
+}
+
+#menu ul {
+  padding-left: 0;
+}
+
+#menu li a {
+  padding: 0.2em 1em;
+}
+
+button {
+  display: block;
+  margin: 0px auto;
+  background: #FFF;
+}
+
+.graph {
+}
+
+.controls {
+  padding-top: 0.25em;
+  padding-bottom: 1em;
+}
+
+.error {
+  border-style: dashed;
+  border-width: 3px;
+  border-color: #D33682;
+}
+
+.reference {
+  text-align: left;
+  width: 90%;
+  background: #EEE;
+  border: 1px solid black;
+}
+
+.reference th, td {
+  border-bottom: 1px solid #DDD;
+}
+
+.reference .name {
+  font-family: monospace;
+  width: 9em;
+}
+
+.reference .usage {
+  font-family: monospace;
+  width: 15em;
+  white-space: pre-wrap;
+}
+
+.CodeMirror {
+  height: auto;
+}
+
+.CodeMirror-scroll {
+  max-height: 930px;
+  height: auto;
+}
