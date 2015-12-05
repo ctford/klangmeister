@@ -3,22 +3,23 @@
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
               [accountant.core :as accountant]
-              [cljs.js :as js]))
+              [cljs.js :as cljs]))
 
 ;; -------------------------
 ;; Model
-(defonce music  (atom ""))
+(defonce music (atom "7"))
 
 ;; -------------------------
 ;; Behaviour
+(defonce compiler-state (cljs/empty-state))
 (defn evaluate
-  [expr]
+  [expr-str]
   (cljs/eval-str
-    (cljs/empty-state)
-    expr
+    compiler-state
+    expr-str
     nil
-    {:eval identity}
-    :value))
+    {:eval cljs/js-eval}
+    #(print-str expr-str " evaluates to " %)))
 
 ;; -------------------------
 ;; Views
@@ -28,7 +29,8 @@
    [:div [:input {:type "text"
                   :value (-> music deref print-str)
                   :on-change #(reset! music (-> % .-target .-value))}]]
-   [:div @music ]])
+   [:div
+    (evaluate @music)]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
