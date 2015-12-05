@@ -5,10 +5,18 @@
               [accountant.core :as accountant]))
 
 ;; -------------------------
+;; Model
+(defonce music  (atom ""))
+
+;; -------------------------
 ;; Views
 
 (defn home-page []
-  [:div [:h1 "Welcome to Leipzig Live!"]])
+  [:div [:h1 "Welcome to Leipzig Live!"]
+   [:div [:input {:type "text"
+                  :value (-> music deref print-str)
+                  :on-change #(reset! music (-> % .-target .-value))}]]
+   [:div @music ]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
