@@ -2,11 +2,23 @@
     (:require [reagent.core :as reagent :refer [atom]]
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
-              [accountant.core :as accountant]))
+              [accountant.core :as accountant]
+              [cljs.js :as js]))
 
 ;; -------------------------
 ;; Model
 (defonce music  (atom ""))
+
+;; -------------------------
+;; Behaviour
+(defn evaluate
+  [expr]
+  (cljs/eval-str
+    (cljs/empty-state)
+    expr
+    nil
+    {:eval identity}
+    :value))
 
 ;; -------------------------
 ;; Views

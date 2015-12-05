@@ -6,6 +6,7 @@
 
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [ring-server "0.4.0"]
+                 [org.clojure/tools.reader "1.0.0-alpha1"]
                  [reagent "0.5.1"
                   :exclusions [org.clojure/tools.reader]]
                  [reagent-forms "0.5.13"]
