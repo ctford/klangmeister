@@ -7,19 +7,24 @@
 
 ;; -------------------------
 ;; Model
-(defonce music (atom "7"))
+(defonce music (atom ""))
 
 ;; -------------------------
 ;; Behaviour
+(defn identify
+  "Hack to make literal values still evaluate."
+  [expr-str]
+  (str "(identity " expr-str ")"))
+
 (defonce compiler-state (cljs/empty-state))
 (defn evaluate
   [expr-str]
-  (cljs/eval-str
-    compiler-state
-    expr-str
-    nil
-    {:eval cljs/js-eval}
-    #(print-str expr-str " evaluates to " %)))
+    (cljs/eval-str
+      compiler-state
+      (identify expr-str)
+      nil
+      {:eval cljs/js-eval}
+      #(:value %)))
 
 ;; -------------------------
 ;; Views
