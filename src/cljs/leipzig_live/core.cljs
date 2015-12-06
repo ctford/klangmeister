@@ -31,17 +31,14 @@
 
 (defonce context (js/window.AudioContext.))
 (defn beep [freq]
-  (let [oscillator (.createOscillator context)]
-    (doto oscillator
+    (doto (.createOscillator context)
       (.connect (.-destination context))
       (-> .-frequency .-value (set! freq))
       (-> .-type (set! "square"))
-      (.start 0))
-    (swap! state assoc-in [:playing] oscillator)))
+      (.start 0)))
 
-(defn kill []
-  (.stop (:playing @state) 0)
-  (swap! state assoc-in [:playing] nil))
+(defn kill [oscillator]
+  (.stop oscillator 0))
 
 (defn handle [expr-str]
   (swap! state assoc-in [:text] expr-str)
@@ -50,8 +47,11 @@
 
 (defn toggle []
   (if (:playing @state)
-    (kill)
-    (beep (:music @state))))
+    (let [oscillator (:playing @state)]
+      (kill oscillator)
+      (swap! state assoc-in [:playing] nil))
+    (let [oscillator (beep (:music @state))]
+      (swap! state assoc-in [:playing] oscillator))))
 
 ;; -------------------------
 ;; Views
