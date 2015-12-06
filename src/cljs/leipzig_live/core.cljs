@@ -9,7 +9,7 @@
 ;; Model
 (defonce state
   (atom {:music ""
-         :playing? false}))
+         :playing nil}))
 
 ;; -------------------------
 ;; Behaviour
@@ -29,25 +29,23 @@
       #(:value %)))
 
 (defonce context (js/window.AudioContext.))
-(defonce oscillator
+(defn beep []
   (let [oscillator (.createOscillator context)]
     (.connect oscillator (.-destination context))
-    oscillator))
-
-(defn beep []
-  (.start oscillator 0))
+    (.start oscillator 0)
+    (swap! state assoc-in [:playing] oscillator)))
 
 (defn kill []
-  (.stop oscillator 0))
+  (.stop (:playing @state) 0)
+  (swap! state assoc-in [:playing] nil))
 
 (defn handle [expr-str]
   (swap! state assoc-in [:music] expr-str))
 
 (defn toggle []
-  (swap! state update-in [:playing?] not)
-  (if (:playing? @state)
-    (beep)
-    (kill)))
+  (if (:playing @state)
+    (kill)
+    (beep)))
 
 ;; -------------------------
 ;; Views
