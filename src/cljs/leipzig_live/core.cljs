@@ -26,6 +26,16 @@
       {:eval cljs/js-eval}
       #(:value %)))
 
+(defn beep []
+  (let [context (js/window.AudioContext.)
+        oscillator (.createOscillator context)]
+    (.connect oscillator (.-destination context))
+    (.start oscillator 0)))
+
+(defn handle [expr-str]
+  (reset! music expr-str)
+  (beep))
+
 ;; -------------------------
 ;; Views
 
@@ -33,7 +43,7 @@
   [:div [:h1 "Welcome to Leipzig Live!"]
    [:div [:input {:type "text"
                   :value (-> music deref print-str)
-                  :on-change #(reset! music (-> % .-target .-value))}]]
+                  :on-change #(-> % .-target .-value handle)}]]
    [:div
     (evaluate @music)]])
 
