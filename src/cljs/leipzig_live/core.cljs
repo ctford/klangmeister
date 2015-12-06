@@ -8,7 +8,8 @@
 ;; -------------------------
 ;; Model
 (defonce state
-  (atom {:music ""
+  (atom {:music nil
+         :text ""
          :playing nil}))
 
 ;; -------------------------
@@ -29,11 +30,11 @@
       #(:value %)))
 
 (defonce context (js/window.AudioContext.))
-(defn beep []
+(defn beep [freq]
   (let [oscillator (.createOscillator context)]
     (doto oscillator
       (.connect (.-destination context))
-      (-> .-frequency .-value (set! 440))
+      (-> .-frequency .-value (set! freq))
       (-> .-type (set! "square"))
       (.start 0))
     (swap! state assoc-in [:playing] oscillator)))
@@ -43,12 +44,14 @@
   (swap! state assoc-in [:playing] nil))
 
 (defn handle [expr-str]
-  (swap! state assoc-in [:music] expr-str))
+  (swap! state assoc-in [:text] expr-str)
+  (when-let [value (evaluate expr-str)]
+    (swap! state assoc-in [:music] value)))
 
 (defn toggle []
   (if (:playing @state)
     (kill)
-    (beep)))
+    (beep (:music @state))))
 
 ;; -------------------------
 ;; Views
@@ -56,11 +59,11 @@
 (defn home-page []
   [:div [:h1 "Welcome to Leipzig Live!"]
    [:div [:input {:type "text"
-                  :value (-> state deref :music print-str)
+                  :value (:text @state)
                   :on-change #(-> % .-target .-value handle)}]
     [:button {:on-click toggle} "Start/stop"]]
    [:div
-    (evaluate (-> @state :music))]])
+    (:music @state)]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
