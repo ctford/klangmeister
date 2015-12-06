@@ -32,6 +32,8 @@
 (defn beep []
   (let [oscillator (.createOscillator context)]
     (.connect oscillator (.-destination context))
+    (-> oscillator .-frequency .-value (set! 440))
+    (-> oscillator .-type (set! "square"))
     (.start oscillator 0)
     (swap! state assoc-in [:playing] oscillator)))
 
