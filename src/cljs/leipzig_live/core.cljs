@@ -7,7 +7,9 @@
 
 ;; -------------------------
 ;; Model
-(defonce music (atom ""))
+(defonce state
+  (atom {:music ""
+         :playing? false}))
 
 ;; -------------------------
 ;; Behaviour
@@ -26,15 +28,26 @@
       {:eval cljs/js-eval}
       #(:value %)))
 
-(defn beep []
-  (let [context (js/window.AudioContext.)
-        oscillator (.createOscillator context)]
+(defonce context (js/window.AudioContext.))
+(defonce oscillator
+  (let [oscillator (.createOscillator context)]
     (.connect oscillator (.-destination context))
-    (.start oscillator 0)))
+    oscillator))
+
+(defn beep []
+  (.start oscillator 0))
+
+(defn kill []
+  (.stop oscillator 0))
 
 (defn handle [expr-str]
-  (reset! music expr-str)
-  (beep))
+  (swap! state assoc-in [:music] expr-str))
+
+(defn toggle []
+  (swap! state update-in [:playing?] not)
+  (if (:playing? @state)
+    (beep)
+    (kill)))
 
 ;; -------------------------
 ;; Views
@@ -42,10 +55,11 @@
 (defn home-page []
   [:div [:h1 "Welcome to Leipzig Live!"]
    [:div [:input {:type "text"
-                  :value (-> music deref print-str)
-                  :on-change #(-> % .-target .-value handle)}]]
+                  :value (-> state deref :music print-str)
+                  :on-change #(-> % .-target .-value handle)}]
+    [:button {:on-click toggle} "Start/stop"]]
    [:div
-    (evaluate @music)]])
+    (evaluate (-> @state :music))]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
