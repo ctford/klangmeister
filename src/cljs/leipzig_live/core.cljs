@@ -31,10 +31,11 @@
 (defonce context (js/window.AudioContext.))
 (defn beep []
   (let [oscillator (.createOscillator context)]
-    (.connect oscillator (.-destination context))
-    (-> oscillator .-frequency .-value (set! 440))
-    (-> oscillator .-type (set! "square"))
-    (.start oscillator 0)
+    (doto oscillator
+      (.connect (.-destination context))
+      (-> .-frequency .-value (set! 440))
+      (-> .-type (set! "square"))
+      (.start 0))
     (swap! state assoc-in [:playing] oscillator)))
 
 (defn kill []
