@@ -29,8 +29,8 @@
       #(:value %)))
 
 (defonce context (js/window.AudioContext.))
-(defn beep [freq dur]
-  (let [start (.-currentTime context)
+(defn beep! [freq start dur]
+  (let [start (+ start (.-currentTime context))
         stop (+ start dur)]
     (doto (.createOscillator context)
       (.connect (.-destination context))
@@ -44,9 +44,10 @@
   (when-let [value (evaluate expr-str)]
     (swap! state assoc-in [:music] value)))
 
+(defn note [t p] {:time t :pitch p})
 (defn play []
-  (doseq [freq (:music @state)]
-    (beep freq 1)))
+  (doseq [{seconds :time hertz :pitch} (map note (range) (:music @state))]
+    (beep! hertz seconds 1)))
 
 ;; -------------------------
 ;; Views
