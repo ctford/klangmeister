@@ -45,7 +45,8 @@
     (swap! state assoc-in [:music] value)))
 
 (defn play []
-  (beep (:music @state)))
+  (doseq [freq (:music @state)]
+    (beep freq)))
 
 ;; -------------------------
 ;; Views
