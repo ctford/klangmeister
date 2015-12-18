@@ -29,9 +29,9 @@
       #(:value %)))
 
 (defonce context (js/window.AudioContext.))
-(defn beep [freq]
+(defn beep [freq dur]
   (let [start (.-currentTime context)
-        stop (inc start)]
+        stop (+ start dur)]
     (doto (.createOscillator context)
       (.connect (.-destination context))
       (-> .-frequency .-value (set! freq))
@@ -46,7 +46,7 @@
 
 (defn play []
   (doseq [freq (:music @state)]
-    (beep freq)))
+    (beep freq 1)))
 
 ;; -------------------------
 ;; Views
