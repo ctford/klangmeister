@@ -9,8 +9,7 @@
 ;; Model
 (defonce state
   (atom {:music nil
-         :text ""
-         :playing nil}))
+         :text ""}))
 
 ;; -------------------------
 ;; Behaviour
@@ -31,27 +30,22 @@
 
 (defonce context (js/window.AudioContext.))
 (defn beep [freq]
+  (let [start (.-currentTime context)
+        stop (inc start)]
     (doto (.createOscillator context)
       (.connect (.-destination context))
       (-> .-frequency .-value (set! freq))
       (-> .-type (set! "square"))
-      (.start 0)))
-
-(defn kill [oscillator]
-  (.stop oscillator 0))
+      (.start start)
+      (.stop stop))))
 
 (defn handle [expr-str]
   (swap! state assoc-in [:text] expr-str)
   (when-let [value (evaluate expr-str)]
     (swap! state assoc-in [:music] value)))
 
-(defn toggle []
-  (if (:playing @state)
-    (let [oscillator (:playing @state)]
-      (kill oscillator)
-      (swap! state assoc-in [:playing] nil))
-    (let [oscillator (beep (:music @state))]
-      (swap! state assoc-in [:playing] oscillator))))
+(defn play []
+  (beep (:music @state)))
 
 ;; -------------------------
 ;; Views
@@ -61,7 +55,7 @@
    [:div [:input {:type "text"
                   :value (:text @state)
                   :on-change #(-> % .-target .-value handle)}]
-    [:button {:on-click toggle} "Start/stop"]]
+    [:button {:on-click play} "Start/stop"]]
    [:div
     (:music @state)]])
 
