@@ -6,13 +6,29 @@
               [cljs.js :as cljs]))
 
 ;; -------------------------
-;; Model
+;; State
+
 (defonce state
   (atom {:music nil
          :text ""}))
 
 ;; -------------------------
-;; Behaviour
+;; Sound
+
+(defonce context (js/window.AudioContext.))
+(defn beep! [freq start dur]
+  (let [start (+ start (.-currentTime context))
+        stop (+ start dur)]
+    (doto (.createOscillator context)
+      (.connect (.-destination context))
+      (-> .-frequency .-value (set! freq))
+      (-> .-type (set! "square"))
+      (.start start)
+      (.stop stop))))
+
+;; -------------------------
+;; Evaluation
+
 (defn identify
   "Hack to make literal values still evaluate."
   [expr-str]
@@ -28,38 +44,44 @@
       {:eval cljs/js-eval}
       #(:value %)))
 
-(defonce context (js/window.AudioContext.))
-(defn beep! [freq start dur]
-  (let [start (+ start (.-currentTime context))
-        stop (+ start dur)]
-    (doto (.createOscillator context)
-      (.connect (.-destination context))
-      (-> .-frequency .-value (set! freq))
-      (-> .-type (set! "square"))
-      (.start start)
-      (.stop stop))))
+;; -------------------------
+;; Behaviour
 
-(defn handle [expr-str]
-  (swap! state assoc-in [:text] expr-str)
-  (when-let [value (evaluate expr-str)]
-    (swap! state assoc-in [:music] value)))
+(defprotocol Action
+  (process [this state]))
+
+(defrecord Play [])
+(defrecord Refresh [text])
 
 (defn note [t p] {:time t :pitch p})
-(defn play []
-  (doseq [{seconds :time hertz :pitch} (map note (range) (:music @state))]
-    (beep! hertz seconds 1)))
+(extend-protocol Action
+  Refresh
+  (process [{expr-str :text} state]
+    (let [new-state (assoc-in state [:text] expr-str)]
+      (if-let [value (evaluate expr-str)]
+        (assoc-in new-state [:music] value)
+        new-state)))
+
+  Play
+  (process [_ state]
+    (doseq [{seconds :time hertz :pitch} (map note (range) (:music state))]
+      (beep! hertz seconds 1))
+    state))
+
+(defn handle! [action]
+  (swap! state (partial process action)))
 
 ;; -------------------------
 ;; Views
 
-(defn home-page []
+(defn home-page [state]
   [:div [:h1 "Welcome to Leipzig Live!"]
    [:div [:input {:type "text"
-                  :value (:text @state)
-                  :on-change #(-> % .-target .-value handle)}]
-    [:button {:on-click play} "Start/stop"]]
+                  :value (:text state)
+                  :on-change #(-> % .-target .-value ->Refresh handle!)}]
+   [:button {:on-click (fn [_] (handle! (->Play)))} "Play!"]]
    [:div
-    (:music @state)]])
+    (:music state)]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
@@ -67,8 +89,11 @@
 ;; -------------------------
 ;; Routes
 
+(defn app []
+  (home-page @state))
+
 (secretary/defroute "/" []
-  (session/put! :current-page #'home-page))
+  (session/put! :current-page #'app))
 
 ;; -------------------------
 ;; Initialize app
