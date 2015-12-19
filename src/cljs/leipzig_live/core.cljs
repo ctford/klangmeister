@@ -1,6 +1,7 @@
 (ns leipzig-live.core
   (:require
     [leipzig-live.music :as music]
+    [leipzig-live.actions :as action]
     [reagent.core :as reagent :refer [atom]]
     [cljs.js :as cljs]))
 
@@ -37,18 +38,16 @@
 (defprotocol Action
   (process [this state]))
 
-(defrecord Play [])
-(defrecord Refresh [text])
 
 (extend-protocol Action
-  Refresh
+  actions/Refresh
   (process [{expr-str :text} state]
     (let [new-state (assoc-in state [:text] expr-str)]
       (if-let [value (evaluate expr-str)]
         (assoc-in new-state [:music] value)
         new-state)))
 
-  Play
+  actions/Play
   (process [_ {pitches :music :as original-state}]
     (music/play-on! beep! (repeat 1) pitches)
     original-state))
