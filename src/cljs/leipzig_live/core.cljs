@@ -43,7 +43,6 @@
 (defrecord Play [])
 (defrecord Refresh [text])
 
-(defn note [t p] {:time t :pitch p})
 (extend-protocol Action
   Refresh
   (process [{expr-str :text} state]
@@ -53,8 +52,8 @@
         new-state)))
 
   Play
-  (process [_ state]
-    (doseq [{seconds :time hertz :pitch} (map note (range) (:music state))]
+  (process [_ {pitches :music :as state}]
+    (doseq [[seconds hertz] (map vector (range) pitches)]
       (beep! hertz seconds 1))
     state))
 
