@@ -68,13 +68,13 @@
       (beep! hertz seconds 1))
     state))
 
-(defn handle! [action]
+(defn apply-action! [action]
   (swap! state (partial process action)))
 
 ;; -------------------------
 ;; Views
 
-(defn home-page [state]
+(defn home-page [handle! state]
   [:div [:h1 "Welcome to Leipzig Live!"]
    [:div [:input {:type "text"
                   :value (:text state)
@@ -90,7 +90,7 @@
 ;; Routes
 
 (defn app []
-  (home-page @state))
+  (home-page apply-action! @state))
 
 (secretary/defroute "/" []
   (session/put! :current-page #'app))
