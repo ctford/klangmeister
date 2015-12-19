@@ -1,6 +1,7 @@
 (ns leipzig-live.core
   (:require
     [leipzig-live.music :as music]
+    [leipzig-live.views :as view]
     [leipzig-live.instruments :as instrument]
     [leipzig-live.actions :as action]
     [leipzig-live.framework :as framework]
@@ -37,25 +38,13 @@
     original-state))
 
 ;; -------------------------
-;; Views
-
-(defn home-page [handle! state]
-  [:div [:h1 "Welcome to Leipzig Live!"]
-   [:div [:input {:type "text"
-                  :value (:text state)
-                  :on-change #(-> % .-target .-value action/->Refresh handle!)}]
-   [:button {:on-click (fn [_] (handle! (action/->Play)))} "Play!"]]
-   [:div
-    (-> state :music print)]])
-
-;; -------------------------
 ;; Wiring
 
 (defn mount-root []
   (let [state-atom (atom {:music [100 120]
                           :text "'(100 120)"})]
     (reagent/render
-      [home-page (partial framework/apply-action! state-atom) @state-atom]
+      [view/home-page (partial framework/apply-action! state-atom) @state-atom]
       js/document.body)))
 
 (defn init! []
