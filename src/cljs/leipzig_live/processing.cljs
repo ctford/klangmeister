@@ -25,6 +25,6 @@
         new-state)))
 
   action/Play
-  (process [_ {pitches :music :as original-state}]
-    (music/play-on! instrument/beep! (repeat 1) pitches)
+  (process [_ {[durations pitches] :music :as original-state}]
+    (music/play-on! instrument/beep! durations pitches)
     original-state))
