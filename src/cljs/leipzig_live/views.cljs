@@ -7,6 +7,6 @@
    [:div [:input {:type "text"
                   :value (:text state)
                   :on-change #(-> % .-target .-value action/->Refresh handle!)}]
-   [:button {:on-click (fn [_] (handle! (action/->Play)))} "Play!"]]
-   [:div
-    (-> state :music print-str)]])
+   [:button {:on-click (fn [_] (handle! (action/->Play)))} "Play!"]
+   [:button {:on-click (fn [_] (handle! (action/->Loop)))} "Loop!"]]
+   [:div (-> state :music print-str)]])

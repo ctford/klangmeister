@@ -27,4 +27,11 @@
   action/Play
   (process [_ {[durations pitches] :music :as original-state}]
     (music/play-on! instrument/beep! durations pitches)
+    original-state)
+
+  action/Loop
+  (process [_ {[durations pitches] :music :as original-state}]
+    (let [once #(music/play-on! instrument/beep! durations pitches)]
+      (once)
+      (js/setTimeout once (* 1000 (reduce + durations))))
     original-state))
