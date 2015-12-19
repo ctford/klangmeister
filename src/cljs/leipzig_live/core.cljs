@@ -1,8 +1,5 @@
 (ns leipzig-live.core
     (:require [reagent.core :as reagent :refer [atom]]
-              [reagent.session :as session]
-              [secretary.core :as secretary :include-macros true]
-              [accountant.core :as accountant]
               [cljs.js :as cljs]))
 
 ;; -------------------------
@@ -83,25 +80,13 @@
    [:div
     (-> state :music print)]])
 
-(defn current-page []
-  [:div [(session/get :current-page)]])
-
-;; -------------------------
-;; Routes
-
-(defn app []
-  (home-page apply-action! @state))
-
-(secretary/defroute "/" []
-  (session/put! :current-page #'app))
-
 ;; -------------------------
 ;; Initialize app
 
 (defn mount-root []
-  (reagent/render [current-page] (.getElementById js/document "app")))
+  (reagent/render
+    [home-page apply-action! @state]
+    js/document.body))
 
 (defn init! []
-  (accountant/configure-navigation!)
-  (accountant/dispatch-current!)
   (mount-root))
