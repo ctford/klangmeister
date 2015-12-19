@@ -68,11 +68,11 @@
     (-> state :music print)]])
 
 ;; -------------------------
-;; Initialize app
+;; Wiring
 
 (defn mount-root []
   (let [state-atom (atom {:music [100 120]
-                     :text "'(100 120)"})]
+                          :text "'(100 120)"})]
     (reagent/render
       [home-page (partial apply-action! state-atom) @state-atom]
       js/document.body)))
