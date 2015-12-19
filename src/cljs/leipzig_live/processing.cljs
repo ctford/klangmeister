@@ -1,6 +1,7 @@
 (ns leipzig-live.processing
   (:require
     [leipzig-live.music :as music]
+    [leipzig-live.instruments :as instrument]
     [leipzig-live.actions :as action]
     [leipzig-live.framework :as framework]
     [cljs.js :as cljs]))
