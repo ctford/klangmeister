@@ -19,20 +19,15 @@
 ;; -------------------------
 ;; Evaluation
 
-(defn identify
-  "Hack to make literal values still evaluate."
-  [expr-str]
-  (str "(identity " expr-str ")"))
-
 (defonce compiler-state (cljs/empty-state))
 (defn evaluate
   [expr-str]
-    (cljs/eval-str
-      compiler-state
-      (identify expr-str)
-      nil
-      {:eval cljs/js-eval}
-      #(:value %)))
+  (cljs/eval-str
+    compiler-state
+    (str "(identity " expr-str ")")
+    nil
+    {:eval cljs/js-eval}
+    #(:value %)))
 
 ;; -------------------------
 ;; Behaviour
