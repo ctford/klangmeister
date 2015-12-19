@@ -9,4 +9,4 @@
                   :on-change #(-> % .-target .-value action/->Refresh handle!)}]
    [:button {:on-click (fn [_] (handle! (action/->Play)))} "Play!"]]
    [:div
-    (-> state :music print)]])
+    (-> state :music print-str)]])
