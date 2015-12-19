@@ -1,7 +1,7 @@
 (ns leipzig-live.framework)
 
 (defprotocol Action
-  (process [this state]))
+  (process [this handle! state]))
 
 (defn apply-action! [state-atom action]
-  (swap! state-atom (partial process action)))
+  (swap! state-atom (partial process action (partial apply-action! state-atom))))

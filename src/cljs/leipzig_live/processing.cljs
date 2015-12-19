@@ -18,20 +18,19 @@
 
 (extend-protocol framework/Action
   action/Refresh
-  (process [{expr-str :text} state]
+  (process [{expr-str :text} _ state]
     (let [new-state (assoc-in state [:text] expr-str)]
       (if-let [value (evaluate expr-str)]
         (assoc-in new-state [:music] value)
         new-state)))
 
   action/Play
-  (process [_ {[durations pitches] :music :as original-state}]
+  (process [_ _ {[durations pitches] :music :as original-state}]
     (music/play-on! instrument/beep! durations pitches)
     original-state)
 
   action/Loop
-  (process [_ {[durations pitches] :music :as original-state}]
-    (let [once #(music/play-on! instrument/beep! durations pitches)]
-      (once)
-      (js/setTimeout once (* 1000 (reduce + durations))))
+  (process [this handle! {[durations pitches] :music :as original-state}]
+    (handle! (action/->Play))
+    (js/setTimeout #(handle! this) (* 1000 (reduce + durations)))
     original-state))
