@@ -1,6 +1,8 @@
 (ns leipzig-live.core
-    (:require [reagent.core :as reagent :refer [atom]]
-              [cljs.js :as cljs]))
+  (:require
+    [leipzig-live.music :as music]
+    [reagent.core :as reagent :refer [atom]]
+    [cljs.js :as cljs]))
 
 ;; -------------------------
 ;; Sound
@@ -47,10 +49,9 @@
         new-state)))
 
   Play
-  (process [_ {pitches :music :as state}]
-    (doseq [[seconds hertz] (map vector (range) pitches)]
-      (beep! hertz seconds 1))
-    state))
+  (process [_ {pitches :music :as original-state}]
+    (music/play-on! beep! (repeat 1) pitches)
+    original-state))
 
 (defn apply-action! [state-atom action]
   (swap! state-atom (partial process action)))
