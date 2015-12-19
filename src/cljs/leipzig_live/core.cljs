@@ -9,8 +9,8 @@
 ;; State
 
 (defonce state
-  (atom {:music nil
-         :text ""}))
+  (atom {:music [100 120]
+         :text "'(100 120)"}))
 
 ;; -------------------------
 ;; Sound
@@ -81,7 +81,7 @@
                   :on-change #(-> % .-target .-value ->Refresh handle!)}]
    [:button {:on-click (fn [_] (handle! (->Play)))} "Play!"]]
    [:div
-    (:music state)]])
+    (-> state :music print)]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
