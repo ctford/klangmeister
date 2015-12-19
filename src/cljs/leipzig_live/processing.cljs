@@ -24,13 +24,14 @@
         (assoc-in new-state [:music] value)
         new-state)))
 
-  action/Play
-  (process [_ _ {[durations pitches] :music :as original-state}]
-    (music/play-on! instrument/beep! durations pitches)
-    original-state)
+  action/Loop?
+  (process [_ handle! state]
+    (update-in state [:looping?] not))
 
-  action/Loop
-  (process [this handle! {[durations pitches] :music :as original-state}]
-    (handle! (action/->Play))
-    (js/setTimeout #(handle! this) (* 1000 (reduce + durations)))
-    original-state))
+  action/Play
+  (process [this handle! {[durations pitches] :music :as state}]
+    (music/play-on! instrument/beep! durations pitches)
+    (when (:looping? state)
+      (let [duration (* 1000 (reduce + durations))]
+        (js/setTimeout #(handle! this) duration)))
+    state))
