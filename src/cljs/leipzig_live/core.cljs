@@ -3,13 +3,6 @@
               [cljs.js :as cljs]))
 
 ;; -------------------------
-;; State
-
-(defonce state
-  (atom {:music [100 120]
-         :text "'(100 120)"}))
-
-;; -------------------------
 ;; Sound
 
 (defonce context (js/window.AudioContext.))
@@ -65,8 +58,8 @@
       (beep! hertz seconds 1))
     state))
 
-(defn apply-action! [action]
-  (swap! state (partial process action)))
+(defn apply-action! [state-atom action]
+  (swap! state-atom (partial process action)))
 
 ;; -------------------------
 ;; Views
@@ -84,9 +77,11 @@
 ;; Initialize app
 
 (defn mount-root []
-  (reagent/render
-    [home-page apply-action! @state]
-    js/document.body))
+  (let [state-atom (atom {:music [100 120]
+                     :text "'(100 120)"})]
+    (reagent/render
+      [home-page (partial apply-action! state-atom) @state-atom]
+      js/document.body)))
 
 (defn init! []
   (mount-root))
