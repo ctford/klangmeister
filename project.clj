@@ -105,6 +105,7 @@
                    :env {:dev true}
 
                    :cljsbuild {:builds {:app {:source-paths ["env/dev/cljs"]
+                                              :figwheel {:on-jsload "leipzig-live.core/reload!"}
                                               :compiler {:main "leipzig-live.dev"
                                                          :source-map true}}
 

@@ -1,6 +1,6 @@
 (ns leipzig-live.instruments)
 
-(defonce context (js/window.AudioContext.))
+(def context (js/window.AudioContext.))
 (defn beep! [freq start dur]
   (let [start (+ start (.-currentTime context))
         stop (+ start dur)]
