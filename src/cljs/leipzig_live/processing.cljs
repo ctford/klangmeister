@@ -6,23 +6,22 @@
     [leipzig-live.framework :as framework]
     [cljs.js :as cljs]))
 
-(defonce compiler-state (cljs/empty-state))
 (defn evaluate
   [expr-str]
   (cljs/eval-str
-    compiler-state
-    (str "(identity " expr-str ")")
+    (cljs/empty-state)
+    expr-str
     nil
     {:eval cljs/js-eval}
     #(:value %)))
 
 (extend-protocol framework/Action
   action/Refresh
-  (process [{expr-str :text} _ state]
-    (let [new-state (assoc-in state [:text] expr-str)]
-      (if-let [value (evaluate expr-str)]
-        (assoc-in new-state [:music] value)
-        new-state)))
+  (process [{expr-str :text} _ {original-music :music :as state}]
+    (let [music (or (evaluate expr-str) original-music)]
+      (-> state
+          (assoc :text expr-str)
+          (assoc :music music))))
 
   action/Stop
   (process [_ handle! state]
