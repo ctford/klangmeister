@@ -5,7 +5,7 @@
     [leipzig-live.framework :as framework]
     [reagent.core :as reagent]))
 
-(def initial-text "[[1 (- 1 0.5) 1.5] [100 (+ 100 25) (* 3 50)]]")
+(def initial-text "(music/phrase [1 1 2] [100 200 300])")
 
 (defonce state-atom
   (reagent/atom

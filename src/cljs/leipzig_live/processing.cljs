@@ -6,13 +6,20 @@
     [leipzig-live.framework :as framework]
     [cljs.js :as cljs]))
 
+(defn add-namespace [expr-str]
+  (str
+    "(ns leipzig-live.playing
+      (:require [leipzig-live.music :as music]))"
+    expr-str))
+
 (defn evaluate
   [expr-str]
   (cljs/eval-str
     (cljs/empty-state)
-    expr-str
+    (add-namespace expr-str)
     nil
-    {:eval cljs/js-eval}
+    {:eval cljs/js-eval
+     :load (fn [_ cb] (cb {:lang :clj :source ""}))}
     #(:value %)))
 
 (extend-protocol framework/Action
@@ -28,13 +35,13 @@
     (assoc state :looping? false))
 
   action/Play
-  (process [this handle! {[durations pitches] :music :as state}]
+  (process [this handle! state]
     (framework/process (action/->Loop) handle! (assoc state :looping? true)))
 
   action/Loop
-  (process [this handle! {[durations pitches] :music :as state}]
+  (process [this handle! {notes :music :as state}]
     (when (:looping? state)
-      (music/play-on! instrument/beep! durations pitches)
-      (let [duration (* 1000 (reduce + durations))]
+      (music/play-on! instrument/beep! notes)
+      (let [duration (->> notes (map last) (reduce +) (* 1000))]
         (js/setTimeout #(handle! this) duration)))
     state))
