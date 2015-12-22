@@ -7,8 +7,8 @@
 
 (def initial-state
   {:looping? false
-   :music [[1 (- 1 0.5) 1.5] [100 (+ 100 25) (* 3 50)]]
-   :text "'((1 (- 1 0.5) 1.5) (100 (+ 100 25) (* 3 50)))"})
+   :music [[1 0.5 1.5] [100 125 150]]
+   :text "[[1 (- 1 0.5) 1.5] [100 (+ 100 25) (* 3 50)]]"})
 
 (defonce state-atom (reagent/atom initial-state))
 
