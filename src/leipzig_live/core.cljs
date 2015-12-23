@@ -21,5 +21,7 @@
     [view/home-page (framework/handler-for state-atom) state-atom]
     js/document.body))
 
-(defn init! []
+(defn main []
   (mount-root))
+
+(main)
