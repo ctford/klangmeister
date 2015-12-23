@@ -6,27 +6,18 @@
 
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [reagent "0.5.1"]
-                 [reagent-forms "0.5.13"]
-                 [reagent-utils "0.1.5"]
                  [org.clojure/clojurescript "1.7.170" :scope "provided"]]
 
-  :plugins [[lein-cljsbuild "1.1.1"]
-            [lein-asset-minifier "0.2.2" :exclusions [org.clojure/clojure]]]
-
-  :min-lein-version "2.5.0"
+  :plugins [[lein-cljsbuild "1.1.1"]]
 
   :clean-targets ^{:protect false} [:target-path
                                     [:cljsbuild :builds :app :compiler :output-dir]
                                     [:cljsbuild :builds :app :compiler :output-to]]
 
-  :source-paths ["src/clj" "src/cljc"]
+  :source-paths ["src/clj"]
   :resource-paths ["resources" "target/cljsbuild"]
 
-  :minify-assets
-  {:assets
-   {"resources/public/css/site.min.css" "resources/public/css/site.css"}}
-
-  :cljsbuild {:builds {:app {:source-paths ["src/cljs" "src/cljc"]
+  :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
                              :compiler {:output-to "resources/public/js/app.js"
                                         :output-dir "resources/public/js/out"
                                         :asset-path   "js/out"
@@ -59,16 +50,4 @@
                    :cljsbuild {:builds {:app {:source-paths ["env/dev/cljs"]
                                               :figwheel {:on-jsload "leipzig-live.core/reload!"}
                                               :compiler {:main "leipzig-live.dev"
-                                                         :source-map true}}}}}
-
-             :uberjar {:hooks [minify-assets.plugin/hooks]
-                       :prep-tasks ["compile" ["cljsbuild" "once"]]
-                       :env {:production true}
-                       :aot :all
-                       :omit-source true
-                       :cljsbuild {:jar true
-                                   :builds {:app
-                                            {:source-paths ["env/prod/cljs"]
-                                             :compiler
-                                             {:optimizations :advanced
-                                              :pretty-print false}}}}}})
+                                                         :source-map true}}}}}})
