@@ -20,15 +20,15 @@
     nil
     {:eval cljs/js-eval
      :load (fn [_ cb] (cb {:lang :clj :source ""}))}
-    #(:value %)))
+    identity))
 
 (extend-protocol framework/Action
   action/Refresh
   (process [{expr-str :text} _ {original-music :music :as state}]
-    (let [new-music (evaluate expr-str)
-          music (or new-music original-music)]
+    (let [{:keys [value error]} (evaluate expr-str)
+          music (or value original-music)]
       (-> state
-          (assoc :compiling? (not (not new-music)))
+          (assoc :error error)
           (assoc :text expr-str)
           (assoc :music music))))
 

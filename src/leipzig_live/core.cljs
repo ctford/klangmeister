@@ -14,9 +14,9 @@
 (defonce state-atom
   (reagent/atom
     {:looping? false
-     :compiling? true
+     :error nil
      :text initial-text
-     :music (processing/evaluate initial-text)}))
+     :music (-> initial-text processing/evaluate :value)}))
 
 (defn reload! []
   (swap! state-atom identity))
