@@ -32,3 +32,23 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+button {
+  display: block;
+  margin: 0px auto;
+  background: #FFF;
+}
+
+.graph {
+}
+
+.controls {
+  padding-top: 1cm;
+  padding-bottom: 1cm;
+}
+
+.error {
+  border-style: dashed;
+  border-width: 3px;
+  border-color: #F89;
+}

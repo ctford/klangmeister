@@ -50,7 +50,6 @@
                  [:button {:on-click #(handle! (action/->Stop))} "Stop"])
         error (:error state)]
     [:div
-     [:div [graph handle! state]]
-     button
-     [:div [editor handle! state]]
-     (if error [:div (str "Error: " (:error state))])]))
+     [:div {:class "graph"} [graph handle! state]]
+     [:div {:class "controls"} button]
+     [:div {:class (if error "error" "")} [editor handle! state]]]))
