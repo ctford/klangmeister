@@ -26,4 +26,5 @@
     [:div
      [:div [editor handle! state]]
      button
+     [:div (str "Compiling? " (:compiling? state))]
      [:div (-> state :music print-str)]]))

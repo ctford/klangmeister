@@ -1,10 +1,36 @@
 (ns leipzig-live.music)
 
-(defn note [pitch time duration] {:pitch pitch :time time :duration duration})
+(defn note [time pitch duration] {:time time :pitch pitch :duration duration})
+(defn where [k f notes] (->> notes (map #(update-in % [k] f))))
+(defn from [offset] (partial + offset))
+
+(defn sum-n [series n] (reduce + (take n series)))
+
+(defn scale [intervals]
+  (fn [degree]
+    (if-not (neg? degree)
+      (sum-n (cycle intervals) degree)
+      ((comp - (scale (reverse intervals)) -) degree))))
+
+(def major (scale [2 2 1 2 2 2 1]))
+
+; alternative scales
+(def minor (scale [2 1 2 2 1 2 2]))
+(def blues (scale [3 2 1 1 3 2]))
+(def pentatonic (scale [3 2 2 3 2]))
+(def chromatic (scale [1]))
+
+(defn bpm [beats] (fn [beat] (/ (* beat 60) beats)))
+
+(defn equal-temperament [midi]
+  (->> (repeat midi 1.0594631) ; 12th root of two
+       (reduce * 8.1757989156))) ; midi zero
+
 (defn phrase [durations pitches]
   (let [times (reductions + 0 durations)]
-    (map note pitches times durations)))
+    (map note times pitches durations)))
 
 (defn play-on! [instrument! notes]
   (doseq [{:keys [pitch time duration]} notes]
     (instrument! pitch time duration)))
+

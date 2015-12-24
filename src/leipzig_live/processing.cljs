@@ -25,8 +25,10 @@
 (extend-protocol framework/Action
   action/Refresh
   (process [{expr-str :text} _ {original-music :music :as state}]
-    (let [music (or (evaluate expr-str) original-music)]
+    (let [new-music (evaluate expr-str)
+          music (or new-music original-music)]
       (-> state
+          (assoc :compiling? (not (not new-music)))
           (assoc :text expr-str)
           (assoc :music music))))
 

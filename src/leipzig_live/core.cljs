@@ -5,11 +5,16 @@
     [leipzig-live.framework :as framework]
     [reagent.core :as reagent]))
 
-(def initial-text "(music/phrase [1 1 2] [100 200 300])")
+(def initial-text
+  "(->> (music/phrase [1 1 1 1] [0 1 2 0])
+       (music/where :time (music/bpm 90))
+       (music/where :duration (music/bpm 90))
+       (music/where :pitch (comp music/equal-temperament (music/from 69) music/major)))")
 
 (defonce state-atom
   (reagent/atom
     {:looping? false
+     :compiling? true
      :text initial-text
      :music (processing/evaluate initial-text)}))
 
