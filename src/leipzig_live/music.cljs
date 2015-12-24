@@ -20,6 +20,14 @@
 (def pentatonic (scale [3 2 2 3 2]))
 (def chromatic (scale [1]))
 
+(def A (from 69))
+(def B (from 71))
+(def C (from 72))
+(def D (from 74))
+(def E (from 76))
+(def F (from 77))
+(def G (from 79))
+
 (defn bpm [beats] (fn [beat] (/ (* beat 60) beats)))
 
 (defn equal-temperament [midi]
