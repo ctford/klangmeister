@@ -1,9 +1,10 @@
 (ns leipzig-live.music)
 
+(defn note [pitch time duration] {:pitch pitch :time time :duration duration})
 (defn phrase [durations pitches]
   (let [times (reductions + 0 durations)]
-    (map vector pitches times durations)))
+    (map note pitches times durations)))
 
 (defn play-on! [instrument! notes]
-  (doseq [[freq start duration] notes]
-    (instrument! freq start duration)))
+  (doseq [{:keys [pitch time duration]} notes]
+    (instrument! pitch time duration)))
