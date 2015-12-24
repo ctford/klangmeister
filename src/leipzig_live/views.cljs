@@ -6,13 +6,23 @@
     [reagent.core :as reagent]))
 
 (quil/defsketch sketch
-  :setup (constantly {:x 1})
-  :update #(update % :x inc)
-  :draw (fn [state] (quil/background 163) (quil/fill 0) (quil/ellipse (rem (:x state) 300) 42 51 52))
+  :setup (constantly [{:time 0 :pitch 440}
+                      {:time 1 :pitch 660}
+                      {:time 2 :pitch 880}
+                      {:time 3 :pitch 660}
+                      {:time 4 :pitch 440}])
+  :draw (fn [state]
+          (quil/background 255)
+          (doseq [{:keys [time pitch]} state]
+            (quil/ellipse
+              (-> time (* 100) (+ 17))
+              (-> pitch - (* 0.25) (+ 300))
+              30
+              30)))
   :host "graph"
   :no-start true
   :middleware [middleware/fun-mode]
-  :size [300 300])
+  :size [600 300])
 
 (defn graph [handle! state]
   (reagent/create-class
@@ -24,8 +34,7 @@
     (let [pane (.fromTextArea
                  js/CodeMirror
                  (reagent/dom-node this)
-                 #js {:mode "clojure"
-                      :lineNumbers true})]
+                 #js {:mode "clojure"})]
       (.on pane "change" #(-> % .getValue action/->Refresh handle!)))))
 
 (defn editor [handle! state]
@@ -38,10 +47,10 @@
   (let [state @state-atom
         button (if-not (:looping? state)
                  [:button {:on-click #(handle! (action/->Play))} "Play"]
-                 [:button {:on-click #(handle! (action/->Stop))} "Stop"])]
+                 [:button {:on-click #(handle! (action/->Stop))} "Stop"])
+        error (:error state)]
     [:div
-     [:div [editor handle! state]]
-     button
      [:div [graph handle! state]]
-     [:div (str "Error? " (:error state))]
-     [:div (-> state :music print-str)]]))
+     button
+     [:div [editor handle! state]]
+     (if error [:div (str "Error: " (:error state))])]))
