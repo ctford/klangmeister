@@ -3,6 +3,7 @@
   :license {:name "MIT" }
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [reagent "0.5.1"]
+                 [quil "2.3.0"]
                  [org.clojure/clojurescript "1.7.170"]]
 
   :plugins [[lein-cljsbuild "1.1.1"]

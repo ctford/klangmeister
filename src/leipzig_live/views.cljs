@@ -1,7 +1,23 @@
 (ns leipzig-live.views
   (:require
     [leipzig-live.actions :as action]
+    [quil.core :as quil :include-macros true]
+    [quil.middleware :as middleware]
     [reagent.core :as reagent]))
+
+(quil/defsketch sketch
+  :setup (constantly {:x 1})
+  :update #(update % :x inc)
+  :draw (fn [state] (quil/background 163) (quil/fill 0) (quil/ellipse (rem (:x state) 300) 42 51 52))
+  :host "graph"
+  :no-start true
+  :middleware [middleware/fun-mode]
+  :size [300 300])
+
+(defn graph [handle! state]
+  (reagent/create-class
+    {:render (fn [] [:canvas#graph {:width 300 :height 300}])
+     :component-did-mount sketch}))
 
 (defn editor-did-mount [handle! _]
   (fn [this]
@@ -26,5 +42,6 @@
     [:div
      [:div [editor handle! state]]
      button
+     [:div [graph handle! state]]
      [:div (str "Error? " (:error state))]
      [:div (-> state :music print-str)]]))
