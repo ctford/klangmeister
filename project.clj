@@ -12,15 +12,16 @@
                                     "target"]
 
   :source-paths ["src"]
+  :resource-paths ["resources" "target/cljsbuild"]
 
-  :cljsbuild {:builds {:dev {:source-paths ["src"]
+  :cljsbuild {:builds {:dev {:source-paths ["env/dev/clj"]
                              :figwheel true
                              :compiler {:main "leipzig-live.core"
                                         :optimizations :none
                                         :output-to "resources/public/js/compiled/app.js"
                                         :output-dir "resources/public/js/compiled"
-                                        :asset-path "js/out"}}
-                       :prod {:source-paths ["src"]
-                              :compiler {:optimizations :advanced
+                                        :asset-path "js/compiled"
+                                        }}
+                       :prod {:compiler {:optimizations :advanced
                                          :output-to "resources/public/js/compiled/app.js"
-                                         :asset-path "js/out"}}}})
+                                         :asset-path "js/compiled"}}}})
