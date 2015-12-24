@@ -28,6 +28,9 @@
 (def F (from 77))
 (def G (from 79))
 
+(def sharp inc)
+(def flat dec)
+
 (defn bpm [beats] (fn [beat] (/ (* beat 60) beats)))
 
 (defn equal-temperament [midi]
