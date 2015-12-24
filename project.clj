@@ -24,7 +24,8 @@
                                    :output-dir "resources/public/js/compiled"
                                    :asset-path "js/compiled"}}
                        {:id "prod"
-                        :compiler {:optimizations :advanced
+                        :source-paths ["src"]
+                        :compiler {:optimizations :simple
                                    :output-to "resources/public/js/compiled/app.js"
                                    :asset-path "js/compiled"}}]}
 
