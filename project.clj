@@ -20,8 +20,9 @@
                                         :optimizations :none
                                         :output-to "resources/public/js/compiled/app.js"
                                         :output-dir "resources/public/js/compiled"
-                                        :asset-path "js/compiled"
-                                        }}
+                                        :asset-path "js/compiled"}}
                        :prod {:compiler {:optimizations :advanced
                                          :output-to "resources/public/js/compiled/app.js"
-                                         :asset-path "js/compiled"}}}})
+                                         :asset-path "js/compiled"}}}}
+
+  :figwheel {:css-dirs ["resources/public/css"]})
