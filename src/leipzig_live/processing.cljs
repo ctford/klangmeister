@@ -1,31 +1,16 @@
 (ns leipzig-live.processing
   (:require
+    [leipzig-live.eval :as eval]
     [leipzig-live.music :as music]
     [leipzig-live.instruments :as instrument]
     [leipzig-live.actions :as action]
     [leipzig-live.framework :as framework]
     [cljs.js :as cljs]))
 
-(defn add-namespace [expr-str]
-  (str
-    "(ns leipzig-live.playing
-      (:require [leipzig-live.music :as music]))"
-    expr-str))
-
-(defn evaluate
-  [expr-str]
-  (cljs/eval-str
-    (cljs/empty-state)
-    (add-namespace expr-str)
-    nil
-    {:eval cljs/js-eval
-     :load (fn [_ cb] (cb {:lang :clj :source ""}))}
-    identity))
-
 (extend-protocol framework/Action
   action/Refresh
   (process [{expr-str :text} _ {original-music :music :as state}]
-    (let [{:keys [value error]} (evaluate expr-str)
+    (let [{:keys [value error]} (eval/uate expr-str)
           music (or value original-music)]
       (-> state
           (assoc :error error)

@@ -1,6 +1,7 @@
 (ns leipzig-live.core
   (:require
-    [leipzig-live.processing :as processing]
+    [leipzig-live.processing] ; Import action defs.
+    [leipzig-live.eval :as eval]
     [leipzig-live.views :as view]
     [leipzig-live.framework :as framework]
     [reagent.core :as reagent]))
@@ -16,7 +17,7 @@
     {:looping? false
      :error nil
      :text initial-text
-     :music (-> initial-text processing/evaluate :value)}))
+     :music (-> initial-text eval/uate :value)}))
 
 (defn reload! []
   (swap! state-atom identity))
