@@ -5,11 +5,11 @@
     [quil.middleware :as middleware]
     [reagent.core :as reagent]))
 
-(defn draw-graph [{:keys [music]}]
-  (quil/sketch :setup (constantly music)
-               :draw (fn [state]
+(defn draw-graph [state-atom]
+  (quil/sketch :setup (constantly nil)
+               :draw (fn [_]
                        (quil/background 255)
-                       (doseq [{:keys [time pitch]} state]
+                       (doseq [{:keys [time pitch]} (:music @state-atom)]
                          (quil/ellipse
                            (-> time (* 100) (+ 17))
                            (-> pitch - (* 0.25) (+ 300))
@@ -20,10 +20,10 @@
                :middleware [middleware/fun-mode]
                :size [600 300]))
 
-(defn graph [handle! state]
+(defn graph [handle! state-atom]
   (reagent/create-class
     {:render (fn [] [:canvas#graph {:width 300 :height 300}])
-     :component-did-update #(draw-graph state)}))
+     :component-did-mount #(draw-graph state-atom)}))
 
 (defn editor-did-mount [handle! _]
   (fn [this]
@@ -46,6 +46,6 @@
                  [:button {:on-click #(handle! (action/->Stop))} "Stop"])
         error (:error state)]
     [:div
-     [:div {:class "graph"} [graph handle! state]]
+     [:div {:class "graph"} [graph handle! state-atom]]
      [:div {:class "controls"} button]
      [:div {:class (if error "error" "")} [editor handle! state]]]))
