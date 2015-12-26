@@ -29,6 +29,9 @@
   (process [this handle! {notes :music :as state}]
     (when (:looping? state)
       (music/play-on! instrument/beep! notes)
-      (let [duration (->> notes (map :duration) (reduce +) (* 1000))]
+      (let [duration (->> notes
+                          (map (fn [{:keys [time duration]}] (+ time duration)))
+                          (apply max)
+                          (* 1000))]
         (js/setTimeout #(handle! this) duration)))
     state))
