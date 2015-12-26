@@ -1,10 +1,10 @@
-(ns leipzig-live.processing
+(ns klangmeister.processing
   (:require
-    [leipzig-live.eval :as eval]
-    [leipzig-live.music :as music]
-    [leipzig-live.instruments :as instrument]
-    [leipzig-live.actions :as action]
-    [leipzig-live.framework :as framework]
+    [klangmeister.eval :as eval]
+    [klangmeister.music :as music]
+    [klangmeister.instruments :as instrument]
+    [klangmeister.actions :as action]
+    [klangmeister.framework :as framework]
     [cljs.js :as cljs]))
 
 (extend-protocol framework/Action

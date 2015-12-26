@@ -1,4 +1,4 @@
-(ns leipzig-live.framework)
+(ns klangmeister.framework)
 
 (defprotocol Action
   "Calculate the new state and `handle!` any new Actions that arise."

@@ -1,4 +1,4 @@
-(ns leipzig-live.music)
+(ns klangmeister.music)
 
 (def leipzig "
 (defn note [time pitch duration] {:time time :pitch pitch :duration duration})

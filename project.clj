@@ -1,4 +1,4 @@
-(defproject leipzig-live "0.1.0-SNAPSHOT"
+(defproject klangmeister "0.1.0-SNAPSHOT"
   :description "A musical scratchpad."
   :license {:name "MIT" }
   :dependencies [[org.clojure/clojure "1.7.0"]
@@ -18,7 +18,7 @@
   :cljsbuild {:builds [{:id "dev"
                         :source-paths ["src"]
                         :figwheel true
-                        :compiler {:main "leipzig-live.core"
+                        :compiler {:main "klangmeister.core"
                                    :optimizations :none
                                    :output-to "resources/public/js/compiled/app.js"
                                    :output-dir "resources/public/js/compiled"

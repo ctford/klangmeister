@@ -1,4 +1,4 @@
-(ns leipzig-live.actions)
+(ns klangmeister.actions)
 
 (defrecord Play [])
 (defrecord Loop [])

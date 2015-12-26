@@ -1,9 +1,9 @@
-(ns leipzig-live.core
+(ns klangmeister.core
   (:require
-    [leipzig-live.processing] ; Import action defs.
-    [leipzig-live.eval :as eval]
-    [leipzig-live.views :as view]
-    [leipzig-live.framework :as framework]
+    [klangmeister.processing] ; Import action defs.
+    [klangmeister.eval :as eval]
+    [klangmeister.views :as view]
+    [klangmeister.framework :as framework]
     [reagent.core :as reagent]))
 
 (def initial-text

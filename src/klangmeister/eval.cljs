@@ -1,7 +1,7 @@
-(ns leipzig-live.eval
+(ns klangmeister.eval
   (:require
     [cljs.js :as cljs]
-    [leipzig-live.music :as music]))
+    [klangmeister.music :as music]))
 
 (defn build-namespace [expr-str]
   (str

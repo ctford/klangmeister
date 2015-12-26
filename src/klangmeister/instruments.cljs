@@ -1,4 +1,4 @@
-(ns leipzig-live.instruments)
+(ns klangmeister.instruments)
 
 (def context (js/window.AudioContext.))
 (defn beep! [freq start dur]
