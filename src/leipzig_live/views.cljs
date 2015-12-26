@@ -5,16 +5,28 @@
     [quil.middleware :as middleware]
     [reagent.core :as reagent]))
 
+(defn scale [k to ms]
+  (let [maximum (->> ms (map k) (apply max))
+        minimum (->> ms (map k) (apply min))
+        range (- maximum minimum)]
+    (->> ms
+         (map #(update % k - minimum))
+         (map #(update % k / range))
+         (map #(update % k * to)))))
+
 (defn draw-graph [state-atom]
   (quil/sketch :setup (constantly nil)
                :draw (fn [_]
                        (quil/background 255)
-                       (doseq [{:keys [time pitch]} (:music @state-atom)]
+                       (let [scaled (->> (:music @state-atom)
+                                         (scale :time 560)
+                                         (scale :pitch 260))]
+                       (doseq [{:keys [time pitch]} scaled]
                          (quil/ellipse
-                           (-> time (* 100) (+ 17))
-                           (-> pitch - (* 0.25) (+ 300))
+                           (-> time (+ 20))
+                           (-> pitch (+ 20) - (+ 300))
                            30
-                           30)))
+                           30))))
                :host "graph"
                :no-start true
                :middleware [middleware/fun-mode]
