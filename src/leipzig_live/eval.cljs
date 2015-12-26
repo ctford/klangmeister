@@ -1,19 +1,19 @@
 (ns leipzig-live.eval
   (:require
-    [cljs.js :as cljs]))
+    [cljs.js :as cljs]
+    [leipzig-live.music :as music]))
 
-(defn add-namespace [expr-str]
+(defn build-namespace [expr-str]
   (str
-    "(ns leipzig-live.playing
-      (:require [leipzig-live.music :as music]))"
+    "(ns leipzig-live.playing)"
+    music/leipzig
     expr-str))
 
 (defn uate
   [expr-str]
   (cljs/eval-str
     (cljs/empty-state)
-    (add-namespace expr-str)
+    (build-namespace expr-str)
     nil
-    {:eval cljs/js-eval
-     :load (fn [_ cb] (cb {:lang :clj :source ""}))}
+    {:eval cljs/js-eval}
     identity))

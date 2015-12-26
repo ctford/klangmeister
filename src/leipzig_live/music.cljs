@@ -1,5 +1,6 @@
 (ns leipzig-live.music)
 
+(def leipzig "
 (defn note [time pitch duration] {:time time :pitch pitch :duration duration})
 (defn where [k f notes] (->> notes (map #(update-in % [k] f))))
 (defn from [offset] (partial + offset))
@@ -40,6 +41,7 @@
 (defn phrase [durations pitches]
   (let [times (reductions + 0 durations)]
     (map note times pitches durations)))
+  ")
 
 (defn play-on! [instrument! notes]
   (doseq [{:keys [pitch time duration]} notes]
