@@ -41,6 +41,16 @@
 (defn phrase [durations pitches]
   (let [times (reductions + 0 durations)]
     (map note times pitches durations)))
+
+(defn- before? [a b] (<= (:time a) (:time b)))
+(defn with
+  ([[a & other-as :as as] [b & other-bs :as bs]]
+   (cond
+     (empty? as) bs
+     (empty? bs) as
+     (before? a b) (cons a (lazy-seq (with other-as bs)))
+     :otherwise    (cons b (lazy-seq (with as other-bs)))))
+  ([as bs & others] (reduce with (cons as (cons bs others)))))
   ")
 
 (defn play-on! [instrument! notes]
