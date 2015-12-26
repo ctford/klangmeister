@@ -3,6 +3,11 @@ Klangmeister
 
 A musical scratchpad.
 
+Playing
+-------
+
+See it in action [here](http://ctford.github.io/klangmeister/). Edit the code and see and hear your changes.
+
 Building
 --------
 
