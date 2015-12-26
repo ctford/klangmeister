@@ -7,10 +7,10 @@
     [reagent.core :as reagent]))
 
 (def initial-text
-  "(->> (phrase [1 1 1 1] [0 1 2 0])
-       (where :time (bpm 90))
-       (where :duration (bpm 90))
-       (where :pitch (comp equal-temperament B major)))")
+  "(->> (phrase [1 1/2 1/2 1 1 2 2] [0 1 0 2 -3 -10 -10])
+     (where :time (bpm 180))
+     (where :duration (bpm 180))
+     (where :pitch (comp equal-temperament C sharp major)))")
 
 (defonce state-atom
   (reagent/atom
