@@ -15,18 +15,20 @@
          (map #(update % k * to)))))
 
 (defn draw-graph [state-atom]
-  (quil/sketch :setup (constantly nil)
-               :draw (fn [_]
+  (quil/sketch :draw (fn [_]
                        (quil/background 255)
-                       (let [scaled (->> (:music @state-atom)
-                                         (scale :time 560)
+                       (let [{:keys [music sync duration]} @state-atom
+                             relative-time (-> (Date.now) (- sync) (mod duration) (/ 1000))
+                             marked (map (fn [{:keys [time] :as note}] (assoc note :played? (<= time relative-time))) music)
+                             scaled (->> marked
+                                         (scale :time 550)
                                          (scale :pitch 260))]
-                       (doseq [{:keys [time pitch]} scaled]
-                         (quil/ellipse
-                           (-> time (+ 20))
-                           (-> pitch (+ 20) - (+ 300))
-                           30
-                           30))))
+                         (doseq [{:keys [time pitch played?]} scaled]
+                           (quil/ellipse
+                             (-> time (+ 25))
+                             (-> pitch (+ 20) - (+ 300))
+                             (if played? 40 30)
+                             30))))
                :host "graph"
                :no-start true
                :middleware [middleware/fun-mode]
@@ -57,13 +59,12 @@
                  [:button {:on-click #(handle! (action/->Play))} "Play"]
                  [:button {:on-click #(handle! (action/->Stop))} "Stop"])
         error (:error state)]
-    [:body
-     [:div
-      [:div {:class "graph"} [graph handle! state-atom]]
-      [:div {:class "controls"} button]
-      [:div {:class (if error "error" "")} [editor handle! state]]
-      [:a {:href "https://github.com/ctford/klangmeister"}
-       [:img {:style {:position "absolute" :top 0 :right 0 :border 0}
-              :src "https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67"
-              :alt "Fork me on GitHub"
-              :data-canonical-src "https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"}]]]]))
+    [:div
+     [:div {:class "graph"} [graph handle! state-atom]]
+     [:div {:class "controls"} button]
+     [:div {:class (if error "error" "")} [editor handle! state]]
+     [:a {:href "https://github.com/ctford/klangmeister"}
+      [:img {:style {:position "absolute" :top 0 :right 0 :border 0}
+             :src "https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67"
+             :alt "Fork me on GitHub"
+             :data-canonical-src "https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"}]]]))

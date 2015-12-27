@@ -23,15 +23,15 @@
 
   action/Play
   (process [this handle! state]
-    (framework/process (action/->Loop) handle! (assoc state :looping? true)))
+    (let [new-state (-> state
+                        (assoc :looping? true)
+                        (assoc :duration (-> state :music music/duration)))]
+      (framework/process (action/->Loop) handle! new-state)))
 
   action/Loop
   (process [this handle! {notes :music :as state}]
-    (when (:looping? state)
-      (music/play-on! instrument/bell! notes)
-      (let [duration (->> notes
-                          (map (fn [{:keys [time duration]}] (+ time duration)))
-                          (apply max)
-                          (* 1000))]
-        (js/setTimeout #(handle! this) duration)))
-    state))
+    (let [start (Date.now)]
+      (when (:looping? state)
+        (music/play-on! instrument/bell! notes)
+        (js/setTimeout #(handle! this) (music/duration notes)))
+      (-> state (assoc :sync start)))))

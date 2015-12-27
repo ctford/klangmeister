@@ -57,3 +57,8 @@
   (doseq [{:keys [pitch time duration]} notes]
     (instrument! pitch time duration)))
 
+(defn duration [notes]
+  (->> notes
+       (map (fn [{:keys [time duration]}] (+ time duration)))
+       (apply max)
+       (* 1000)))
