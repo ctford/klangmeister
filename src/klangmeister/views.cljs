@@ -17,9 +17,11 @@
 (defn draw-graph [state-atom]
   (quil/sketch :draw (fn [_]
                        (quil/background 255)
-                       (let [{:keys [music sync duration]} @state-atom
+                       (let [{:keys [music sync duration looping?]} @state-atom
                              relative-time (-> (Date.now) (- sync) (mod duration) (/ 1000))
-                             marked (map (fn [{:keys [time] :as note}] (assoc note :played? (<= time relative-time))) music)
+                             marked (map (fn [{:keys [time] :as note}]
+                                           (let [played? (and looping? (<= time relative-time))]
+                                             (assoc note :played? played?))) music)
                              scaled (->> marked
                                          (scale :time 550)
                                          (scale :pitch 260))]

@@ -29,9 +29,10 @@
       (framework/process (action/->Loop) handle! new-state)))
 
   action/Loop
-  (process [this handle! {notes :music :as state}]
-    (let [start (Date.now)]
-      (when (:looping? state)
-        (music/play-on! instrument/bell! notes)
-        (js/setTimeout #(handle! this) (music/duration notes)))
-      (-> state (assoc :sync start)))))
+  (process [this handle! {:keys [music looping?] :as state}]
+    (if looping?
+      (let [start (Date.now)]
+        (music/play-on! instrument/bell! music)
+        (js/setTimeout #(handle! this) (music/duration music))
+        (assoc state :sync start))
+      (dissoc state :sync))))
