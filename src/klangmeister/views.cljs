@@ -26,11 +26,14 @@
                                          (scale :time 550)
                                          (scale :pitch 260))]
                          (doseq [{:keys [time pitch played?]} scaled]
-                           (quil/ellipse
-                             (-> time (+ 25))
-                             (-> pitch (+ 20) - (+ 300))
-                             (if played? 40 30)
-                             30))))
+                           (let [colour (if played? 200 20)]
+                             (quil/stroke colour)
+                             (quil/fill colour)
+                             (quil/ellipse
+                               (-> time (+ 25))
+                               (-> pitch (+ 20) - (+ 300))
+                               40
+                               30)))))
                :host "graph"
                :no-start true
                :middleware [middleware/fun-mode]
