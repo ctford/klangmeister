@@ -28,7 +28,7 @@
   action/Loop
   (process [this handle! {notes :music :as state}]
     (when (:looping? state)
-      (music/play-on! instrument/beep! notes)
+      (music/play-on! instrument/bell! notes)
       (let [duration (->> notes
                           (map (fn [{:keys [time duration]}] (+ time duration)))
                           (apply max)
