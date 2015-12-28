@@ -23,10 +23,7 @@
 
   action/Play
   (process [this handle! state]
-    (let [new-state (-> state
-                        (assoc :looping? true)
-                        (assoc :duration (-> state :music music/duration)))]
-      (framework/process (action/->Loop) handle! new-state)))
+    (framework/process (action/->Loop) handle! (assoc state :looping? true)))
 
   action/Loop
   (process [this handle! {:keys [music looping?] :as state}]
