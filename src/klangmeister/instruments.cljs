@@ -1,7 +1,8 @@
 (ns klangmeister.instruments
   (:require [klangmeister.music :as music]))
 
-(def context (js/window.AudioContext.))
+(defonce context (js/window.AudioContext.))
+
 (defn bell! [midi start dur]
   (let [freq (music/equal-temperament midi)
         start (+ start (.-currentTime context))
@@ -25,3 +26,21 @@
     (harmonic 3 0.4)
     (harmonic 4.1 0.25)
     (harmonic 5.2 0.2)))
+
+(defn fuzz! [midi start dur]
+  (let [freq (music/equal-temperament midi)
+        start (+ start (.-currentTime context))
+        stop (+ start dur)
+        mid (+ start 0.1)
+        gainNode (doto (.createGain context)
+                   (.connect (.-destination context)))
+        gain (doto (.-gain gainNode)
+               (.setValueAtTime 0 start)
+               (.linearRampToValueAtTime 0.6 mid)
+               (.linearRampToValueAtTime 0 (+ mid 0.5)))]
+    (doto (.createOscillator context)
+      (.connect gainNode)
+      (-> .-frequency .-value (set! freq))
+      (-> .-type  (set! "sawtooth"))
+      (.start start)
+      (.stop (+ start 1.5)))))

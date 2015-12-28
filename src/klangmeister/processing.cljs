@@ -29,7 +29,7 @@
   (process [this handle! {:keys [music looping?] :as state}]
     (if looping?
       (let [start (Date.now)]
-        (music/play-on! instrument/bell! music)
+        (music/play-on! instrument/fuzz! music)
         (js/setTimeout #(handle! this) (music/duration music))
         (assoc state :sync start))
       (dissoc state :sync))))
