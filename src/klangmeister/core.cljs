@@ -13,7 +13,7 @@
                    [4 4 5 4 7 6 7 6 5 4]))
      (where :time (bpm 120))
      (where :duration (bpm 120))
-     (where :pitch (comp equal-temperament C sharp major)))")
+     (where :pitch (comp C sharp major)))")
 
 (defonce state-atom
   (reagent/atom

@@ -1,8 +1,10 @@
-(ns klangmeister.instruments)
+(ns klangmeister.instruments
+  (:require [klangmeister.music :as music]))
 
 (def context (js/window.AudioContext.))
-(defn bell! [freq start dur]
-  (let [start (+ start (.-currentTime context))
+(defn bell! [midi start dur]
+  (let [freq (music/equal-temperament midi)
+        start (+ start (.-currentTime context))
         stop (+ start dur)
         harmonic (fn [n proportion]
                    (let [mid (+ start 0.01)

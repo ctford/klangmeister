@@ -34,10 +34,6 @@
 
 (defn bpm [beats] (fn [beat] (/ (* beat 60) beats)))
 
-(defn equal-temperament [midi]
-  (->> (repeat midi 1.0594631) ; 12th root of two
-       (reduce * 8.1757989156))) ; midi zero
-
 (defn phrase [durations pitches]
   (let [times (reductions + 0 durations)]
     (map note times pitches durations)))
@@ -62,3 +58,7 @@
        (map (fn [{:keys [time duration]}] (+ time duration)))
        (apply max)
        (* 1000)))
+
+(defn equal-temperament [midi]
+  (->> (repeat midi 1.0594631) ; 12th root of two
+       (reduce * 8.1757989156))) ; midi zero
