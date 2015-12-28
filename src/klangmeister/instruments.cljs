@@ -3,6 +3,14 @@
 
 (defonce context (js/window.AudioContext.))
 
+(defn perc [at attack decay]
+  (let [node (.createGain context)]
+    (doto (.-gain node)
+      (.setValueAtTime 0 at)
+      (.linearRampToValueAtTime 1 (+ at attack))
+      (.linearRampToValueAtTime 0 (+ at attack decay)))
+    node))
+
 (defn bell! [midi start dur]
   (let [freq (music/equal-temperament midi)
         start (+ start (.-currentTime context))
@@ -31,15 +39,10 @@
   (let [freq (music/equal-temperament midi)
         start (+ start (.-currentTime context))
         stop (+ start dur)
-        mid (+ start 0.1)
-        gainNode (doto (.createGain context)
-                   (.connect (.-destination context)))
-        gain (doto (.-gain gainNode)
-               (.setValueAtTime 0 start)
-               (.linearRampToValueAtTime 0.6 mid)
-               (.linearRampToValueAtTime 0 (+ mid 0.5)))]
+        envelope (doto (perc start 0.1 0.5)
+                   (.connect (.-destination context)))]
     (doto (.createOscillator context)
-      (.connect gainNode)
+      (.connect envelope)
       (-> .-frequency .-value (set! freq))
       (-> .-type  (set! "sawtooth"))
       (.start start)
