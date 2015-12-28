@@ -3,6 +3,7 @@
 
 (defonce context (js/window.AudioContext.))
 
+
 (defn perc [at attack decay]
   (let [node (.createGain context)]
     (doto (.-gain node)
@@ -35,15 +36,19 @@
     (harmonic 4.1 0.25)
     (harmonic 5.2 0.2)))
 
+(defn connect [& [a b & nodes]]
+  (when b
+    (.connect a b)
+    (apply connect (cons b nodes))))
+
 (defn fuzz! [midi start dur]
   (let [freq (music/equal-temperament midi)
         start (+ start (.-currentTime context))
         stop (+ start dur)
-        envelope (doto (perc start 0.1 0.5)
-                   (.connect (.-destination context)))]
+        envelope (perc start 0.1 0.5)]
     (doto (.createOscillator context)
-      (.connect envelope)
       (-> .-frequency .-value (set! freq))
       (-> .-type  (set! "sawtooth"))
       (.start start)
-      (.stop (+ start 1.5)))))
+      (.stop (+ start 1.5))
+      (connect envelope (.-destination context)))))
