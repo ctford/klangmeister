@@ -47,7 +47,21 @@
      (before? a b) (cons a (lazy-seq (with other-as bs)))
      :otherwise    (cons b (lazy-seq (with as other-bs)))))
   ([as bs & others] (reduce with (cons as (cons bs others)))))
-  ")
+
+(defn after [wait notes]
+  (where :time (from wait) notes))
+
+(defn duration
+  [notes]
+  (let [length (fn [{:keys [time duration]}] (+ time duration))]
+    (->> notes
+         (map length)
+         (reduce max 0))))
+
+(defn then [later earlier]
+  (->> later
+       (after (duration earlier))
+       (with earlier)))")
 
 (defn play-on! [instrument! notes]
   (doseq [{:keys [pitch time duration]} notes]
