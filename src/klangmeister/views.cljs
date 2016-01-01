@@ -19,23 +19,24 @@
   (let [[height width] [150 800]
         [dot-height dot-width] [15 20]]
     (quil/sketch :draw (fn [_]
-                         (quil/background 255)
-                         (let [{:keys [music sync looping?]} @state-atom
-                               relative-time (-> (Date.now) (- sync) (mod (music/duration music)) (/ 1000))
-                               marked (map (fn [{:keys [time] :as note}]
-                                             (let [played? (and looping? (<= time relative-time))]
-                                               (assoc note :played? played?))) music)
-                               scaled (->> marked
-                                           (scale :time (- width dot-width))
-                                           (scale :pitch (- height dot-height)))]
-                           (doseq [{:keys [time pitch played?]} scaled]
-                             (let [colour (if played? 200 20)
-                                   half (partial * 0.5)
-                                   [x y] [(+ time (half dot-width))
-                                          (+ (- (+ pitch (half dot-height))) height)]]
-                               (quil/stroke colour)
-                               (quil/fill colour)
-                               (quil/ellipse x y dot-width dot-height)))))
+                         (try (quil/background 255)
+                              (let [{:keys [music sync looping?]} @state-atom
+                                    relative-time (-> (Date.now) (- sync) (mod (music/duration music)) (/ 1000))
+                                    marked (map (fn [{:keys [time] :as note}]
+                                                  (let [played? (and looping? (<= time relative-time))]
+                                                    (assoc note :played? played?))) music)
+                                    scaled (->> marked
+                                                (scale :time (- width dot-width))
+                                                (scale :pitch (- height dot-height)))]
+                                (doseq [{:keys [time pitch played?]} scaled]
+                                  (let [colour (if played? 200 20)
+                                        half (partial * 0.5)
+                                        [x y] [(+ time (half dot-width))
+                                               (+ (- (+ pitch (half dot-height))) height)]]
+                                    (quil/stroke colour)
+                                    (quil/fill colour)
+                                    (quil/ellipse x y dot-width dot-height))))
+                              (catch js/Object e)))
                  :host "graph"
                  :no-start true
                  :middleware [middleware/fun-mode]
