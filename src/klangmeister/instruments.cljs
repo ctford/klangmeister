@@ -31,7 +31,7 @@
                          gain (doto (.-gain gainNode)
                                 (.setValueAtTime 0 start)
                                 (.linearRampToValueAtTime (* 0.05 proportion) mid)
-                                (.linearRampToValueAtTime 0 (+ mid (* proportion 1))))]
+                                (.linearRampToValueAtTime 0 (+ mid proportion)))]
                      (doto (.createOscillator context)
                        (.connect gainNode)
                        (-> .-frequency .-value (set! (* n freq)))
