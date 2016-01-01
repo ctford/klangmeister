@@ -16,33 +16,34 @@
          (map #(update % k * to)))))
 
 (defn draw-graph [state-atom]
-  (quil/sketch :draw (fn [_]
-                       (quil/background 255)
-                       (let [{:keys [music sync looping?]} @state-atom
-                             relative-time (-> (Date.now) (- sync) (mod (music/duration music)) (/ 1000))
-                             marked (map (fn [{:keys [time] :as note}]
-                                           (let [played? (and looping? (<= time relative-time))]
-                                             (assoc note :played? played?))) music)
-                             scaled (->> marked
-                                         (scale :time 550)
-                                         (scale :pitch 260))]
-                         (doseq [{:keys [time pitch played?]} scaled]
-                           (let [colour (if played? 200 20)]
-                             (quil/stroke colour)
-                             (quil/fill colour)
-                             (quil/ellipse
-                               (-> time (+ 25))
-                               (-> pitch (+ 20) - (+ 300))
-                               40
-                               30)))))
-               :host "graph"
-               :no-start true
-               :middleware [middleware/fun-mode]
-               :size [600 300]))
+  (let [[height width] [150 800]
+        [dot-height dot-width] [15 20]]
+    (quil/sketch :draw (fn [_]
+                         (quil/background 255)
+                         (let [{:keys [music sync looping?]} @state-atom
+                               relative-time (-> (Date.now) (- sync) (mod (music/duration music)) (/ 1000))
+                               marked (map (fn [{:keys [time] :as note}]
+                                             (let [played? (and looping? (<= time relative-time))]
+                                               (assoc note :played? played?))) music)
+                               scaled (->> marked
+                                           (scale :time (- width dot-width))
+                                           (scale :pitch (- height dot-height)))]
+                           (doseq [{:keys [time pitch played?]} scaled]
+                             (let [colour (if played? 200 20)
+                                   half (partial * 0.5)
+                                   [x y] [(+ time (half dot-width))
+                                          (+ (- (+ pitch (half dot-height))) height)]]
+                               (quil/stroke colour)
+                               (quil/fill colour)
+                               (quil/ellipse x y dot-width dot-height)))))
+                 :host "graph"
+                 :no-start true
+                 :middleware [middleware/fun-mode]
+                 :size [width height])))
 
 (defn graph [handle! state-atom]
   (reagent/create-class
-    {:render (fn [] [:canvas#graph {:width 300 :height 300}])
+    {:render (fn [] [:canvas#graph])
      :component-did-mount #(draw-graph state-atom)}))
 
 (defn editor-did-mount [handle! _]
