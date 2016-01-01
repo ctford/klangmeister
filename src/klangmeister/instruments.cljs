@@ -24,13 +24,17 @@
 (def sin-osc (partial oscillator "sine"))
 (def saw (partial oscillator "sawtooth"))
 
+(defn from [osc start stop]
+  (doto osc
+    (.start start)
+    (.stop stop)))
+
 (defn bell! [midi start dur]
   (let [freq (music/equal-temperament midi)
         start (+ start (.-currentTime context))
         harmonic (fn [n proportion]
                    (doto (sin-osc (* n freq))
-                     (.start start)
-                     (.stop (+ start 1.5))
+                     (from start (+ start 1.5))
                      (connect (perc start 0.01 (* 0.05 proportion) proportion)
                               (.-destination context))))]
     (doseq [h [1.0 2.0 3.0 4.1 5.2]
@@ -42,6 +46,5 @@
         start (+ start (.-currentTime context))
         envelope (perc start 0.1 0.8 0.5)]
     (doto (saw freq)
-      (.start start)
-      (.stop (+ start 1.5))
+      (from start (+ start 1.5))
       (connect envelope (.-destination context)))))
