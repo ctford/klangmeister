@@ -23,7 +23,6 @@
 (defn bell! [midi start dur]
   (let [freq (music/equal-temperament midi)
         start (+ start (.-currentTime context))
-        stop (+ start dur)
         harmonic (fn [n proportion]
                    (let [mid (+ start 0.01)
                          gainNode (doto (.createGain context)
@@ -45,7 +44,6 @@
 (defn fuzz! [midi start dur]
   (let [freq (music/equal-temperament midi)
         start (+ start (.-currentTime context))
-        stop (+ start dur)
         envelope (perc start 0.1 0.5)]
     (doto (.createOscillator context)
       (-> .-frequency .-value (set! freq))
