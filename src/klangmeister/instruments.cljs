@@ -38,11 +38,9 @@
                        (-> .-type  (set! "sine"))
                        (.start start)
                        (.stop (+ start 1.5)))))]
-    (harmonic 1 1)
-    (harmonic 2 0.6)
-    (harmonic 3 0.4)
-    (harmonic 4.1 0.25)
-    (harmonic 5.2 0.2)))
+    (doseq [h [1 2 3 4.1 5.2]
+            p [1 0.6 0.4 0.25 0.2]]
+      (harmonic h p))))
 
 (defn fuzz! [midi start dur]
   (let [freq (music/equal-temperament midi)
