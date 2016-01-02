@@ -9,7 +9,12 @@
     (let [pane (.fromTextArea
                  js/CodeMirror
                  (reagent/dom-node this)
-                 #js {:mode "clojure"})]
+                 #js {:mode "clojure"
+                      :theme "solarized"
+                      :lineNumbers true
+                      :matchBrackets true
+                      :autoCloseBrackets true
+                      :lineWrapping true})]
       (.on pane "change" #(-> % .getValue action/->Refresh handle!)))))
 
 (defn editor [handle! state]
