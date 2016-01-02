@@ -52,3 +52,8 @@ button {
   border-width: 3px;
   border-color: #F89;
 }
+
+.cheatsheet {
+  padding-top: 0.5cm;
+  font-family: monospace;
+}
