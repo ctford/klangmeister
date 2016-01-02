@@ -27,7 +27,7 @@
 
 (defn mount-root []
   (reagent/render
-    [view/home-page (framework/handler-for state-atom) state-atom]
+    [view/render (framework/handler-for state-atom) state-atom]
     js/document.body))
 
 (defn main []

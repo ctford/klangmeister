@@ -5,16 +5,16 @@
     [klangmeister.editor :as editor]
     [reagent.core :as reagent]))
 
-(defn home-page [handle! state-atom]
+(defn render [handle! state-atom]
   (let [state @state-atom
         button (if-not (:looping? state)
                  [:button {:on-click #(handle! (action/->Play))} "Play"]
                  [:button {:on-click #(handle! (action/->Stop))} "Stop"])
         error (:error state)]
     [:div
-     [:div {:class "graph"} [graph/graph handle! state-atom]]
+     [:div {:class "graph"} [graph/render handle! state-atom]]
      [:div {:class "controls"} button]
-     [:div {:class (if error "error" "")} [editor/editor handle! state]]
+     [:div {:class (if error "error" "")} [editor/render handle! state]]
      [:a {:href "https://github.com/ctford/klangmeister"}
       [:img {:style {:position "absolute" :top 0 :right 0 :border 0}
              :src "https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67"

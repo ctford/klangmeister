@@ -17,7 +17,7 @@
                       :lineWrapping true})]
       (.on pane "change" #(-> % .getValue action/->Refresh handle!)))))
 
-(defn editor [handle! state]
+(defn render [handle! state]
   (reagent/create-class
     {:render (fn [] [:textarea {:default-value (:text state)
                                 :auto-complete "off"}])

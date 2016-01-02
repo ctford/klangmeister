@@ -41,7 +41,7 @@
                  :middleware [middleware/fun-mode]
                  :size [width height])))
 
-(defn graph [handle! state-atom]
+(defn render [handle! state-atom]
   (reagent/create-class
     {:render (fn [] [:canvas#graph])
      :component-did-mount #(draw-graph state-atom)}))
