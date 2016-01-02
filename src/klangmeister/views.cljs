@@ -22,7 +22,7 @@
      [:div
       [:table {:class "cheatsheet"}
        [:tbody
-        (row "(..)" "Evaluation an expression" "(+ 1 1)")
+        (row "(..)" "Evaluate an expression" "(+ 1 1)")
         (row "[..]" "Build a sequence." "[1 2 3]")
         (row "->>" "Thread together multiple expressions." "(->> (range) (take 4))")
         (row "A..G" "Translate a relative midi into the specified key." "(A 3) => 72")
