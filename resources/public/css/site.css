@@ -55,5 +55,8 @@ button {
 
 .cheatsheet {
   padding-top: 0.5cm;
+}
+
+.cheatsheet .code {
   font-family: monospace;
 }
