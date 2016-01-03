@@ -18,7 +18,7 @@
     [:div
      [:div {:class "graph"} [graph/render handle! state-atom]]
      [:div {:class "controls"} button]
-     [:div {:class (if error "error" "")} [editor/render handle! state]]
+     [:div {:class (str "editor " (if error "error" ""))} [editor/render handle! state]]
      [:div
       [:table {:class "cheatsheet"}
        [:tbody
