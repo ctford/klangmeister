@@ -43,5 +43,6 @@
 
 (defn render [handle! state-atom]
   (reagent/create-class
-    {:render (fn [] [:canvas#graph])
+    {:render (fn []
+     [:div {:class "graph"} [:canvas#graph]])
      :component-did-mount #(draw-graph state-atom)}))
