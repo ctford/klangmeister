@@ -1,4 +1,5 @@
-(ns klangmeister.music)
+(ns klangmeister.music
+  (:require [leipzig.temperament :as temperament]))
 
 (def leipzig "
 (defn note [time pitch duration] {:time time :pitch pitch :duration duration})
@@ -65,4 +66,4 @@
 
 (defn play-on! [instrument! notes]
   (doseq [{:keys [pitch time duration]} notes]
-    (instrument! pitch time duration)))
+    (instrument! (temperament/equal pitch) time duration)))
