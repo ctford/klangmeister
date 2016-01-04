@@ -10,9 +10,9 @@
         minimum (->> ms (map k) (apply min))
         range (- maximum minimum)]
     (->> ms
-         (map #(update % k - minimum))
-         (map #(update % k / range))
-         (map #(update % k * to)))))
+         (melody/where k #(- % minimum))
+         (melody/where k #(/ % range))
+         (melody/where k #(* % to)))))
 
 (defn draw-graph [state-atom]
   (let [[height width] [150 800]
@@ -21,9 +21,10 @@
                          (try (quil/background 255)
                               (let [{:keys [music sync looping?]} @state-atom
                                     relative-time (-> (Date.now) (- sync) (mod (* 1000 (melody/duration music))) (/ 1000))
-                                    marked (map (fn [{:keys [time] :as note}]
-                                                  (let [played? (and looping? (<= time relative-time))]
-                                                    (assoc note :played? played?))) music)
+                                    marked (->> music
+                                                (melody/wherever
+                                                  #(and looping? (<= (:time %) relative-time))
+                                                  :played? (melody/is true)))
                                     scaled (->> marked
                                                 (scale :time (- width dot-width))
                                                 (scale :pitch (- height dot-height)))]
