@@ -19,19 +19,21 @@
                [:td {:class "code"} example]])]
     [:table {:class "cheatsheet"}
      [:tbody
-      (row "(..)" "Evaluate an expression" "(+ 1 1)")
-      (row "[..]" "Build a sequence." "[1 2 3]")
-      (row "->>" "Thread together multiple expressions." "(->> (range) (take 4))")
-      (row "A..G" "Translate a relative midi into the specified key." "(A 3) => 72")
-      (row "bpm" "Build a function that converts beats into seconds." "((bpm 120) 3) => 1.5")
-      (row "def" "Define a value with a name. Used outside the `->>`." "(def pi 3.14)")
-      (row "flat" "Translate a midi down one semitone." "(flat 72) => 71")
-      (row "major" "Convert a rank of a minor scale into a midi pitch." "(major 2) => 4")
-      (row "minor" "Convert a rank of a minor scale into a midi pitch." "(minor 2) => 3")
-      (row "phrase" "Build a melody from a sequence of durations and a sequence of pitches." "(phrase [1 1 2] [0 2 4])")
-      (row "sharp" "Translate a midi up one semitone." "(sharp 70) => 71")
-      (row "where" "Transform a specified key using a specified function." "(where :pitch inc notes)")
-      (row "with" "Combines two melodies." "(with notes bass-notes)")]]))
+      (row "(..)" "Evaluate an expression" "(+ 1 1) => 2")
+      (row "[..]" "Make a sequence." "[1 2 3] => [1 2 3]")
+      (row "->>" "Thread together multiple expressions." "(->> guitar (with bass))")
+      (row "A..G" "Transform a quantity of semitones relative to root into the specified key." "(A 3) => 72")
+      (row "bpm" "Make a transformation from beats to seconds." "((bpm 120) 3) => 1.5")
+      (row "comp" "Join together several transformations." "((comp C major) 2) => 64")
+      (row "def" "Define a name with a value. Use it before the `->>`." "(def key (comp C major))")
+      (row "flat" "Transform a number of semitones down one." "(flat 72) => 71")
+      (row "major" "Transform a rank of a major scale into semitones." "(major 2) => 4")
+      (row "minor" "Transform a rank of a minor scale into semitones." "(minor 2) => 3")
+      (row "phrase" "Transform a sequence of durations and a sequence of pitches into a melody." "(phrase [1 1 2] [0 2 4])")
+      (row "sharp" "Transform a number of semitones up one." "(sharp 70) => 71")
+      (row "then" "Put one melody after another." "(->> bass (then guitar))")
+      (row "where" "Transform an attribute of each note using the specified transformation." "(where :pitch inc notes)")
+      (row "with" "Put two melodies together." "(with bass guitar)")]]))
 
 (defn ribbon []
   [:a {:href "https://github.com/ctford/klangmeister"}
