@@ -4,7 +4,8 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [reagent "0.5.1"]
                  [quil "2.3.0"]
-                 [org.clojure/clojurescript "1.7.170"]]
+                 [org.clojure/clojurescript "1.7.170"]
+                 [leipzig "0.10.0-SNAPSHOT"]]
 
   :plugins [[lein-cljsbuild "1.1.1"]
             [lein-figwheel "0.5.0-2"]]

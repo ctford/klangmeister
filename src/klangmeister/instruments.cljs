@@ -1,5 +1,5 @@
 (ns klangmeister.instruments
-  (:require [klangmeister.music :as music]))
+  (:require [leipzig.temperament :as temperament]))
 
 (defonce context (js/window.AudioContext.))
 
@@ -30,7 +30,7 @@
     (.stop stop)))
 
 (defn bell! [midi start dur]
-  (let [freq (music/equal-temperament midi)
+  (let [freq (temperament/equal midi)
         start (+ start (.-currentTime context))
         harmonic (fn [n proportion]
                    (doto (sin-osc (* n freq))
@@ -42,7 +42,7 @@
       (harmonic h p))))
 
 (defn fuzz! [midi start dur]
-  (let [freq (music/equal-temperament midi)
+  (let [freq (temperament/equal midi)
         start (+ start (.-currentTime context))
         envelope (perc start 0.1 0.8 0.5)]
     (doto (saw freq)

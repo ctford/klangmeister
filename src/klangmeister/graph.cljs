@@ -1,6 +1,6 @@
 (ns klangmeister.graph
   (:require
-    [klangmeister.music :as music]
+    [leipzig.melody :as melody]
     [quil.core :as quil :include-macros true]
     [quil.middleware :as middleware]
     [reagent.core :as reagent]))
@@ -20,7 +20,7 @@
     (quil/sketch :draw (fn [_]
                          (try (quil/background 255)
                               (let [{:keys [music sync looping?]} @state-atom
-                                    relative-time (-> (Date.now) (- sync) (mod (music/duration music)) (/ 1000))
+                                    relative-time (-> (Date.now) (- sync) (mod (* 1000 (melody/duration music))) (/ 1000))
                                     marked (map (fn [{:keys [time] :as note}]
                                                   (let [played? (and looping? (<= time relative-time))]
                                                     (assoc note :played? played?))) music)

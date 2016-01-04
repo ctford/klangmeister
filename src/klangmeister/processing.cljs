@@ -5,6 +5,7 @@
     [klangmeister.instruments :as instrument]
     [klangmeister.actions :as action]
     [klangmeister.framework :as framework]
+    [leipzig.melody :as melody]
     [cljs.js :as cljs]))
 
 (extend-protocol framework/Action
@@ -30,6 +31,6 @@
     (if looping?
       (let [start (Date.now)]
         (music/play-on! instrument/bell! music)
-        (js/setTimeout #(handle! this) (music/duration music))
+        (js/setTimeout #(handle! this) (* 1000 (melody/duration music)))
         (assoc state :sync start))
       (dissoc state :sync))))

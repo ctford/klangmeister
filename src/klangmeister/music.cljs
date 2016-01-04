@@ -66,13 +66,3 @@
 (defn play-on! [instrument! notes]
   (doseq [{:keys [pitch time duration]} notes]
     (instrument! pitch time duration)))
-
-(defn duration [notes]
-  (->> notes
-       (map (fn [{:keys [time duration]}] (+ time duration)))
-       (apply max)
-       (* 1000)))
-
-(defn equal-temperament [midi]
-  (->> (repeat midi 1.0594631) ; 12th root of two
-       (reduce * 8.1757989156))) ; midi zero
