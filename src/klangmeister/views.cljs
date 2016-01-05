@@ -22,6 +22,7 @@
       (row "(..)" "Evaluate an expression" "(+ 1 1) => 2")
       (row "[..]" "Make a sequence." "[1 2 3] => [1 2 3]")
       (row "->>" "Thread together multiple expressions." "(->> guitar (with bass))")
+      (row ";" "Ignore the rest of the line, so that you can put comments in." "; The melody.")
       (row "A..G" "Transform a quantity of semitones relative to root into the specified key." "(A 3) => 72")
       (row "bpm" "Make a transformation from beats to seconds." "((bpm 120) 3) => 1.5")
       (row "comp" "Join together several transformations." "((comp C major) 2) => 64")
