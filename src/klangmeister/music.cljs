@@ -73,10 +73,11 @@
    :buzz instrument/buzz!})
 
 (defn play-on! [notes]
-  (doseq [{:keys [instrument] :as note} notes]
+  (doseq [{:keys [time instrument] :as note} notes]
     (let [synth! (get instruments instrument instrument/bell!)
-          now (partial + (.-currentTime instrument/context))]
+          at (+ time (.-currentTime instrument/context)) ]
       (-> note
           (update :pitch temperament/equal)
-          (update :time now)
-          synth!))))
+          (dissoc :time)
+          synth!
+          (apply [at instrument/context])))))
