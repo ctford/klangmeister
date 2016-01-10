@@ -28,10 +28,10 @@
     (.start start)
     (.stop stop)))
 
-(defn bell! [freq start dur]
-  (let [start (+ start (.-currentTime context))
+(defn bell! [{:keys [time duration pitch]}]
+  (let [start (+ time (.-currentTime context))
         harmonic (fn [n proportion]
-                   (doto (sin-osc (* n freq))
+                   (doto (sin-osc (* n pitch))
                      (from start (+ start 1.5))
                      (connect (perc start 0.01 (* 0.05 proportion) proportion)
                               (.-destination context))))]
@@ -39,16 +39,16 @@
             p [1.0 0.6 0.4 0.3 0.2]]
       (harmonic h p))))
 
-(defn fuzz! [freq start dur]
-  (let [start (+ start (.-currentTime context))
+(defn fuzz! [{:keys [time duration pitch]}]
+  (let [start (+ time (.-currentTime context))
         envelope (perc start 0.1 0.8 0.5)]
-    (doto (saw freq)
+    (doto (saw pitch)
       (from start (+ start 1.5))
       (connect envelope (.-destination context)))))
 
-(defn buzz! [freq start dur]
-  (let [start (+ start (.-currentTime context))
-        freqs [freq (* freq 1.001) (* freq 0.99)]
+(defn buzz! [{:keys [time duration pitch]}]
+  (let [start (+ time (.-currentTime context))
+        freqs [pitch (* pitch 1.01) (* pitch 0.99)]
         envelopes [(perc start 0.3 0.4 0.2)
                    (perc start 0.05 0.3 0.1)
                    (perc start 0.1 0.01 0.1)]]
