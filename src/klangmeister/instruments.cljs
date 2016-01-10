@@ -18,7 +18,7 @@
         (.linearRampToValueAtTime 0 (+ at attack decay)))
       node)))
 
-(defn wire [ugen1 ugen2]
+(defn connect [ugen1 ugen2]
   (fn [at context]
     (let [upstream (ugen1 at context)
           sink (ugen2 at context)]
@@ -26,7 +26,7 @@
       sink)))
 
 (defn >>> [& nodes]
-  (reduce wire nodes))
+  (reduce connect nodes))
 
 (defn oscillator [type freq duration]
   (fn [at context]
