@@ -45,3 +45,14 @@
     (doto (saw freq)
       (from start (+ start 1.5))
       (connect envelope (.-destination context)))))
+
+(defn buzz! [freq start dur]
+  (let [start (+ start (.-currentTime context))
+        freqs [freq (* freq 1.001) (* freq 0.99)]
+        envelopes [(perc start 0.3 0.4 0.2)
+                   (perc start 0.05 0.3 0.1)
+                   (perc start 0.1 0.01 0.1)]]
+    (doseq [freq freqs envelope envelopes]
+      (doto (saw freq)
+        (from start (+ start 1.5))
+        (connect envelope (.-destination context))))))

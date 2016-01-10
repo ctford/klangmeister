@@ -1,5 +1,6 @@
 (ns klangmeister.music
-  (:require [leipzig.temperament :as temperament]))
+  (:require [leipzig.temperament :as temperament]
+            [klangmeister.instruments :as instrument]))
 
 (def leipzig "
 (defn note [time pitch duration] {:time time :pitch pitch :duration duration})
@@ -62,8 +63,16 @@
 (defn then [later earlier]
   (->> later
        (after (duration earlier))
-       (with earlier)))")
+       (with earlier)))
 
-(defn play-on! [instrument! notes]
-  (doseq [{:keys [pitch time duration]} notes]
-    (instrument! (temperament/equal pitch) time duration)))
+(def is constantly)")
+
+(def instruments
+  {:bell instrument/bell!
+   :fuzz instrument/fuzz!
+   :buzz instrument/buzz!})
+
+(defn play-on! [notes]
+  (doseq [{:keys [pitch time duration instrument]} notes]
+    (let [synth! (get instruments instrument instrument/bell!)]
+      (synth! (temperament/equal pitch) time duration))))
