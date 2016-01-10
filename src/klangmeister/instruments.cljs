@@ -42,7 +42,7 @@
 (defn destination [at context]
   (.-destination context))
 
-(defn all [nodes]
+(defn blend [nodes]
   (fn [at context]
     (doseq [node nodes]
       (node at context))))
@@ -58,12 +58,12 @@
         harmonic
         [1.0 2.0 3.0 4.1 5.2]
         [1.0 0.6 0.4 0.3 0.2])
-      all)))
+      blend)))
 
 (defn fuzz! [{:keys [duration pitch]}]
   (>>> (saw pitch 1.5)
        (percuss 0.1 0.5)
-       (volume 0.3)
+       (volume 0.1)
        destination))
 
 (defn buzz! [{:keys [duration pitch]}]
@@ -76,4 +76,4 @@
                      destination))
               freqs
               envelopes)
-         all)))
+         blend)))
