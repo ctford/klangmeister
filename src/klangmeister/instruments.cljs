@@ -28,13 +28,16 @@
 (defn >>> [& nodes]
   (reduce wire nodes))
 
-(defn oscillate [type freq duration]
+(defn oscillator [type freq duration]
   (fn [at context]
     (doto (.createOscillator context)
       (-> .-frequency .-value (set! freq))
       (-> .-type (set! type))
       (.start at)
       (.stop (+ at duration)))))
+
+(def sin-osc (partial oscillator "sine"))
+(def saw (partial oscillator "sawtooth"))
 
 (defn destination [at context]
   (.-destination context))
@@ -46,7 +49,7 @@
 
 (defn bell! [{:keys [time duration pitch]}]
   (let [harmonic (fn [n proportion]
-                   (>>> (oscillate "sine" (* n pitch) 1.5)
+                   (>>> (sin-osc (* n pitch) 1.5)
                         (percuss 0.01 proportion)
                         (volume 0.01)
                         destination))]
@@ -58,7 +61,7 @@
       all)))
 
 (defn fuzz! [{:keys [duration pitch]}]
-  (>>> (oscillate "sawtooth" pitch 1.5)
+  (>>> (saw pitch 1.5)
        (percuss 0.1 0.5)
        (volume 0.3)
        destination))
@@ -67,7 +70,7 @@
   (let [freqs [pitch (* pitch 1.01) (* pitch 0.99)]
         envelopes [[0.3 0.2] [0.05 0.1] [0.1 0.1]]]
     (->> (map (fn [freq [attack decay]]
-                (>>> (oscillate "sawtooth" freq 1.5)
+                (>>> (saw freq 1.5)
                      (percuss attack decay)
                      (volume 0.05)
                      destination))
