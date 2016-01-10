@@ -49,23 +49,26 @@
 (defn destination [at context]
   (.-destination context))
 
-(defn blend [nodes]
+(defn blend [& nodes]
   (fn [at context]
-    (doseq [node nodes]
-      (node at context))))
+    (let [sink (volume 1.0)]
+      (doseq [node nodes]
+        (connect node sink)
+        (node at context))
+      sink)))
 
 (defn bell! [{:keys [time duration pitch]}]
   (let [harmonic (fn [n proportion]
                    (>>> (sin-osc (* n pitch) 1.5)
                         (percuss 0.01 proportion)
                         (volume 0.01)
-                        destination))]
-    (->>
-      (map
-        harmonic
-        [1.0 2.0 3.0 4.1 5.2]
-        [1.0 0.6 0.4 0.3 0.2])
-      blend)))
+                        destination))
+        mixture (->> (map
+                  harmonic
+                  [1.0 2.0 3.0 4.1 5.2]
+                  [1.0 0.6 0.4 0.3 0.2])
+                     (apply blend))]
+    mixture))
 
 (defn fuzz! [{:keys [duration pitch]}]
   (>>> (saw pitch 1.5)
