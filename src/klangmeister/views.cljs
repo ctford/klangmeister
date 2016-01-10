@@ -29,7 +29,7 @@
       (row "def" "Define a name with a value. Use it before the `->>`." "(def key (comp C major))")
       (row ":duration" "The duration of each note." "")
       (row "flat" "Transform a number of semitones down one." "(flat 72) => 71")
-      (row ":instrument" "Specifies the synth to play. Currently :bell, :bop, :buzz or :fuzz." "")
+      (row ":instrument" "Specifies the synth to play. Currently :bell, :bop, :buzz, :omg or :fuzz." "")
       (row "major" "Transform a rank of a major scale into semitones." "(major 2) => 4")
       (row "minor" "Transform a rank of a minor scale into semitones." "(minor 2) => 3")
       (row "phrase" "Transform a sequence of durations and a sequence of pitches into a melody." "(phrase [1 1 2] [0 2 4])")

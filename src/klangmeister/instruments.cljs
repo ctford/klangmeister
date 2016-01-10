@@ -27,6 +27,9 @@
         (.linearRampToValueAtTime 0 (+ at attack decay hold release)) )
       node)))
 
+(defn ashr [attack hold release]
+  (adshr attack 0 1 hold release))
+
 (defn connect [ugen1 ugen2]
   (fn [at context]
     (let [upstream (ugen1 at context)
@@ -79,6 +82,12 @@
 (defn bop! [{:keys [duration pitch]}]
   (>>> (square pitch 1.5)
        (adshr 0.01 0.1 0.6 0.2 0.1)
+       (volume 0.1)
+       destination))
+
+(defn omg! [{:keys [duration pitch]}]
+  (>>> (square pitch 1.5)
+       (ashr 0.1 0.4 0.05)
        (volume 0.1)
        destination))
 
