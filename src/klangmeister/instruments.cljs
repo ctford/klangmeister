@@ -4,10 +4,8 @@
 
 (defn volume [peak]
   (fn [at context]
-    (let [node (.createGain context)]
-      (doto (.-gain node)
-        (.setValueAtTime peak at))
-      node)))
+    (doto (.createGain context)
+      (-> .-gain (.setValueAtTime peak at)))))
 
 (defn percuss [attack decay]
   (fn [at context]
