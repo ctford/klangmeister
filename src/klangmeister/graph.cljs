@@ -13,10 +13,7 @@
         spread (- maximum minimum)]
     (fn [x] (-> x (- minimum) (/ spread) (* to)))))
 
-(def guide-frequencies
-  (map (comp temperament/equal scale/C scale/major) (range -10 10)))
-
-(js/console.log (apply print-str guide-frequencies))
+(def guide-frequencies (range 0 128 2))
 
 (defn draw-graph [state-atom]
   (let [[height width] [150 800]
@@ -31,17 +28,18 @@
                                                   :played? (melody/is true)))
                                     scale-pitch (scaler-for (- height dot-height) (map :pitch music))
                                     scale-time (scaler-for (- width dot-width) (map :time music))
+                                    half (partial * 0.5)
                                     scaled (->> marked
                                                 (melody/where :pitch scale-pitch)
                                                 (melody/where :time scale-time))]
-                                #_(doseq [freq (map scale-pitch guide-frequencies)]
-                                  (quil/stroke 200)
-                                  (quil/line 0 (* 0.5 freq) width (* 0.5 freq)))
+                                (doseq [pitch (map scale-pitch guide-frequencies)]
+                                  (let [y (+ height (- (+ pitch (half dot-height))))]
+                                    (quil/stroke 230)
+                                    (quil/line 0 y width y)))
                                 (doseq [{:keys [time pitch played?]} scaled]
                                   (let [colour (if played? 200 20)
-                                        half (partial * 0.5)
-                                        [x y] [(+ time (half dot-width))
-                                               (+ (- (+ pitch (half dot-height))) height)]]
+                                        x (+ time (half dot-width))
+                                        y (+ height (- (+ pitch (half dot-height))))]
                                     (quil/stroke colour)
                                     (quil/fill colour)
                                     (quil/ellipse x y dot-width dot-height))))
