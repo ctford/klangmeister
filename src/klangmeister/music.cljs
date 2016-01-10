@@ -74,5 +74,9 @@
 
 (defn play-on! [notes]
   (doseq [{:keys [instrument] :as note} notes]
-    (let [synth! (get instruments instrument instrument/bell!)]
-      (-> note (update :pitch temperament/equal) synth!))))
+    (let [synth! (get instruments instrument instrument/bell!)
+          now (partial + (.-currentTime instrument/context))]
+      (-> note
+          (update :pitch temperament/equal)
+          (update :time now)
+          synth!))))
