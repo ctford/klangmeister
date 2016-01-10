@@ -16,6 +16,17 @@
         (.linearRampToValueAtTime 0 (+ at attack decay)))
       node)))
 
+(defn adshr [attack decay sustain hold release]
+  (fn [at context]
+    (let [node (.createGain context)]
+      (doto (.-gain node)
+        (.setValueAtTime 0 at)
+        (.linearRampToValueAtTime 1.0 (+ at attack))
+        (.linearRampToValueAtTime sustain (+ at attack decay))
+        (.setValueAtTime sustain (+ at attack decay hold))
+        (.linearRampToValueAtTime 0 (+ at attack decay hold release)) )
+      node)))
+
 (defn connect [ugen1 ugen2]
   (fn [at context]
     (let [upstream (ugen1 at context)
@@ -36,6 +47,7 @@
 
 (def sin-osc (partial oscillator "sine"))
 (def saw (partial oscillator "sawtooth"))
+(def square (partial oscillator "square"))
 
 (defn destination [at context]
   (.-destination context))
@@ -61,6 +73,12 @@
 (defn fuzz! [{:keys [duration pitch]}]
   (>>> (saw pitch 1.5)
        (percuss 0.1 0.5)
+       (volume 0.1)
+       destination))
+
+(defn bop! [{:keys [duration pitch]}]
+  (>>> (square pitch 1.5)
+       (adshr 0.01 0.1 0.6 0.2 0.1)
        (volume 0.1)
        destination))
 

@@ -68,7 +68,8 @@
 (def is constantly)")
 
 (def instruments
-  {:bell instrument/bell!
+  {:bop instrument/bop!
+   :bell instrument/bell!
    :fuzz instrument/fuzz!
    :buzz instrument/buzz!})
 
