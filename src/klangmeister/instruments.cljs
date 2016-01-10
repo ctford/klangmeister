@@ -7,15 +7,6 @@
     (doto (.createGain context)
       (-> .-gain (.setValueAtTime peak at)))))
 
-(defn percuss [attack decay]
-  (fn [at context]
-    (let [node (.createGain context)]
-      (doto (.-gain node)
-        (.setValueAtTime 0 at)
-        (.linearRampToValueAtTime 1.0 (+ at attack))
-        (.linearRampToValueAtTime 0 (+ at attack decay)))
-      node)))
-
 (defn adshr [attack decay sustain hold release]
   (fn [at context]
     (let [node (.createGain context)]
@@ -26,6 +17,9 @@
         (.setValueAtTime sustain (+ at attack decay hold))
         (.linearRampToValueAtTime 0 (+ at attack decay hold release)) )
       node)))
+
+(defn percuss [attack decay]
+  (adshr attack decay 0 0 0))
 
 (defn ashr [attack hold release]
   (adshr attack 0 1 hold release))
