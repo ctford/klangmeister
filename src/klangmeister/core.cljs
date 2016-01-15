@@ -7,14 +7,14 @@
     [reagent.core :as reagent]))
 
 (def initial-text
-  "(->> (phrase [1 1/2 1/2 1 1 2 2]
+  "(->> (melody/phrase [1 1/2 1/2 1 1 2 2]
              [0 1 0 2 -3 1 -1])
-     (with (phrase [1 1/2 1/2 1 1 1/2 1/2 1/2 1/2 2]
+     (melody/with (melody/phrase [1 1/2 1/2 1 1 1/2 1/2 1/2 1/2 2]
                    [4 4 5 4 7 6 7 6 5 4]))
-     (where :instrument (is :bell))
-     (where :time (bpm 120))
-     (where :duration (bpm 120))
-     (where :pitch (comp scale/high scale/C scale/sharp scale/major)))")
+     (melody/wherever (constantly true) :instrument (melody/is :bell))
+     (melody/where :time (melody/bpm 120))
+     (melody/where :duration (melody/bpm 120))
+     (melody/where :pitch (comp scale/high scale/C scale/sharp scale/major)))")
 
 (defonce state-atom
   (reagent/atom

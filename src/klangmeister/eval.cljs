@@ -1,7 +1,6 @@
 (ns klangmeister.eval
   (:require
-    [cljs.js :as cljs]
-    [klangmeister.music :as music])
+    [cljs.js :as cljs])
   (:require-macros
     [klangmeister.macros :as macro]))
 
@@ -18,8 +17,8 @@
 (defn build-namespace [expr-str]
   (str
     "(ns leipzig-live.playing
-       (:require [leipzig.scale :as scale]))"
-    music/leipzig
+       (:require [leipzig.scale :as scale]
+                 [leipzig.melody :as melody]))"
     expr-str))
 
 (defn uate
