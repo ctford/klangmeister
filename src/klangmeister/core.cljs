@@ -14,7 +14,7 @@
      (where :instrument (is :bell))
      (where :time (bpm 120))
      (where :duration (bpm 120))
-     (where :pitch (comp C sharp major)))")
+     (where :pitch (comp scale/high scale/C scale/sharp scale/major)))")
 
 (defonce state-atom
   (reagent/atom

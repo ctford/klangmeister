@@ -27,4 +27,5 @@
 (defn render [handle! {:keys [error] :as state}]
   [:div
    {:class (str "editor" (if error " error" ""))}
-   [editor handle! state]])
+   [editor handle! state]
+   [:div (some-> error .-cause .-message)]])
