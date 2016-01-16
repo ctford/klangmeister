@@ -1,6 +1,6 @@
 (ns klangmeister.live
   (:require [leipzig.scale :refer [A B C D E F G sharp flat high low major minor]]
-            [leipzig.melody :refer [all bpm is phrase then times where wherever with]]
+            [leipzig.melody :refer [all bpm is phrase tempo then times where wherever with]]
             [klangmeister.instruments :refer [>>> bell! saw sin-osc square percuss volume]]))
 
 (defn fuzz! [{:keys [duration pitch]}]
@@ -12,7 +12,6 @@
              [0 1 0 2 -3 1 -1])
      (with (phrase [1 1/2 1/2 1 1 1/2 1/2 1/2 1/2 2]
                    [4 4 5 4 7 6 7 6 5 4]))
-     (wherever (constantly true) :instrument (is fuzz!))
-     (where :time (bpm 120))
-     (where :duration (bpm 120))
+     (all :instrument fuzz!)
+     (tempo (bpm 120))
      (where :pitch (comp high C sharp major)))
