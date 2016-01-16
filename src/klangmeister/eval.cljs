@@ -18,7 +18,8 @@
   (str
     "(ns leipzig-live.playing
        (:require [leipzig.scale :as scale]
-                 [leipzig.melody :as melody]))"
+                 [leipzig.melody :as melody]
+                 [klangmeister.instruments :as inst]))"
     expr-str))
 
 (defn uate
