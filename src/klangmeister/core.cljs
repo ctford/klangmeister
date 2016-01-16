@@ -9,7 +9,7 @@
     [klangmeister.macros :as macro]))
 
 (def initial-code
-  (macro/source klangmeister.live))
+  (macro/text "src/klangmeister/live.cljs.txt"))
 
 (defonce state-atom
   (reagent/atom
