@@ -1,7 +1,6 @@
 (ns klangmeister.macros
   (:require [clojure.tools.namespace.find :as find]
             [clojure.tools.namespace.file :as file]
-            [clojure.tools.reader :as reader]
             [clojure.java.io :as io]
             [clojure.java.classpath :as classpath])
   (:import (java.io File)))
