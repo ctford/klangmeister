@@ -11,7 +11,6 @@
 (defn files []
   (->> (classpath/classpath-directories)
        (map io/file)
-       (filter #(.exists ^File %))
        (mapcat #(find/find-sources-in-dir % find/cljs))))
 
 (defn collate [entries]
