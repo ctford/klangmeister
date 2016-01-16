@@ -15,6 +15,18 @@ Run `lein figwheel` for a hot-reloading development mode, or `lein cljsbuild onc
 
 Then browse to `resources/index.html`.
 
+Goals
+-----
+My aims for Klangmeister are:
+* Zero-install live-coding
+* Accessible synth design
+* Music education
+* Performance-readiness
+
+There are many other excellent live-coding platforms, like [Sonic Pi](http://sonic-pi.net/), [Overtone](https://overtone.github.io/) and [Extempore](http://extempore.moso.com.au/). The main thing that differentiates Klangmeister is that as it's in-browser, it's really easy to get going quickly.
+
 References
 ----------
-* [Leipzig](https://github.com/ctford/leipzig)
+Klangmeister is based on a talk called [Functional Composition](https://www.youtube.com/watch?v=Mfsnlbd-4xQ) and a music theory library called [Leipzig](https://github.com/ctford/leipzig).
+
+It is built on [Clojurescript](https://github.com/clojure/clojurescript) and the [Web Audio API](https://www.w3.org/TR/webaudio/).
