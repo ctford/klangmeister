@@ -24,12 +24,16 @@
                         :figwheel true
                         :compiler {:main "klangmeister.core"
                                    :optimizations :none
+                                   :pretty-print true
                                    :output-to "resources/public/js/compiled/app.js"
                                    :output-dir "resources/public/js/compiled"
                                    :asset-path "js/compiled"}}
                        {:id "prod"
                         :source-paths ["src"]
                         :compiler {:optimizations :simple
+                                   :pretty-print false
+                                   :optimize-constants true
+                                   :static-fns true
                                    :output-to "resources/public/js/compiled/app.js"
                                    :asset-path "js/compiled"}}]}
 
