@@ -9,9 +9,6 @@
   (:require-macros
     [klangmeister.macros :as macro]))
 
-(def initial-code
-  (macro/text "src/klangmeister/live.cljs.txt"))
-
 (defn empty-state []
   (reagent/atom
     {:looping? false
