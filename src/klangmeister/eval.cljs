@@ -17,10 +17,12 @@
 (defn loader [{:keys [name]} callback]
   (callback {:lang :clj :source (get dependencies name "")}))
 
+(defonce state (cljs/empty-state))
+
 (defn uate
   [expr-str]
   (cljs/eval-str
-    (cljs/empty-state)
+    state
     expr-str
     nil
     {:eval cljs/js-eval
