@@ -12,23 +12,18 @@
 (def dependencies
   (macro/sources
     leipzig.scale
-    leipzig.melody))
+    leipzig.melody
+    klangmeister.live))
 
-(defn build-namespace [expr-str]
-  (str
-    "(ns leipzig-live.playing
-       (:require [leipzig.scale :as scale]
-                 [leipzig.melody :as melody]
-                 [klangmeister.instruments :as inst]))"
-    expr-str))
+(defn loader [{:keys [name]} callback]
+  (callback {:lang :clj :source (get dependencies name "")}))
 
 (defn uate
   [expr-str]
   (cljs/eval-str
     (cljs/empty-state)
-    (build-namespace expr-str)
+    expr-str
     nil
     {:eval cljs/js-eval
-     :load (fn [{:keys [name]} callback]
-             (callback {:lang :clj :source (get dependencies name "")}))}
+     :load loader}
     identity))
