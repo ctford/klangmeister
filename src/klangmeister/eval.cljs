@@ -4,11 +4,6 @@
   (:require-macros
     [klangmeister.macros :as macro]))
 
-(defn print-error [error]
-  (when-let [cause (.-cause error)]
-    (println (.-message cause))
-    (println (.-stack cause))))
-
 (def dependencies
   (macro/sources
     leipzig.canon

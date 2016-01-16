@@ -2,6 +2,7 @@
   (:require
     [klangmeister.processing] ; Import action defs.
     [klangmeister.eval :as eval]
+    [klangmeister.actions :as action]
     [klangmeister.views :as view]
     [klangmeister.framework :as framework]
     [reagent.core :as reagent])
@@ -11,20 +12,24 @@
 (def initial-code
   (macro/text "src/klangmeister/live.cljs.txt"))
 
-(defonce state-atom
+(defn empty-state []
   (reagent/atom
     {:looping? false
      :error nil
-     :text initial-code
-     :music (-> initial-code eval/uate :value)}))
+     :text ""
+     :music []}))
+
+(defonce state-atom (empty-state))
 
 (defn reload! []
   (swap! state-atom identity))
 
 (defn mount-root []
-  (reagent/render
-    [view/render (framework/handler-for state-atom) state-atom]
-    js/document.body))
+  (let [handle! (framework/handler-for state-atom)]
+    (handle! (action/->Refresh (macro/text "src/klangmeister/live.cljs.txt")))
+    (reagent/render
+      [view/render handle! state-atom]
+      js/document.body)))
 
 (defn main []
   (mount-root))
