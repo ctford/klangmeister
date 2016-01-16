@@ -20,8 +20,7 @@
 
 (defn loader [{:keys [name]} callback]
   (let [str-name (.-str name)
-        source (dependencies str-name)
-        source nil]
+        source (dependencies str-name)]
     (if source
       (do (js/console.log (str "Loading " str-name "."))
           (callback {:lang :clj :source source}))

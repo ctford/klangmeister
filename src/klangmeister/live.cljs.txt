@@ -1,6 +1,7 @@
 (ns klangmeister.live
   (:require [leipzig.scale :as scale]
             [leipzig.melody :as melody]
+            [leipzig.melody :refer [where]]
             [klangmeister.instruments :as inst]))
 
 (defn fuzz! [{:keys [duration pitch]}]
@@ -14,6 +15,6 @@
      (melody/with (melody/phrase [1 1/2 1/2 1 1 1/2 1/2 1/2 1/2 2]
                                  [4 4 5 4 7 6 7 6 5 4]))
      (melody/wherever (constantly true) :instrument (melody/is fuzz!))
-     (melody/where :time (melody/bpm 120))
-     (melody/where :duration (melody/bpm 120))
-     (melody/where :pitch (comp scale/high scale/C scale/sharp scale/major)))
+     (where :time (melody/bpm 120))
+     (where :duration (melody/bpm 120))
+     (where :pitch (comp scale/high scale/C scale/sharp scale/major)))
