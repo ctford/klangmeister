@@ -28,3 +28,6 @@
 
 (defmacro sources [& names]
   (sources* names))
+
+(defmacro source [name]
+  ((sources* [name]) (str name)))

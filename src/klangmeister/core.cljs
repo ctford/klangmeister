@@ -4,17 +4,19 @@
     [klangmeister.eval :as eval]
     [klangmeister.views :as view]
     [klangmeister.framework :as framework]
-    [reagent.core :as reagent]))
+    [reagent.core :as reagent])
+  (:require-macros
+    [klangmeister.macros :as macro]))
 
-(def initial-text
-  (eval/dependencies "klangmeister.live"))
+(def initial-code
+  (macro/source klangmeister.live))
 
 (defonce state-atom
   (reagent/atom
     {:looping? false
      :error nil
-     :text initial-text
-     :music (-> initial-text eval/uate :value)}))
+     :text initial-code
+     :music (-> initial-code eval/uate :value)}))
 
 (defn reload! []
   (swap! state-atom identity))

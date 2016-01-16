@@ -12,8 +12,7 @@
 (def dependencies
   (macro/sources
     leipzig.scale
-    leipzig.melody
-    klangmeister.live))
+    leipzig.melody))
 
 (defn loader [{:keys [name]} callback]
   (callback {:lang :clj :source (get dependencies name "")}))
