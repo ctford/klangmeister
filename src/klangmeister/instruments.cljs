@@ -1,7 +1,5 @@
 (ns klangmeister.instruments)
 
-(defonce context (js/window.AudioContext.))
-
 (defn volume [peak]
   (fn [at context]
     (doto (.createGain context)
@@ -61,32 +59,22 @@
   (let [harmonic (fn [n proportion]
                    (>>> (sin-osc (* n pitch) 1.5)
                         (percuss 0.01 proportion)
-                        (volume 0.01)
-                        destination))
-        mixture (->> (map
-                  harmonic
-                  [1.0 2.0 3.0 4.1 5.2]
-                  [1.0 0.6 0.4 0.3 0.2])
-                     (apply blend))]
-    mixture))
-
-(defn fuzz! [{:keys [duration pitch]}]
-  (>>> (saw pitch 1.5)
-       (percuss 0.1 0.5)
-       (volume 0.1)
-       destination))
+                        (volume 0.01)))]
+    (apply blend
+           (map
+             harmonic
+             [1.0 2.0 3.0 4.1 5.2]
+             [1.0 0.6 0.4 0.3 0.2]))))
 
 (defn bop! [{:keys [duration pitch]}]
   (>>> (square pitch 1.5)
        (adshr 0.01 0.1 0.6 0.2 0.1)
-       (volume 0.1)
-       destination))
+       (volume 0.1)))
 
 (defn omg! [{:keys [duration pitch]}]
   (>>> (square pitch 1.5)
        (ashr 0.1 0.4 0.05)
-       (volume 0.1)
-       destination))
+       (volume 0.1)))
 
 (defn buzz! [{:keys [duration pitch]}]
   (let [freqs [pitch (* pitch 1.01) (* pitch 0.99)]
@@ -94,8 +82,7 @@
     (->> (map (fn [freq [attack decay]]
                 (>>> (saw freq 1.5)
                      (percuss attack decay)
-                     (volume 0.05)
-                     destination))
+                     (volume 0.05)))
               freqs
               envelopes)
-         blend)))
+         (apply blend))))
