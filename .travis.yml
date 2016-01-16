@@ -1,2 +1,4 @@
-lein: lein
-script: lein cljsbuild once prod
+sudo: false
+language: clojure
+lein: lein2
+script: lein2 cljsbuild once prod
