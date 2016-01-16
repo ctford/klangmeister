@@ -1,2 +1,1 @@
-lein: lein2
-script: lein2 cljsbuild once prod
+script: lein cljsbuild once prod
