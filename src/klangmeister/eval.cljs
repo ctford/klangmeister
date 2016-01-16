@@ -11,11 +11,23 @@
 
 (def dependencies
   (macro/sources
+    leipzig.canon
+    leipzig.chord
+    leipzig.melody
     leipzig.scale
-    leipzig.melody))
+    leipzig.temperament
+    klangmeister.instruments))
 
 (defn loader [{:keys [name]} callback]
-  (callback {:lang :clj :source (get dependencies name "")}))
+  (let [str-name (.-str name)
+        source (dependencies str-name)
+        source nil]
+    (if source
+      (do (js/console.log (str "Loading " str-name "."))
+          (callback {:lang :clj :source source}))
+      (do
+        (js/console.log (str "Unable to load " str-name "."))
+        (callback {:lang :clj :source ""})))))
 
 (defonce state (cljs/empty-state))
 
