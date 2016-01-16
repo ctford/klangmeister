@@ -3,6 +3,8 @@ Klangmeister
 
 A musical scratchpad.
 
+[![Build Status](https://travis-ci.org/ctford/klangmeister.png)](https://travis-ci.org/ctford/klangmeister)
+
 Playing
 -------
 
