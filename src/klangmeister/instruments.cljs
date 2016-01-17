@@ -44,6 +44,15 @@
 (def saw (partial oscillator "sawtooth"))
 (def square (partial oscillator "square"))
 
+(defn biquad-filter [type freq]
+  (fn [at context]
+    (doto (.createBiquadFilter context)
+      (-> .-frequency .-value (set! freq))
+      (-> .-type (set! type)))))
+
+(def lpf (partial biquad-filter "lowpass"))
+(def hpf (partial biquad-filter "highpass"))
+
 (defn destination [at context]
   (.-destination context))
 
