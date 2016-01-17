@@ -6,12 +6,16 @@
   (:import (java.io File)))
 
 (defn name-val [rdr]
-  ((juxt (comp str second file/read-file-ns-decl) slurp) rdr))
+  [(-> rdr file/read-file-ns-decl second str) (slurp rdr)])
 
 (defn files []
   (->> (classpath/classpath-directories)
-       (map io/file)
        (mapcat #(find/find-sources-in-dir % find/cljs))))
+
+(defn jars []
+  (->> (classpath/classpath-jarfiles)
+       (mapcat #(find/sources-in-jar % find/cljs))
+       (map io/resource)))
 
 (defn collate [entries]
   (reduce conj {} entries))
@@ -19,7 +23,7 @@
 (defn sources* [names]
   (let [in-names? (->> names (map str) set)
         relevant? (fn [[name _]] (in-names? name))]
-    (->> (files)
+    (->> (concat (files) (jars))
          (map name-val)
          (filter relevant?)
          collate)))
