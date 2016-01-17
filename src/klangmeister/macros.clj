@@ -23,7 +23,7 @@
 (defn sources* [names]
   (let [in-names? (->> names (map str) set)
         relevant? (fn [[name _]] (in-names? name))]
-    (->> (concat (files) (jars))
+    (->> (concat (jars) (files))
          (map name-val)
          (filter relevant?)
          collate)))
