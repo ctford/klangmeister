@@ -2,11 +2,9 @@
   (:require
     [klangmeister.eval :as eval]
     [klangmeister.music :as music]
-    [klangmeister.instruments :as instrument]
     [klangmeister.actions :as action]
     [klangmeister.framework :as framework]
-    [leipzig.melody :as melody]
-    [cljs.js :as cljs]))
+    [leipzig.melody :as melody]))
 
 (extend-protocol framework/Action
   action/Refresh

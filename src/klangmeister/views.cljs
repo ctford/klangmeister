@@ -2,8 +2,7 @@
   (:require
     [klangmeister.actions :as action]
     [klangmeister.graph :as graph]
-    [klangmeister.editor :as editor]
-    [reagent.core :as reagent]))
+    [klangmeister.editor :as editor]))
 
 (defn controls [handle! {:keys [looping?]}]
   (let [play (if-not looping?
