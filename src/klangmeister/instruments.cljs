@@ -29,7 +29,7 @@
       (.connect upstream sink)
       sink)))
 
-(defn >>> [& nodes]
+(defn >> [& nodes]
   (reduce connect nodes))
 
 (defn oscillator [type freq duration]
@@ -70,9 +70,9 @@
 
 (defn bell! [{:keys [time duration pitch]}]
   (let [harmonic (fn [n proportion]
-                   (>>> (sin-osc (* n pitch) 1.5)
-                        (percuss 0.01 proportion)
-                        (volume 0.01)))]
+                   (>> (sin-osc (* n pitch) 1.5)
+                       (percuss 0.01 proportion)
+                       (volume 0.01)))]
     (apply ><
            (map
              harmonic
@@ -80,22 +80,22 @@
              [1.0 0.6 0.4 0.3 0.2]))))
 
 (defn bop! [{:keys [duration pitch]}]
-  (>>> (square pitch 1.5)
-       (adshr 0.01 0.1 0.6 0.2 0.1)
-       (volume 0.1)))
+  (>> (square pitch 1.5)
+      (adshr 0.01 0.1 0.6 0.2 0.1)
+      (volume 0.1)))
 
 (defn omg! [{:keys [duration pitch]}]
-  (>>> (square pitch 1.5)
-       (ashr 0.1 0.4 0.05)
-       (volume 0.1)))
+  (>> (square pitch 1.5)
+      (ashr 0.1 0.4 0.05)
+      (volume 0.1)))
 
 (defn buzz! [{:keys [duration pitch]}]
   (let [freqs [pitch (* pitch 1.01) (* pitch 0.99)]
         envelopes [[0.3 0.2] [0.05 0.1] [0.1 0.1]]]
     (->> (map (fn [freq [attack decay]]
-                (>>> (saw freq 1.5)
-                     (percuss attack decay)
-                     (volume 0.05)))
+                (>> (saw freq 1.5)
+                    (percuss attack decay)
+                    (volume 0.05)))
               freqs
               envelopes)
          (apply ><))))
