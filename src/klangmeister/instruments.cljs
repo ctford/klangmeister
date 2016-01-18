@@ -56,13 +56,17 @@
 (defn destination [at context]
   (.-destination context))
 
-(defn blend [& nodes]
+(defn >< [ugen1 ugen2]
   (fn [at context]
-    (let [sink (volume 1.0)]
-      (doseq [node nodes]
-        (connect node sink)
-        (node at context))
+    (let [one (ugen1 at context)
+          two (ugen2 at context)
+          sink ((volume 1.0) at context)]
+      (.connect one sink)
+      (.connect two sink)
       sink)))
+
+(defn blend [& nodes]
+  (reduce >< nodes))
 
 (defn bell! [{:keys [time duration pitch]}]
   (let [harmonic (fn [n proportion]
