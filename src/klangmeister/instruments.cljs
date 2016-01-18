@@ -56,7 +56,7 @@
 (defn destination [at context]
   (.-destination context))
 
-(defn >< [ugen1 ugen2]
+(defn blend [ugen1 ugen2]
   (fn [at context]
     (let [one (ugen1 at context)
           two (ugen2 at context)
@@ -65,15 +65,15 @@
       (.connect two sink)
       sink)))
 
-(defn blend [& nodes]
-  (reduce >< nodes))
+(defn >< [& nodes]
+  (reduce blend nodes))
 
 (defn bell! [{:keys [time duration pitch]}]
   (let [harmonic (fn [n proportion]
                    (>>> (sin-osc (* n pitch) 1.5)
                         (percuss 0.01 proportion)
                         (volume 0.01)))]
-    (apply blend
+    (apply ><
            (map
              harmonic
              [1.0 2.0 3.0 4.1 5.2]
@@ -98,4 +98,4 @@
                      (volume 0.05)))
               freqs
               envelopes)
-         (apply blend))))
+         (apply ><))))
