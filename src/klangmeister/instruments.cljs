@@ -22,7 +22,8 @@
 (defn ashr [attack hold release]
   (adshr attack 0 1 hold release))
 
-(defn connect [ugen1 ugen2]
+(defn connect
+  [ugen1 ugen2]
   (fn [at context]
     (let [upstream (ugen1 at context)
           sink (ugen2 at context)]
@@ -43,6 +44,13 @@
 (def sin-osc (partial oscillator "sine"))
 (def saw (partial oscillator "sawtooth"))
 (def square (partial oscillator "square"))
+
+(defn modulator [freq duration]
+  (fn [at context]
+    (let [modulatee (saw freq duration)
+          carrier (>> (sin-osc 2 duration) (volume freq))]
+      ((connect carrier (.-frequency modulatee)) at context)
+      modulatee)))
 
 (defn biquad-filter [type freq]
   (fn [at context]
