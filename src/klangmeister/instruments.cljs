@@ -1,9 +1,9 @@
 (ns klangmeister.instruments)
 
-(defn volume [peak]
+(defn gain [level]
   (fn [at context]
     (doto (.createGain context)
-      (-> .-gain (.setValueAtTime peak at)))))
+      (-> .-gain (.setValueAtTime level at)))))
 
 (defn adshr [attack decay sustain hold release]
   (fn [at context]
@@ -48,7 +48,7 @@
 (defn modulator [freq duration]
   (fn [at context]
     (let [modulatee (saw freq duration)
-          carrier (>> (sin-osc 2 duration) (volume freq))]
+          carrier (>> (sin-osc 2 duration) (gain freq))]
       ((connect carrier (.-frequency modulatee)) at context)
       modulatee)))
 
@@ -68,7 +68,7 @@
   (fn [at context]
     (let [one (ugen1 at context)
           two (ugen2 at context)
-          sink ((volume 1.0) at context)]
+          sink ((gain 1.0) at context)]
       (.connect one sink)
       (.connect two sink)
       sink)))
@@ -80,7 +80,7 @@
   (let [harmonic (fn [n proportion]
                    (>> (sin-osc (* n pitch) 1.5)
                        (percuss 0.01 proportion)
-                       (volume 0.01)))]
+                       (gain 0.01)))]
     (apply ><
            (map
              harmonic
@@ -90,12 +90,12 @@
 (defn bop! [{:keys [duration pitch]}]
   (>> (square pitch 1.5)
       (adshr 0.01 0.1 0.6 0.2 0.1)
-      (volume 0.1)))
+      (gain 0.1)))
 
 (defn omg! [{:keys [duration pitch]}]
   (>> (square pitch 1.5)
       (ashr 0.1 0.4 0.05)
-      (volume 0.1)))
+      (gain 0.1)))
 
 (defn buzz! [{:keys [duration pitch]}]
   (let [freqs [pitch (* pitch 1.01) (* pitch 0.99)]
@@ -103,7 +103,7 @@
     (->> (map (fn [freq [attack decay]]
                 (>> (saw freq 1.5)
                     (percuss attack decay)
-                    (volume 0.05)))
+                    (gain 0.05)))
               freqs
               envelopes)
          (apply ><))))
