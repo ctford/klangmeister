@@ -1,10 +1,10 @@
 (ns klangmeister.live
   (:require [leipzig.scale :refer [A B C D E F G sharp flat high low major minor]]
             [leipzig.melody :refer [all bpm is phrase tempo then times where wherever with]]
-            [klangmeister.instruments :refer [>> >< bell! lpf hpf saw sin-osc square percuss gain]]))
+            [klangmeister.instruments :refer [>> >< modulator bell! lpf hpf saw sin-osc square percuss gain]]))
 
 (defn fuzz! [{:keys [duration pitch]}]
-  (>> (>< (saw pitch 1.5) (saw (* pitch 1.01) 1.0))
+  (>> (modulator pitch duration)
       (lpf 1000)
       (percuss 0.1 0.5)
       (gain 0.1)))

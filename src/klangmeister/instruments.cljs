@@ -35,11 +35,15 @@
 
 (defn oscillator [type freq duration]
   (fn [at context]
-    (doto (.createOscillator context)
-      (-> .-frequency .-value (set! freq))
-      (-> .-type (set! type))
-      (.start at)
-      (.stop (+ at duration)))))
+    (letfn [(plug [node x]
+              (if (number? x)
+                (-> node .-value (set! x))
+                (-> node (.connect x))))]
+      (doto (.createOscillator context)
+        (-> .frequency (plug freq))
+        (-> .-type (set! type))
+        (.start at)
+        (.stop (+ at duration))))))
 
 (def sin-osc (partial oscillator "sine"))
 (def saw (partial oscillator "sawtooth"))
