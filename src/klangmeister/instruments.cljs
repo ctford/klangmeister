@@ -5,29 +5,36 @@
     (doto (.createGain context)
       (-> .-gain (.setValueAtTime level at)))))
 
-(defn adshr [attack decay sustain hold release]
+
+(defn line
+  "Build a line out of [x y] coordinates, starting at [0 0]."
+  [& corners]
   (fn [at context]
-    (let [node (.createGain context)]
-      (doto (.-gain node)
-        (.setValueAtTime 0 at)
-        (.linearRampToValueAtTime 1.0 (+ at attack))
-        (.linearRampToValueAtTime sustain (+ at attack decay))
-        (.setValueAtTime sustain (+ at attack decay hold))
-        (.linearRampToValueAtTime 0 (+ at attack decay hold release)) )
+    (let [node (.createGain context)
+          gain (.-gain node)]
+      (.setValueAtTime gain 0 at)
+      (reduce
+        (fn [x [dx y]]
+          (.linearRampToValueAtTime gain y (+ x dx))
+          (+ dx x))
+        at
+        corners)
       node)))
 
-(defn percuss [attack decay]
-  (adshr attack decay 0 0 0))
+(defn adshr [attack decay sustain hold release]
+  (line [attack 1.0] [decay sustain] [hold sustain] [release 0]))
 
 (defn ashr [attack hold release]
-  (adshr attack 0 1 hold release))
+  (line [attack 1.0] [hold 1.0] [release 0]))
+
+(defn percuss [attack decay]
+  (line [attack 1.0] [decay 0.0]))
 
 (defn connect
   [ugen1 ugen2]
   (fn [at context]
-    (let [upstream (ugen1 at context)
-          sink (ugen2 at context)]
-      (.connect upstream sink)
+    (let [sink (ugen2 at context)]
+      (.connect (ugen1 at context) sink)
       sink)))
 
 (defn >> [& nodes]
@@ -35,15 +42,11 @@
 
 (defn oscillator [type freq duration]
   (fn [at context]
-    (letfn [(plug [node x]
-              (if (number? x)
-                (-> node .-value (set! x))
-                (-> node (.connect x))))]
-      (doto (.createOscillator context)
-        (-> .frequency (plug freq))
-        (-> .-type (set! type))
-        (.start at)
-        (.stop (+ at duration))))))
+    (doto (.createOscillator context)
+      (-> .-frequency .-value (set! freq))
+      (-> .-type (set! type))
+      (.start at)
+      (.stop (+ at duration)))))
 
 (def sin-osc (partial oscillator "sine"))
 (def saw (partial oscillator "sawtooth"))

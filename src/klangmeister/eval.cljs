@@ -23,7 +23,7 @@
         (js/console.log (str "Unable to load " str-name "."))
         (callback {:lang :clj :source ""})))))
 
-(defonce state (cljs/empty-state))
+(def state (cljs/empty-state))
 
 (defn uate
   [expr-str]
