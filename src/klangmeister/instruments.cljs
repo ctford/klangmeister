@@ -73,21 +73,21 @@
 (defn destination [at context]
   (.-destination context))
 
-(defn blend [ugen1 ugen2]
+(defn add [& ugens]
   (fn [at context]
-    (doto ((gain 1.0) at context)
-      (-> .-gain (plug ugen1 at context))
-      (-> .-gain (plug ugen2 at context)))))
-
-(defn >< [& nodes]
-  (reduce blend nodes))
+    (reduce
+      (fn [sink input]
+        (doto sink
+          (-> .-gain (plug input at context))))
+      ((gain 1.0) at context)
+      ugens)))
 
 (defn bell! [{:keys [time duration pitch]}]
   (let [harmonic (fn [n proportion]
                    (>> (sin-osc (* n pitch) 1.5)
                        (percuss 0.01 proportion)
                        (gain 0.01)))]
-    (apply ><
+    (apply add
            (map
              harmonic
              [1.0 2.0 3.0 4.1 5.2]
