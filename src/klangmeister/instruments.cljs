@@ -1,8 +1,5 @@
 (ns klangmeister.instruments)
 
-(defn run [ugen at context]
-  (ugen at context))
-
 (defn plug [param input at context]
   "Plug an input into an audio parameter,
   accepting both numbers and ugens."
@@ -57,6 +54,26 @@
       (.start at)
       (.stop (+ at duration)))))
 
+(defn rise [freq duration]
+  (fn [at context]
+    (let [modulator (.createOscillator context)
+          width (.createGain context)
+          wave (.createOscillator context)]
+      (doto width
+        (-> .-gain .-value (set! 400))
+        (.connect (.-frequency wave)))
+      (doto modulator
+        (-> .-frequency .-value (set! 9))
+        (-> .-type (set! "sine"))
+        (.connect width)
+        (.start at)
+        (.stop (+ at duration)))
+      (doto wave
+        (-> .-frequency (plug freq at context))
+        (-> .-type (set! "square"))
+        (.start at)
+        (.stop (+ at duration))))))
+
 (def sin-osc (partial oscillator "sine"))
 (def saw (partial oscillator "sawtooth"))
 (def square (partial oscillator "square"))
@@ -92,24 +109,3 @@
              harmonic
              [1.0 2.0 3.0 4.1 5.2]
              [1.0 0.6 0.4 0.3 0.2]))))
-
-(defn bop! [{:keys [duration pitch]}]
-  (>> (square pitch 1.5)
-      (adshr 0.01 0.1 0.6 0.2 0.1)
-      (gain 0.1)))
-
-(defn omg! [{:keys [duration pitch]}]
-  (>> (square pitch 1.5)
-      (ashr 0.1 0.4 0.05)
-      (gain 0.1)))
-
-(defn buzz! [{:keys [duration pitch]}]
-  (let [freqs [pitch (* pitch 1.01) (* pitch 0.99)]
-        envelopes [[0.3 0.2] [0.05 0.1] [0.1 0.1]]]
-    (->> (map (fn [freq [attack decay]]
-                (>> (saw freq 1.5)
-                    (percuss attack decay)
-                    (gain 0.05)))
-              freqs
-              envelopes)
-         (apply ><))))
