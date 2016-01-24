@@ -1,13 +1,22 @@
 (ns klangmeister.instruments)
 
+(defn run [ugen at context]
+  (ugen at context))
+
+(defn plug [param input at context]
+  "Plug an input into an audio parameter,
+  accepting both numbers and ugens."
+  (if (fn? input)
+    (.connect (input at context) param)
+    (.setValueAtTime param input at)))
+
 (defn gain [level]
   (fn [at context]
     (doto (.createGain context)
-      (-> .-gain (.setValueAtTime level at)))))
-
+      (-> .-gain (plug level at context)))))
 
 (defn line
-  "Build a line out of [x y] coordinates, starting at [0 0]."
+  "Build a line out of [dx y] coordinates, starting at [0 0]."
   [& corners]
   (fn [at context]
     (let [node (.createGain context)
@@ -43,7 +52,7 @@
 (defn oscillator [type freq duration]
   (fn [at context]
     (doto (.createOscillator context)
-      (-> .-frequency .-value (set! freq))
+      (-> .-frequency (plug freq at context))
       (-> .-type (set! type))
       (.start at)
       (.stop (+ at duration)))))
@@ -52,17 +61,10 @@
 (def saw (partial oscillator "sawtooth"))
 (def square (partial oscillator "square"))
 
-(defn modulator [freq duration]
-  (fn [at context]
-    (let [modulatee (saw freq duration)
-          carrier (>> (sin-osc 2 duration) (gain freq))]
-      ((connect carrier (.-frequency modulatee)) at context)
-      modulatee)))
-
 (defn biquad-filter [type freq]
   (fn [at context]
     (doto (.createBiquadFilter context)
-      (-> .-frequency .-value (set! freq))
+      (-> .-frequency (plug freq at context))
       (-> .-type (set! type)))))
 
 (def lpf (partial biquad-filter "lowpass"))
@@ -73,12 +75,9 @@
 
 (defn blend [ugen1 ugen2]
   (fn [at context]
-    (let [one (ugen1 at context)
-          two (ugen2 at context)
-          sink ((gain 1.0) at context)]
-      (.connect one sink)
-      (.connect two sink)
-      sink)))
+    (doto ((gain 1.0) at context)
+      (-> .-gain (plug ugen1 at context))
+      (-> .-gain (plug ugen2 at context)))))
 
 (defn >< [& nodes]
   (reduce blend nodes))
