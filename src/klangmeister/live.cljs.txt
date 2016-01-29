@@ -1,7 +1,7 @@
 (ns klangmeister.live
   (:require [leipzig.scale :refer [A B C D E F G sharp flat high low major minor]]
             [leipzig.melody :refer [all bpm is phrase tempo then times where wherever with]]
-            [klangmeister.instruments :refer [>> rise line bell! add lpf hpf saw sin-osc square percuss adshr gain]]))
+            [klangmeister.instruments :refer [>> white-noise rise line bell! add lpf hpf saw sin-osc square percuss adshr gain]]))
 
 (defn fuzz! [{:keys [duration pitch]}]
   (>> (rise pitch duration)

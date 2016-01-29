@@ -46,6 +46,20 @@
 (defn >> [& nodes]
   (reduce connect nodes))
 
+(defn noise [bit duration]
+  (fn [at context]
+    (let [sample-rate 44100
+          frame-count (* sample-rate duration)
+          buffer (.createBuffer context 1 frame-count sample-rate)
+          data (.getChannelData buffer 0)]
+      (doseq [i (range sample-rate)]
+        (aset data i (bit)))
+      (doto (.createBufferSource context)
+        (-> .-buffer (set! buffer))
+        (.start at)))))
+
+(def white-noise (partial noise #(-> (js/Math.random) (* 2) dec)))
+
 (defn oscillator [type freq duration]
   (fn [at context]
     (doto (.createOscillator context)
