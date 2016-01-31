@@ -43,7 +43,7 @@
       (.connect (ugen1 at context) sink)
       sink)))
 
-(defn >> [& nodes]
+(defn connect-> [& nodes]
   (reduce connect nodes))
 
 (defn noise [bit duration]
@@ -98,9 +98,10 @@
 
 (defn bell! [{:keys [time duration pitch]}]
   (let [harmonic (fn [n proportion]
-                   (>> (sine (* n pitch) 1.5)
-                       (percussive 0.01 proportion)
-                       (gain 0.01)))]
+                   (connect->
+                     (sine (* n pitch) 1.5)
+                     (percussive 0.01 proportion)
+                     (gain 0.01)))]
     (apply add
            (map
              harmonic
