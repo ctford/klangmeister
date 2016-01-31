@@ -1,19 +1,19 @@
 (ns klangmeister.live
   (:require [leipzig.scale :refer [A B C D E F G sharp flat high low major minor]]
             [leipzig.melody :refer [all bpm is phrase tempo then times where wherever with]]
-            [klangmeister.instruments :refer [connect-> white-noise line bell! add low-pass high-pass sawtooth sine square percussive adshr gain]]))
+            [klangmeister.instruments :refer [connect-> white-noise line bell! add low-pass high-pass sawtooth sine square percussive adsr gain]]))
 
-(defn fuzz! [{:keys [duration pitch]}]
+(defn fuzz [{:keys [pitch]}]
   (connect->
     (add (square (* 1.01 pitch)) (sawtooth pitch))
     (low-pass 1500)
-    (percussive 0.01 (- duration 0.01))
+    (adsr 0.01 0.2 0.5 0.1)
     (gain 0.1)))
 
 (->> (phrase [1 1/2 1/2 1 1 2 2]
              [0 1 0 2 -3 1 -1])
      (with (phrase [1 1/2 1/2 1 1 1/2 1/2 1/2 1/2 2]
                    [4 4 5 4 7 6 7 6 5 4]))
-     (all :instrument fuzz!)
+     (all :instrument fuzz)
      (tempo (bpm 90))
      (where :pitch (comp C sharp major)))

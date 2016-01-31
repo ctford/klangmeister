@@ -18,7 +18,7 @@
   (fn [context at duration]
     (let [node (.createGain context)
           gain (.-gain node)]
-      (.setValueAtTime gain 0 at)
+      (.setValueAtTime gain 0.0 at)
       (reduce
         (fn [x [dx y]]
           (.linearRampToValueAtTime gain y (+ x dx))
@@ -30,8 +30,12 @@
 (defn adshr [attack decay sustain hold release]
   (line [attack 1.0] [decay sustain] [hold sustain] [release 0]))
 
-(defn ashr [attack hold release]
-  (line [attack 1.0] [hold 1.0] [release 0]))
+(defn adsr [attack decay sustain release]
+  (fn [context at duration]
+    (let [remainder (- duration attack decay sustain)
+          hold (max 0.0 remainder)
+          ugen (adshr attack decay sustain hold release)]
+      (ugen context at duration))))
 
 (defn percussive [attack decay]
   (line [attack 1.0] [decay 0.0]))
@@ -58,7 +62,7 @@
         (-> .-buffer (set! buffer))
         (.start at)))))
 
-(def white-noise (partial noise #(-> (js/Math.random) (* 2) dec)))
+(def white-noise (partial noise #(-> (js/Math.random) (* 2.0) dec)))
 
 (defn oscillator
   ([type freq detune]
@@ -71,7 +75,7 @@
        (-> .-frequency .-value (set! freq))
        (-> .-type (set! type))
        (.start at)
-       (.stop (+ at duration))))))
+       (.stop (+ at duration 1.0))))))
 
 (def sine (partial oscillator "sine"))
 (def sawtooth (partial oscillator "sawtooth"))
