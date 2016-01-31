@@ -5,7 +5,7 @@
 (defonce context (js/window.AudioContext.))
 
 (defn play-on! [notes]
-  (doseq [{:keys [time instrument] :as note} notes]
+  (doseq [{:keys [time duration instrument] :as note} notes]
     (let [synth (or instrument instrument/bell!)
           at (+ time (.-currentTime context))
           synth-instance (-> note
@@ -13,4 +13,4 @@
                              (dissoc :time)
                              synth)
           connected-instance (instrument/connect synth-instance instrument/destination)]
-      (connected-instance at context))))
+      (connected-instance context at duration))))

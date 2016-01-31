@@ -5,7 +5,7 @@
 
 (defn fuzz! [{:keys [duration pitch]}]
   (connect->
-    (add (square (* 1.01 pitch) duration) (sawtooth pitch duration))
+    (add (square (* 1.01 pitch)) (sawtooth pitch))
     (low-pass 1500)
     (percussive 0.01 (- duration 0.01))
     (gain 0.1)))

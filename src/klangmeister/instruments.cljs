@@ -1,21 +1,21 @@
 (ns klangmeister.instruments)
 
-(defn plug [param input at context]
+(defn plug [param input context at duration]
   "Plug an input into an audio parameter,
   accepting both numbers and ugens."
   (if (fn? input)
-    (.connect (input at context) param)
+    (.connect (input context at duration) param)
     (.setValueAtTime param input at)))
 
 (defn gain [level]
-  (fn [at context]
+  (fn [context at duration]
     (doto (.createGain context)
-      (-> .-gain (plug level at context)))))
+      (-> .-gain (plug level context at duration)))))
 
 (defn line
   "Build a line out of [dx y] coordinates, starting at [0 0]."
   [& corners]
-  (fn [at context]
+  (fn [context at duration]
     (let [node (.createGain context)
           gain (.-gain node)]
       (.setValueAtTime gain 0 at)
@@ -38,16 +38,16 @@
 
 (defn connect
   [ugen1 ugen2]
-  (fn [at context]
-    (let [sink (ugen2 at context)]
-      (.connect (ugen1 at context) sink)
+  (fn [context at duration]
+    (let [sink (ugen2 context at duration)]
+      (.connect (ugen1 context at duration) sink)
       sink)))
 
 (defn connect-> [& nodes]
   (reduce connect nodes))
 
 (defn noise [bit duration]
-  (fn [at context]
+  (fn [context at duration]
     (let [sample-rate 44100
           frame-count (* sample-rate duration)
           buffer (.createBuffer context 1 frame-count sample-rate)
@@ -61,12 +61,12 @@
 (def white-noise (partial noise #(-> (js/Math.random) (* 2) dec)))
 
 (defn oscillator
-  ([type freq duration detune]
-   (fn [at context]
-     (doto ((oscillator type freq duration) at context)
-       (-> .-frequency (plug detune at context)))))
-  ([type freq duration]
-   (fn [at context]
+  ([type freq detune]
+   (fn [context at duration]
+     (doto ((oscillator type freq) context at duration)
+       (-> .-frequency (plug detune context at duration)))))
+  ([type freq]
+   (fn [context at duration]
      (doto (.createOscillator context)
        (-> .-frequency .-value (set! freq))
        (-> .-type (set! type))
@@ -78,28 +78,28 @@
 (def square (partial oscillator "square"))
 
 (defn biquad-filter [type freq]
-  (fn [at context]
+  (fn [context at duration]
     (doto (.createBiquadFilter context)
-      (-> .-frequency (plug freq at context))
+      (-> .-frequency (plug freq context at duration))
       (-> .-type (set! type)))))
 
 (def low-pass (partial biquad-filter "lowpass"))
 (def high-pass (partial biquad-filter "highpass"))
 
-(defn destination [at context]
+(defn destination [context at duration]
   (.-destination context))
 
 (defn add [& ugens]
-  (fn [at context]
-    (let [sink ((gain 1.0) at context)]
+  (fn [context at duration]
+    (let [sink ((gain 1.0) context at duration)]
       (doseq [ugen ugens]
-        (.connect (ugen at context) sink))
+        (.connect (ugen context at duration) sink))
       sink)))
 
 (defn bell! [{:keys [time duration pitch]}]
   (let [harmonic (fn [n proportion]
                    (connect->
-                     (sine (* n pitch) 1.5)
+                     (sine (* n pitch))
                      (percussive 0.01 proportion)
                      (gain 0.01)))]
     (apply add
