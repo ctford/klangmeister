@@ -16,7 +16,7 @@
 (def guide-frequencies (range 0 128 2))
 
 (defn draw-graph [state-atom]
-  (let [[height width] [150 800]
+  (let [[height width] [120 1000]
         [dot-height dot-width] [15 20]]
     (quil/sketch :draw (fn [_]
                          (try (quil/background 255)

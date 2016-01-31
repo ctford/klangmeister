@@ -1,6 +1,6 @@
 body {
   font-family: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   padding-top: 72px;
   -webkit-font-smoothing: antialiased;
@@ -59,4 +59,8 @@ button {
 
 .cheatsheet .code {
   font-family: monospace;
+}
+
+.CodeMirror {
+  height: 1000px;
 }

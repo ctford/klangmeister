@@ -99,15 +99,3 @@
       (doseq [ugen ugens]
         (.connect (ugen context at duration) sink))
       sink)))
-
-(defn bell! [{:keys [time duration pitch]}]
-  (let [harmonic (fn [n proportion]
-                   (connect->
-                     (sine (* n pitch))
-                     (percussive 0.01 proportion)
-                     (gain 0.01)))]
-    (apply add
-           (map
-             harmonic
-             [1.0 2.0 3.0 4.1 5.2]
-             [1.0 0.6 0.4 0.3 0.2]))))

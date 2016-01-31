@@ -21,7 +21,8 @@
   (reagent/create-class
     {:render (fn []
                [:textarea {:default-value text
-                           :auto-complete "off"}])
+                           :auto-complete "off"
+                           :class "text"}])
      :component-did-mount (editor-did-mount handle!)}))
 
 (defn render [handle! {:keys [error] :as state}]

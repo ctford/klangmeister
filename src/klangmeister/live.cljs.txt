@@ -1,19 +1,46 @@
 (ns klangmeister.live
-  (:require [leipzig.scale :refer [A B C D E F G sharp flat high low major minor]]
-            [leipzig.melody :refer [all bpm is phrase tempo then times where wherever with]]
-            [klangmeister.instruments :refer [connect-> white-noise line bell! add low-pass high-pass sawtooth sine square percussive adsr gain]]))
+  (:require
+    [klangmeister.instruments :refer
+      [connect-> add           ; Synth connectors
+       high-pass low-pass      ; Frequency filters
+       sawtooth sine square    ; Signal generators
+       adsr gain percussive]]  ; Signal shapers
 
-(defn fuzz [{:keys [pitch]}]
-  (connect->
-    (add (square (* 1.01 pitch)) (sawtooth pitch))
-    (low-pass 1500)
-    (adsr 0.01 0.2 0.5 0.1)
-    (gain 0.1)))
+    [leipzig.scale :refer
+      [A B C D E F G           ; Keys
+       flat high low sharp     ; Key modifiers
+       major minor]]           ; Scales
 
-(->> (phrase [1 1/2 1/2 1 1 2 2]
-             [0 1 0 2 -3 1 -1])
-     (with (phrase [1 1/2 1/2 1 1 1/2 1/2 1/2 1/2 2]
-                   [4 4 5 4 7 6 7 6 5 4]))
-     (all :instrument fuzz)
-     (tempo (bpm 90))
-     (where :pitch (comp C sharp major)))
+    [leipzig.melody :refer
+      [phrase then times with  ; Melody makers
+       all bpm tempo where]])) ; Melody modifiers
+
+(defn fuzz
+  "A simple synth, made by adding two detuned oscillators."
+  [{:keys [pitch]}]
+    (connect->
+      (add (square (* 1.01 pitch)) (sawtooth pitch)) ; Add square and sawtooth oscillators. Try using sine.
+      (low-pass 1500)                                ; Filter out high frequencies. Try another cutoff.
+      (adsr 0.01 0.2 0.5 0.1)                        ; The attack, decay, sustain and release of each note.
+      (gain 0.1)))                                   ; Multiply the volume by 0.1. Try raising the gain.
+
+(defn bell
+  "An imitation bell, made by adding together harmonics."
+  [{:keys [pitch]}]
+    (let [harmonic (fn [n proportion]
+                     (connect->
+                       (sine (* n pitch))            ; Each harmonic is a sine wave.
+                       (percussive 0.01 proportion)  ; The attack and decay of each note.
+                       (gain 0.05)))]                ; Multiply the volume of each harmonic by 0.5.
+      (->> (map harmonic [1.0 2.0 3.0 4.1 5.2]       ; Each harmonic is a multiple of the base frequency.
+                         [1.0 0.6 0.4 0.3 0.2])      ; Higher harmonics are weaker.
+           (apply add))))
+
+; A simple melody, which Klangmeister loops as you edit.
+(->> (phrase [1 1/2 1/2 1 1 2 2]                     ; The durations of the notes. Try changing them.
+             [0 1 0 2 -3 1 -1])                      ; The pitches of the notes. Try changing them.
+     (with (phrase [1 1/2 1/2 1 1 1/2 1/2 1/2 1/2 2] ; The durations of the second part's notes.
+                   [4 4 5 4 7 6 7 6 5 4]))           ; The pitches of the second part's notes.
+     (all :instrument fuzz)                          ; How to play the notes. Try the bell instead.
+     (tempo (bpm 90))                                ; How fast to play. Try changing the number.
+     (where :pitch (comp C major)))                  ; What key to play in. Try using D or minor.
