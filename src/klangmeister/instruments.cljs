@@ -33,7 +33,7 @@
 (defn ashr [attack hold release]
   (line [attack 1.0] [hold 1.0] [release 0]))
 
-(defn percuss [attack decay]
+(defn percussive [attack decay]
   (line [attack 1.0] [decay 0.0]))
 
 (defn connect
@@ -73,8 +73,8 @@
        (.start at)
        (.stop (+ at duration))))))
 
-(def sin-osc (partial oscillator "sine"))
-(def saw (partial oscillator "sawtooth"))
+(def sine (partial oscillator "sine"))
+(def sawtooth (partial oscillator "sawtooth"))
 (def square (partial oscillator "square"))
 
 (defn biquad-filter [type freq]
@@ -83,8 +83,8 @@
       (-> .-frequency (plug freq at context))
       (-> .-type (set! type)))))
 
-(def lpf (partial biquad-filter "lowpass"))
-(def hpf (partial biquad-filter "highpass"))
+(def low-pass (partial biquad-filter "lowpass"))
+(def high-pass (partial biquad-filter "highpass"))
 
 (defn destination [at context]
   (.-destination context))
@@ -98,8 +98,8 @@
 
 (defn bell! [{:keys [time duration pitch]}]
   (let [harmonic (fn [n proportion]
-                   (>> (sin-osc (* n pitch) 1.5)
-                       (percuss 0.01 proportion)
+                   (>> (sine (* n pitch) 1.5)
+                       (percussive 0.01 proportion)
                        (gain 0.01)))]
     (apply add
            (map

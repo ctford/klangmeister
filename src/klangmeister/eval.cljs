@@ -25,6 +25,8 @@
 
 (def state (cljs/empty-state))
 
+(set-print-err-fn! #(js/console.log))
+
 (defn uate
   [expr-str]
   (cljs/eval-str
