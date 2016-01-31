@@ -60,33 +60,18 @@
 
 (def white-noise (partial noise #(-> (js/Math.random) (* 2) dec)))
 
-(defn oscillator [type freq duration]
-  (fn [at context]
-    (doto (.createOscillator context)
-      (-> .-frequency (plug freq at context))
-      (-> .-type (set! type))
-      (.start at)
-      (.stop (+ at duration)))))
-
-(defn rise [freq duration]
-  (fn [at context]
-    (let [modulator (.createOscillator context)
-          width (.createGain context)
-          wave (.createOscillator context)]
-      (doto width
-        (-> .-gain .-value (set! 400))
-        (.connect (.-frequency wave)))
-      (doto modulator
-        (-> .-frequency .-value (set! 9))
-        (-> .-type (set! "sine"))
-        (.connect width)
-        (.start at)
-        (.stop (+ at duration)))
-      (doto wave
-        (-> .-frequency (plug freq at context))
-        (-> .-type (set! "square"))
-        (.start at)
-        (.stop (+ at duration))))))
+(defn oscillator
+  ([type freq duration detune]
+   (fn [at context]
+     (doto ((oscillator type freq duration) at context)
+       (-> .-frequency (plug detune at context)))))
+  ([type freq duration]
+   (fn [at context]
+     (doto (.createOscillator context)
+       (-> .-frequency .-value (set! freq))
+       (-> .-type (set! type))
+       (.start at)
+       (.stop (+ at duration))))))
 
 (def sin-osc (partial oscillator "sine"))
 (def saw (partial oscillator "sawtooth"))
@@ -106,12 +91,10 @@
 
 (defn add [& ugens]
   (fn [at context]
-    (reduce
-      (fn [sink input]
-        (doto sink
-          (-> .-gain (plug input at context))))
-      ((gain 1.0) at context)
-      ugens)))
+    (let [sink ((gain 1.0) at context)]
+      (doseq [ugen ugens]
+        (.connect (ugen at context) sink))
+      sink)))
 
 (defn bell! [{:keys [time duration pitch]}]
   (let [harmonic (fn [n proportion]
