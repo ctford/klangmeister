@@ -80,6 +80,7 @@
 (def sine (partial oscillator "sine"))
 (def sawtooth (partial oscillator "sawtooth"))
 (def square (partial oscillator "square"))
+(def triangle (partial oscillator "triangle"))
 
 (defn biquad-filter [type freq]
   (fn [context at duration]
