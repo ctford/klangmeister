@@ -1,6 +1,6 @@
 (ns klangmeister.live
   (:require
-    [klangmeister.instruments :refer
+    [klangmeister.synthesis :refer
       [connect-> add           ; Synth connectors
        high-pass low-pass      ; Frequency filters
        sawtooth sine square    ; Signal generators

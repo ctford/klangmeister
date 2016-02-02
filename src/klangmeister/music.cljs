@@ -1,6 +1,6 @@
 (ns klangmeister.music
   (:require [leipzig.temperament :as temperament]
-            [klangmeister.instruments :as instrument]))
+            [klangmeister.synthesis :as synthesis]))
 
 (defonce context (js/window.AudioContext.))
 
@@ -11,5 +11,5 @@
                              (update :pitch temperament/equal)
                              (dissoc :time)
                              instrument)
-          connected-instance (instrument/connect synth-instance instrument/destination)]
+          connected-instance (synthesis/connect synth-instance synthesis/destination)]
       (connected-instance context at duration))))

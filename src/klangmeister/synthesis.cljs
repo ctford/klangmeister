@@ -1,4 +1,4 @@
-(ns klangmeister.instruments)
+(ns klangmeister.synthesis)
 
 (defn plug [param input context at duration]
   "Plug an input into an audio parameter,
