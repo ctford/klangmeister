@@ -91,6 +91,11 @@
 (def low-pass (partial biquad-filter "lowpass"))
 (def high-pass (partial biquad-filter "highpass"))
 
+(defn stereo-panner [pan]
+  (fn [context at duration]
+    (doto (.createStereoPanner context)
+      (-> .-pan (plug pan context at duration)))))
+
 (defn destination [context at duration]
   (.-destination context))
 
