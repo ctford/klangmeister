@@ -12,29 +12,6 @@
                [:button {:on-click #(handle! (action/->Stop :main))} "Stop"])]
     [:div {:class "controls"} play]))
 
-(defn cheatsheet []
-  (let [row (fn [term explanation example]
-              [:tr
-               [:td {:class "code"} term]
-               [:td explanation]
-               [:td {:class "code"} example]])]
-    [:table {:class "cheatsheet"}
-     [:tbody
-      (row "->>" "Make a series of updates to a melody." "(->> (phrase [1] [0]) (where :pitch inc))")
-      (row ";" "Ignore the rest of the line, so that you can put comments in." "; The melody.")
-      (row "A..G" "Put a quantity of semitones into a specified key." "(A 3) => 72")
-      (row "bpm" "Make a function to convert from beats into seconds." "((bpm 120) 3) => 1.5")
-      (row "comp" "Join two functions together." "((comp C major) 2) => 64")
-      (row "connect->" "Connect a series of synth nodes together." "(connect-> (saw 440) (low-pass 1000))")
-      (row "defn" "Define a named function." "(defn double [x] (* 2 x))")
-      (row "major" "Put a rank into a major scale." "(major 2) => 4")
-      (row "minor" "Put a rank into a minor scale." "(minor 2) => 3")
-      (row "phrase" "Use a some durations and some pitches to make a melody." "(phrase [1 1 2] [0 2 4])")
-      (row "then" "Put one melody after another." "(->> bass (then guitar))")
-      (row "times" "Repeat a melody several times." "(->> bass (times 4))")
-      (row "where" "Update an element of a melody." "(where :pitch inc notes)")
-      (row "with" "Put two melodies together." "(with bass guitar)")]]))
-
 (defn ribbon []
   [:a {:href "https://github.com/ctford/klangmeister"}
    [:img {:style {:position "absolute" :top 0 :right 0 :border 0}
@@ -52,5 +29,4 @@
    [editor/render :main (-> @state-atom :main :text) handle! @state-atom]
    [controls handle! @state-atom]
    [graph/render handle! state-atom]
-   [cheatsheet]
    [ribbon]])
