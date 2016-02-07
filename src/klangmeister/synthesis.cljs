@@ -76,14 +76,14 @@
 
 ; Noise
 
-(defn noise [bit duration]
+(defn noise [generate-bit! duration]
   (fn [context at duration]
     (let [sample-rate 44100
           frame-count (* sample-rate duration)
           buffer (.createBuffer context 1 frame-count sample-rate)
           data (.getChannelData buffer 0)]
       (doseq [i (range sample-rate)]
-        (aset data i (bit)))
+        (aset data i (generate-bit!)))
       (doto (.createBufferSource context)
         (-> .-buffer (set! buffer))
         (.start at)))))
