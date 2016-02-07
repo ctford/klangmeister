@@ -20,7 +20,7 @@
         [dot-height dot-width] [15 20]]
     (quil/sketch :draw (fn [_]
                          (try (quil/background 255)
-                              (let [{:keys [music sync looping?]} @state-atom
+                              (let [{:keys [music sync looping?]} (:main @state-atom)
                                     relative-time (-> (Date.now) (- sync) (mod (* 1000 (melody/duration music))) (/ 1000))
                                     marked (->> music
                                                 (melody/wherever

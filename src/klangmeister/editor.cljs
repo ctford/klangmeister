@@ -4,7 +4,7 @@
     [klangmeister.graph :as graph]
     [reagent.core :as reagent]))
 
-(defn editor-did-mount [handle!]
+(defn editor-did-mount [target handle!]
   (fn [this]
     (let [pane (.fromTextArea
                  js/CodeMirror
@@ -15,18 +15,19 @@
                       :matchBrackets true
                       :autoCloseBrackets true
                       :lineWrapping true})]
-      (.on pane "change" #(-> % .getValue action/->Refresh handle!)))))
+      (.on pane "change" #(-> % .getValue (action/->Refresh target) handle!)))))
 
-(defn editor [handle! {:keys [text]}]
+(defn editor [target handle! state]
   (reagent/create-class
     {:render (fn []
-               [:textarea {:default-value text
+               [:textarea {:default-value (-> state target :text)
                            :auto-complete "off"
                            :class "text"}])
-     :component-did-mount (editor-did-mount handle!)}))
+     :component-did-mount (editor-did-mount target handle!)}))
 
-(defn render [handle! {:keys [error] :as state}]
-  [:div
-   {:class (str "editor" (if error " error" ""))}
-   [editor handle! state]
-   [:div (some-> error .-cause .-message)]])
+(defn render [target handle! state]
+  (let [{:keys [error]} (target state)]
+    [:div
+     {:class (str "editor" (if error " error" ""))}
+     [editor target handle! state]
+     [:div (some-> error .-cause .-message)]]))

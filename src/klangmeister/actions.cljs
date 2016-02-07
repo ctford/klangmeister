@@ -1,6 +1,6 @@
 (ns klangmeister.actions)
 
-(defrecord Play [])
-(defrecord Loop [])
-(defrecord Stop [])
-(defrecord Refresh [text])
+(defrecord Play [target])
+(defrecord Loop [target])
+(defrecord Stop [target])
+(defrecord Refresh [text target])

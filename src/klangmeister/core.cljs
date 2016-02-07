@@ -11,10 +11,10 @@
 
 (defn empty-state []
   (reagent/atom
-    {:looping? false
-     :error nil
-     :text ""
-     :music []}))
+    {:main {:looping? false
+            :error nil
+            :text ""
+            :music []}}))
 
 (defonce state-atom (empty-state))
 
@@ -23,7 +23,7 @@
 
 (defn mount-root []
   (let [handle! (framework/handler-for state-atom)]
-    (handle! (action/->Refresh (macro/text "src/klangmeister/live.cljs.txt")))
+    (handle! (action/->Refresh (macro/text "src/klangmeister/live.cljs.txt") :main))
     (reagent/render
       [view/render handle! state-atom]
       js/document.body)))

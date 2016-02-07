@@ -4,10 +4,11 @@
     [klangmeister.graph :as graph]
     [klangmeister.editor :as editor]))
 
-(defn controls [handle! {:keys [looping?]}]
-  (let [play (if-not looping?
-               [:button {:on-click #(handle! (action/->Play))} "Play"]
-               [:button {:on-click #(handle! (action/->Stop))} "Stop"])]
+(defn controls [handle! state]
+  (let [{:keys [looping?]} (:main state)
+        play (if-not looping?
+               [:button {:on-click #(handle! (action/->Play :main))} "Play"]
+               [:button {:on-click #(handle! (action/->Stop :main))} "Stop"])]
     [:div {:class "controls"} play]))
 
 (defn cheatsheet []
@@ -44,6 +45,6 @@
   [:div
    [graph/render handle! state-atom]
    [controls handle! @state-atom]
-   [editor/render handle! @state-atom]
+   [editor/render :main handle! @state-atom]
    [cheatsheet]
    [ribbon]])
