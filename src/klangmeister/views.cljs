@@ -2,7 +2,8 @@
   (:require
     [klangmeister.actions :as action]
     [klangmeister.graph :as graph]
-    [klangmeister.editor :as editor]))
+    [klangmeister.editor :as editor]
+    [klangmeister.content :as content]))
 
 (defn controls [handle! state]
   (let [{:keys [looping?]} (:main state)
@@ -45,6 +46,8 @@
   [:div
    [graph/render handle! state-atom]
    [controls handle! @state-atom]
-   [editor/render :main handle! @state-atom]
+   [content/render :sine handle! state-atom]
+   [content/render :envelope handle! state-atom]
+   [editor/render :main (-> @state-atom :main :text) handle! @state-atom]
    [cheatsheet]
    [ribbon]])

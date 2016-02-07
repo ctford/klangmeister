@@ -24,6 +24,12 @@
   (process [{pane :target :as this} handle! state]
     (framework/process (action/->Loop pane) handle! (assoc-in state [pane :looping?] true)))
 
+  action/PlayOnce
+  (process [{pane :target :as this} handle! state]
+    (let [{:keys [music]} (pane state)]
+      (music/play-on! music)
+      state))
+
   action/Loop
   (process [{pane :target :as this} handle! state]
     (let [{:keys [music looping?]} (pane state)

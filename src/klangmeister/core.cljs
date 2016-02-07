@@ -9,12 +9,16 @@
   (:require-macros
     [klangmeister.macros :as macro]))
 
+(def nothing
+  {:looping? false
+   :error nil
+   :text ""
+   :music []})
+
 (defn empty-state []
   (reagent/atom
-    {:main {:looping? false
-            :error nil
-            :text ""
-            :music []}}))
+    {:main nothing
+     :synth nothing}))
 
 (defonce state-atom (empty-state))
 

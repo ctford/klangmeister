@@ -14,20 +14,21 @@
                       :lineNumbers true
                       :matchBrackets true
                       :autoCloseBrackets true
-                      :lineWrapping true})]
+                      :lineWrapping true
+                      :viewportMargin js/Infinity})]
       (.on pane "change" #(-> % .getValue (action/->Refresh target) handle!)))))
 
-(defn editor [target handle! state]
+(defn editor [target text handle!]
   (reagent/create-class
     {:render (fn []
-               [:textarea {:default-value (-> state target :text)
+               [:textarea {:default-value text
                            :auto-complete "off"
                            :class "text"}])
      :component-did-mount (editor-did-mount target handle!)}))
 
-(defn render [target handle! state]
+(defn render [target text handle! state]
   (let [{:keys [error]} (target state)]
     [:div
      {:class (str "editor" (if error " error" ""))}
-     [editor target handle! state]
+     [editor target text handle!]
      [:div (some-> error .-cause .-message)]]))
