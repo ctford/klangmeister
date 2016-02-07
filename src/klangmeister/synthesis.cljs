@@ -20,8 +20,8 @@
 
 ; Envelopes
 
-(defn line
-  "Build a line out of [dx y] coordinates, starting at [0 0]."
+(defn envelope
+  "Build an envelope out of [dx y] coordinates, starting at [0 0]."
   [& corners]
   (fn [context at duration]
     (let [node (.createGain context)
@@ -36,7 +36,7 @@
       node)))
 
 (defn adshr [attack decay sustain hold release]
-  (line [attack 1.0] [decay sustain] [hold sustain] [release 0]))
+  (envelope [attack 1.0] [decay sustain] [hold sustain] [release 0]))
 
 (defn adsr [attack decay sustain release]
   (fn [context at duration]
@@ -46,7 +46,7 @@
       (ugen context at duration))))
 
 (defn percussive [attack decay]
-  (line [attack 1.0] [decay 0.0]))
+  (envelope [attack 1.0] [decay 0.0]))
 
 
 ; Combinators
