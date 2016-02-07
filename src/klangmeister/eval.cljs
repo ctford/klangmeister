@@ -4,6 +4,9 @@
   (:require-macros
     [klangmeister.macros :as macro]))
 
+(def namespace-declaration
+  (macro/text "src/klangmeister/namespace.cljs.txt"))
+
 (def dependencies
   (macro/sources
     leipzig.canon
@@ -32,7 +35,7 @@
   [expr-str]
   (cljs/eval-str
     state
-    expr-str
+    (str namespace-declaration expr-str)
     nil
     {:eval cljs/js-eval
      :load loader}
