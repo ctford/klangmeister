@@ -88,7 +88,9 @@
         (-> .-buffer (set! buffer))
         (.start at)))))
 
-(def white-noise (partial noise #(-> (js/Math.random) (* 2.0) dec)))
+(def white-noise
+  (let [white #(-> (js/Math.random) (* 2.0) (- 1.0))]
+    (partial noise white)))
 
 
 ; Oscillators
