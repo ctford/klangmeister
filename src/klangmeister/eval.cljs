@@ -11,7 +11,8 @@
     leipzig.melody
     leipzig.scale
     leipzig.temperament
-    klangmeister.synthesis))
+    klangmeister.synthesis
+    klangmeister.instruments))
 
 (defn loader [{:keys [name]} callback]
   (let [str-name (.-str name)
