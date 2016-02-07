@@ -43,8 +43,8 @@ button {
 }
 
 .controls {
-  padding-top: 1cm;
-  padding-bottom: 1cm;
+  padding-top: 0.25em;
+  padding-bottom: 1em;
 }
 
 .error {
