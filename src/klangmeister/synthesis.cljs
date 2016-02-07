@@ -2,6 +2,11 @@
 
 ; Plumbing
 
+(defn run
+  "Convert a node (actually a reader fn) into a concrete audio node by supplying context and timing."
+  [node context at duration]
+  (node context at duration))
+
 (defn destination [context at duration]
   (.-destination context))
 
@@ -9,7 +14,7 @@
   "Plug an input into an audio parameter,
   accepting both numbers and ugens."
   (if (fn? input)
-    (.connect (input context at duration) param)
+    (-> input (run context at duration) (.connect param))
     (.setValueAtTime param input at)))
 
 (defn gain [level]
@@ -43,7 +48,7 @@
     (let [remainder (- duration attack decay sustain)
           hold (max 0.0 remainder)
           ugen (adshr attack decay sustain hold release)]
-      (ugen context at duration))))
+      (-> ugen (run context at duration)))))
 
 (defn percussive [attack decay]
   (envelope [attack 1.0] [decay 0.0]))
@@ -54,8 +59,8 @@
 (defn connect
   [ugen1 ugen2]
   (fn [context at duration]
-    (let [sink (ugen2 context at duration)]
-      (.connect (ugen1 context at duration) sink)
+    (let [sink (-> ugen2 (run context at duration))]
+      (-> ugen1 (run context at duration) (.connect sink))
       sink)))
 
 (defn connect-> [& nodes]
@@ -63,9 +68,9 @@
 
 (defn add [& ugens]
   (fn [context at duration]
-    (let [sink ((gain 1.0) context at duration)]
+    (let [sink (-> (gain 1.0) (run context at duration))]
       (doseq [ugen ugens]
-        (.connect (ugen context at duration) sink))
+        (-> ugen (run context at duration) (.connect sink)))
       sink)))
 
 
@@ -91,7 +96,7 @@
 (defn oscillator
   ([type freq detune]
    (fn [context at duration]
-     (doto ((oscillator type freq) context at duration)
+     (doto (-> (oscillator type freq) (run context at duration))
        (-> .-frequency (plug detune context at duration)))))
   ([type freq]
    (fn [context at duration]
@@ -132,4 +137,3 @@
     (let [maximum 5]
       (doto (.createDelay context maximum)
         (-> .-delayTime (plug time context at duration))))))
-
