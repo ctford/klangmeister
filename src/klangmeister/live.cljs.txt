@@ -1,13 +1,8 @@
-; A simple synth, made by adding two detuned oscillators.
-(defn fuzz [note]
+(defn synth [note]
   (connect->
-    ; Add square and sawtooth oscillators. Try using sine instead.
-    (add (square (* 1.01 (:pitch note))) (sawtooth (:pitch note)))
-    ; Filter out high frequencies. Try a higher cutoff.
+    (add (square (* 1.01 (:pitch note))) (triangle (:pitch note)))
     (low-pass 600)
-    ; The attack, decay, sustain and release of each note.
-    (adsr 0.01 0.1 0.5 0.2)
-    ; Multiply the volume by 0.1. Try raising the gain.
+    (adsr 0.001 0.4 0.5 0.1)
     (gain 0.1)))
 
 
@@ -21,9 +16,6 @@
      ;(with (phrase (cycle [3 0.75 0.25]) [-14 -15 -16 -17 -16 -15]))
      ; A high harmony. Try uncommenting it.
      ;(with (phrase [3 1 3/2 5/2] [9 11 8 10]))
-     ; How to play the notes. Try bell instead.
-     (all :instrument fuzz)
-     ; How fast to play. Try changing the number.
-     (tempo (bpm 90))
-     ; Which key to play in. Try using D or minor.
-     (where :pitch (comp C major)))
+     (all :instrument synth) ; Try 'bell' instead.
+     (tempo (bpm 90)) ; Try changing the number.
+     (where :pitch (comp C major))) ; Try D or minor.
