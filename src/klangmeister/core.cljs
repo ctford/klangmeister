@@ -27,7 +27,6 @@
 
 (defn mount-root []
   (let [handle! (framework/handler-for state-atom)]
-    (handle! (action/->Refresh (macro/text "src/klangmeister/live.cljs.txt") :main))
     (reagent/render
       [view/render handle! state-atom]
       js/document.body)))
