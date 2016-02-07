@@ -44,6 +44,7 @@
 
 (defn render [handle! state-atom]
   [:div
+   [:h1 "Klangmeister"]
    [content/render :sine handle! state-atom]
    [content/render :interference handle! state-atom]
    [content/render :envelope handle! state-atom]
