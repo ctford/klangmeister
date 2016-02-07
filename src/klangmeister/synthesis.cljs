@@ -11,11 +11,10 @@
   (.-destination context))
 
 (defn plug [param input context at duration]
-  "Plug an input into an audio parameter,
-  accepting both numbers and ugens."
-  (if (fn? input)
-    (-> input (run-with context at duration) (.connect param))
-    (.setValueAtTime param input at)))
+  "Plug an input into an audio parameter, accepting both numbers and nodes."
+  (if (number? input)
+    (.setValueAtTime param input at)
+    (-> input (run-with context at duration) (.connect param))))
 
 (defn gain [level]
   (fn [context at duration]
