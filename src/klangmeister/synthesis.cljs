@@ -96,8 +96,7 @@
     (doto (.createStereoPanner context)
       (-> .-pan (plug pan context at duration)))))
 
-(defn echo
-  "A delay."
+(defn delay-line
   [time]
   (fn [context at duration]
     (let [maximum 5]
