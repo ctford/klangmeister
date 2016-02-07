@@ -22,7 +22,17 @@
                 (percussive 0.05 0.2)))
 
     (->> (phrase [1] [72])
-        (all :instrument plink))"]})
+        (all :instrument plink))"]
+    :gain
+   ["That's a bit loud. To control the volume of a sound, we alter the amplitude of the wave. To do that, we use something called a gain. A gain multiplies the amplitude by a specified factor."
+    "(defn quiet-plink [note]
+    (connect-> (sine (:pitch note))
+    (percussive 0.01 0.2)
+    (gain 0.4)))
+
+(->> (phrase [1] [72])
+        (all :instrument quiet-plink))"]
+    })
 
 (defn render [k handle! state-atom]
   (let [[text code] (steps k)]

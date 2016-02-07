@@ -48,6 +48,7 @@
    [controls handle! @state-atom]
    [content/render :sine handle! state-atom]
    [content/render :envelope handle! state-atom]
+   [content/render :gain handle! state-atom]
    [editor/render :main (-> @state-atom :main :text) handle! @state-atom]
    [cheatsheet]
    [ribbon]])
