@@ -25,19 +25,18 @@
 ; Envelopes
 
 (defn envelope
-  "Build an envelope out of [dx y] coordinates, starting at [0 0]."
+  "Build an envelope out of [segment-duration final-level] coordinates."
   [& corners]
   (fn [context at duration]
-    (let [node (.createGain context)
-          gain (.-gain node)]
-      (.setValueAtTime gain 0.0 at)
+    (let [audio-node (.createGain context)]
+      (-> audio-node .-gain (.setValueAtTime 0.0 at))
       (reduce
         (fn [x [dx y]]
-          (.linearRampToValueAtTime gain y (+ x dx))
+          (-> audio-node .-gain (.linearRampToValueAtTime y (+ x dx)))
           (+ dx x))
         at
         corners)
-      node)))
+      audio-node)))
 
 (defn adshr [attack decay sustain hold release]
   (envelope [attack 1.0] [decay sustain] [hold sustain] [release 0]))
@@ -46,8 +45,8 @@
   (fn [context at duration]
     (let [remainder (- duration attack decay sustain)
           hold (max 0.0 remainder)
-          ugen (adshr attack decay sustain hold release)]
-      (-> ugen (run-with context at duration)))))
+          node (adshr attack decay sustain hold release)]
+      (-> node (run-with context at duration)))))
 
 (defn percussive [attack decay]
   (envelope [attack 1.0] [decay 0.0]))
@@ -56,20 +55,20 @@
 ; Combinators
 
 (defn connect
-  [ugen1 ugen2]
+  [node1 node2]
   (fn [context at duration]
-    (let [sink (-> ugen2 (run-with context at duration))]
-      (-> ugen1 (run-with context at duration) (.connect sink))
+    (let [sink (-> node2 (run-with context at duration))]
+      (-> node1 (run-with context at duration) (.connect sink))
       sink)))
 
 (defn connect-> [& nodes]
   (reduce connect nodes))
 
-(defn add [& ugens]
+(defn add [& nodes]
   (fn [context at duration]
     (let [sink (-> (gain 1.0) (run-with context at duration))]
-      (doseq [ugen ugens]
-        (-> ugen (run-with context at duration) (.connect sink)))
+      (doseq [node nodes]
+        (-> node (run-with context at duration) (.connect sink)))
       sink)))
 
 
