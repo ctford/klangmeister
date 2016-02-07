@@ -47,6 +47,7 @@
    [graph/render handle! state-atom]
    [controls handle! @state-atom]
    [content/render :sine handle! state-atom]
+   [content/render :interference handle! state-atom]
    [content/render :envelope handle! state-atom]
    [content/render :gain handle! state-atom]
    [editor/render :main (-> @state-atom :main :text) handle! @state-atom]
