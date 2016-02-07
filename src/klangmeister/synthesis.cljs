@@ -1,5 +1,10 @@
 (ns klangmeister.synthesis)
 
+; Plumbing
+
+(defn destination [context at duration]
+  (.-destination context))
+
 (defn plug [param input context at duration]
   "Plug an input into an audio parameter,
   accepting both numbers and ugens."
@@ -11,6 +16,9 @@
   (fn [context at duration]
     (doto (.createGain context)
       (-> .-gain (plug level context at duration)))))
+
+
+; Envelopes
 
 (defn line
   "Build a line out of [dx y] coordinates, starting at [0 0]."
@@ -40,6 +48,9 @@
 (defn percussive [attack decay]
   (line [attack 1.0] [decay 0.0]))
 
+
+; Combinators
+
 (defn connect
   [ugen1 ugen2]
   (fn [context at duration]
@@ -49,6 +60,16 @@
 
 (defn connect-> [& nodes]
   (reduce connect nodes))
+
+(defn add [& ugens]
+  (fn [context at duration]
+    (let [sink ((gain 1.0) context at duration)]
+      (doseq [ugen ugens]
+        (.connect (ugen context at duration) sink))
+      sink)))
+
+
+; Noise
 
 (defn noise [bit duration]
   (fn [context at duration]
@@ -63,6 +84,9 @@
         (.start at)))))
 
 (def white-noise (partial noise #(-> (js/Math.random) (* 2.0) dec)))
+
+
+; Oscillators
 
 (defn oscillator
   ([type freq detune]
@@ -82,6 +106,9 @@
 (def square (partial oscillator "square"))
 (def triangle (partial oscillator "triangle"))
 
+
+; Filters
+
 (defn biquad-filter [type freq]
   (fn [context at duration]
     (doto (.createBiquadFilter context)
@@ -90,6 +117,9 @@
 
 (def low-pass (partial biquad-filter "lowpass"))
 (def high-pass (partial biquad-filter "highpass"))
+
+
+; Effects
 
 (defn stereo-panner [pan]
   (fn [context at duration]
@@ -103,12 +133,3 @@
       (doto (.createDelay context maximum)
         (-> .-delayTime (plug time context at duration))))))
 
-(defn destination [context at duration]
-  (.-destination context))
-
-(defn add [& ugens]
-  (fn [context at duration]
-    (let [sink ((gain 1.0) context at duration)]
-      (doseq [ugen ugens]
-        (.connect (ugen context at duration) sink))
-      sink)))
