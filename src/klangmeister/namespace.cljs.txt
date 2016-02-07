@@ -2,9 +2,17 @@
   (:require
     [klangmeister.synthesis :refer
       [connect-> add           ; Synth connectors
+
        high-pass low-pass      ; Frequency filters
+
        sawtooth sine square    ; Signal generators
-       adsr gain percussive]]  ; Signal shapers
+       triangle
+
+       adsr gain percussive    ; Signal shapers
+       adshr envelope
+
+       stereo-panner           ; Effects
+       delay-line]]
 
     [klangmeister.instruments :refer
       [bell]]                  ; An imitation bell
