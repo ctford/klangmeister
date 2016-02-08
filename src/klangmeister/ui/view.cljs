@@ -1,16 +1,7 @@
 (ns klangmeister.ui.view
   (:require
-    [klangmeister.actions :as action]
-    [klangmeister.ui.graph :as graph]
-    [klangmeister.ui.editor :as editor]
+    [klangmeister.ui.jam :as jam]
     [klangmeister.ui.content :as content]))
-
-(defn controls [handle! state]
-  (let [{:keys [looping?]} (:main state)
-        play (if-not looping?
-               [:button {:on-click #(handle! (action/->Play :main))} "Loop"]
-               [:button {:on-click #(handle! (action/->Stop :main))} "Stop"])]
-    [:div {:class "controls"} play]))
 
 (defn ribbon []
   [:a {:href "https://github.com/ctford/klangmeister"}
@@ -23,8 +14,5 @@
   [:div
    [:h1 "Klangmeister"]
    [content/render handle! state-atom]
-   [:p "Now we know the basics of synthesis, we can play melodies or even whole songs. To make the experience more interactive, lets graph the notes we're playing, and loop them over and over again as we edit the synth and music."]
-   [graph/render handle! state-atom]
-   [editor/render :main (-> @state-atom :main :text) handle! @state-atom]
-   [controls handle! @state-atom]
+   [jam/render handle! state-atom]
    [ribbon]])
