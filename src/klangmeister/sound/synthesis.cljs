@@ -1,4 +1,4 @@
-(ns klangmeister.synthesis)
+(ns klangmeister.sound.synthesis)
 
 ; Plumbing
 

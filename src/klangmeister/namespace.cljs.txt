@@ -1,6 +1,6 @@
 (ns klangmeister.live
   (:require
-    [klangmeister.synthesis :refer
+    [klangmeister.sound.synthesis :refer
       [connect-> add           ; Synth connectors
 
        high-pass low-pass      ; Frequency filters
@@ -14,7 +14,7 @@
        stereo-panner           ; Effects
        delay-line]]
 
-    [klangmeister.instruments :refer
+    [klangmeister.sound.instruments :refer
       [bell]]                  ; An imitation bell
 
     [leipzig.scale :refer

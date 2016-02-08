@@ -1,6 +1,6 @@
-(ns klangmeister.instruments
+(ns klangmeister.sound.instruments
   (:require
-    [klangmeister.synthesis :refer [connect-> percussive sine add gain]]))
+    [klangmeister.sound.synthesis :refer [connect-> percussive sine add gain]]))
 
 (defn bell
   "An imitation bell, made by adding together harmonics."

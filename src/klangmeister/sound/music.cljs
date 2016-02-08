@@ -1,6 +1,6 @@
-(ns klangmeister.music
+(ns klangmeister.sound.music
   (:require [leipzig.temperament :as temperament]
-            [klangmeister.synthesis :as synthesis]))
+            [klangmeister.sound.synthesis :as synthesis]))
 
 (defonce context (js/window.AudioContext.))
 

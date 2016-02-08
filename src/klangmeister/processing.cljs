@@ -1,7 +1,7 @@
 (ns klangmeister.processing
   (:require
     [klangmeister.eval :as eval]
-    [klangmeister.music :as music]
+    [klangmeister.sound.music :as music]
     [klangmeister.actions :as action]
     [klangmeister.framework :as framework]
     [leipzig.melody :as melody]))
