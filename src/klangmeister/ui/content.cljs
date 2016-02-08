@@ -1,5 +1,5 @@
-(ns klangmeister.content
-  (:require [klangmeister.editor :as editor]
+(ns klangmeister.ui.content
+  (:require [klangmeister.ui.editor :as editor]
             [klangmeister.actions :as action]))
 
 (defn controls [k handle! state]

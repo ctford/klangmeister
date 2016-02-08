@@ -1,9 +1,9 @@
-(ns klangmeister.views
+(ns klangmeister.ui.view
   (:require
     [klangmeister.actions :as action]
-    [klangmeister.graph :as graph]
-    [klangmeister.editor :as editor]
-    [klangmeister.content :as content]))
+    [klangmeister.ui.graph :as graph]
+    [klangmeister.ui.editor :as editor]
+    [klangmeister.ui.content :as content]))
 
 (defn controls [handle! state]
   (let [{:keys [looping?]} (:main state)

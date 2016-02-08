@@ -3,7 +3,7 @@
     [klangmeister.processing] ; Import action defs.
     [klangmeister.eval :as eval]
     [klangmeister.actions :as action]
-    [klangmeister.views :as view]
+    [klangmeister.ui.view :as view]
     [klangmeister.framework :as framework]
     [reagent.core :as reagent])
   (:require-macros

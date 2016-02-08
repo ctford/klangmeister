@@ -1,7 +1,6 @@
-(ns klangmeister.editor
+(ns klangmeister.ui.editor
   (:require
     [klangmeister.actions :as action]
-    [klangmeister.graph :as graph]
     [reagent.core :as reagent]))
 
 (defn editor-did-mount [target text handle!]

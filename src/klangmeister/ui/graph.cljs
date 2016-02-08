@@ -1,4 +1,4 @@
-(ns klangmeister.graph
+(ns klangmeister.ui.graph
   (:require
     [leipzig.melody :as melody]
     [leipzig.scale :as scale]
