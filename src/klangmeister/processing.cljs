@@ -1,6 +1,6 @@
 (ns klangmeister.processing
   (:require
-    [klangmeister.eval :as eval]
+    [klangmeister.compile.eval :as eval]
     [klangmeister.sound.music :as music]
     [klangmeister.actions :as action]
     [klangmeister.framework :as framework]

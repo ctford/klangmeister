@@ -1,13 +1,12 @@
 (ns klangmeister.core
   (:require
     [klangmeister.processing] ; Import action defs.
-    [klangmeister.eval :as eval]
     [klangmeister.actions :as action]
     [klangmeister.ui.view :as view]
     [klangmeister.framework :as framework]
     [reagent.core :as reagent])
   (:require-macros
-    [klangmeister.macros :as macro]))
+    [klangmeister.compile.macros :as macro]))
 
 (def nothing
   {:looping? false
