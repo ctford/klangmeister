@@ -79,9 +79,19 @@
 (->> (phrase [8] [72]) ; This time the note is held eight times as long.
   (all :instrument plooonk))"]})
 
-(defn render [k handle! state-atom]
+(defn render-one [k handle! state-atom]
   (let [[text code] (steps k)]
     [:div
      [:p text]
      [editor/render k code handle! @state-atom]
      [controls k handle! @state-atom]]))
+
+(defn render [handle! state-atom]
+  [:div
+   [render-one :sine handle! state-atom]
+   [render-one :gain handle! state-atom]
+   [render-one :interference handle! state-atom]
+   [render-one :envelope handle! state-atom]
+   [render-one :oscillators handle! state-atom]
+   [render-one :filters handle! state-atom]
+   [render-one :sustain handle! state-atom]])
