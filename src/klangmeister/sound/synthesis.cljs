@@ -114,11 +114,16 @@
 
 ; Filters
 
-(defn biquad-filter [type freq]
-  (fn [context at duration]
-    (doto (.createBiquadFilter context)
-      (-> .-frequency (plug freq context at duration))
-      (-> .-type (set! type)))))
+(defn biquad-filter
+  ([type freq q]
+   (fn [context at duration]
+     (doto (-> (biquad-filter type freq) (run-with context at duration))
+       (-> .-Q (plug q context at duration)))))
+  ([type freq]
+   (fn [context at duration]
+     (doto (.createBiquadFilter context)
+       (-> .-frequency (plug freq context at duration))
+       (-> .-type (set! type))))))
 
 (def low-pass (partial biquad-filter "lowpass"))
 (def high-pass (partial biquad-filter "highpass"))
