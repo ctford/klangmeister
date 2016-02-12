@@ -30,6 +30,12 @@
       (music/play-on! music)
       state))
 
+  action/Test
+  (process [{pane :target :as this} handle! state]
+    (let [{:keys [music]} (pane state)]
+      (music/play-on! [{:time 0 :duration 1 :instrument (constantly music)}])
+      state))
+
   action/Loop
   (process [{pane :target :as this} handle! state]
     (let [{:keys [music looping?]} (pane state)
