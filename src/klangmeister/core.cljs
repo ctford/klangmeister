@@ -12,7 +12,7 @@
   {:looping? false
    :error nil
    :text ""
-   :music []})
+   :value []})
 
 (defn empty-state []
   (reagent/atom

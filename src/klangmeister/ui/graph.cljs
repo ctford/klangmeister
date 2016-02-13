@@ -20,14 +20,14 @@
         [dot-height dot-width] [15 20]]
     (quil/sketch :draw (fn [_]
                          (try (quil/background 255)
-                              (let [{:keys [music sync looping?]} (:main @state-atom)
-                                    relative-time (-> (Date.now) (- sync) (mod (* 1000 (melody/duration music))) (/ 1000))
-                                    marked (->> music
+                              (let [{:keys [value sync looping?]} (:main @state-atom)
+                                    relative-time (-> (Date.now) (- sync) (mod (* 1000 (melody/duration value))) (/ 1000))
+                                    marked (->> value
                                                 (melody/wherever
                                                   #(and looping? (<= (:time %) relative-time))
                                                   :played? (melody/is true)))
-                                    scale-pitch (scaler-for (- height dot-height) (map :pitch music))
-                                    scale-time (scaler-for (- width dot-width) (map :time music))
+                                    scale-pitch (scaler-for (- height dot-height) (map :pitch value))
+                                    scale-time (scaler-for (- width dot-width) (map :time value))
                                     half (partial * 0.5)
                                     scaled (->> marked
                                                 (melody/where :pitch scale-pitch)

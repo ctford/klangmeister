@@ -10,11 +10,11 @@
   action/Refresh
   (process [{expr-str :text pane :target} _ state]
     (let [{:keys [value error]} (eval/uate expr-str)
-          music (or value (get-in state [pane :music]) )]
+          value (or value (get-in state [pane :value]) )]
       (-> state
           (assoc-in [pane :error] error)
           (assoc-in [pane :text] expr-str)
-          (assoc-in [pane :music] music))))
+          (assoc-in [pane :value] value))))
 
   action/Stop
   (process [{pane :target} handle! state]
@@ -26,22 +26,22 @@
 
   action/PlayOnce
   (process [{pane :target :as this} handle! state]
-    (let [{:keys [music]} (pane state)]
-      (music/play-on! music)
+    (let [{:keys [value]} (pane state)]
+      (music/play-on! value)
       state))
 
   action/Test
   (process [{pane :target :as this} handle! state]
-    (let [{:keys [music]} (pane state)]
-      (music/play-on! [{:time 0 :duration 1 :instrument (constantly music)}])
+    (let [{:keys [value]} (pane state)]
+      (music/play-on! [{:time 0 :duration 1 :instrument (constantly value)}])
       state))
 
   action/Loop
   (process [{pane :target :as this} handle! state]
-    (let [{:keys [music looping?]} (pane state)
+    (let [{:keys [value looping?]} (pane state)
           start (Date.now)]
       (if looping?
-        (do (music/play-on! music)
-            (js/setTimeout #(handle! this) (* 1000 (melody/duration music)))
+        (do (music/play-on! value)
+            (js/setTimeout #(handle! this) (* 1000 (melody/duration value)))
             (assoc-in state [pane :sync] start))
         (assoc-in state [pane :sync] nil)))))
