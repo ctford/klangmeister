@@ -38,7 +38,7 @@
            (percussive 0.001 0.4)
            (gain 0.1))"]
    :sustain
-   ["Many instruments can sustain a note over a period of time. To achive that, we use an adsr envelope instead of a percussive one. As well as an initial attack and decay, an adsr envelope holds the sound at a sustain level before dying away over the release."
+   ["Many instruments can sustain a note over a period of time. To achive that, we use an ADSR envelope instead of a percussive one. As well as an initial attack and decay, an ADSR envelope holds the sound at a sustain level before dying away over the release."
     "(connect-> (add (square 440) (triangle 442))
            (low-pass 600)
            (adsr 0.001 0.4 0.5 0.1) ; What happens when you change the numbers?
