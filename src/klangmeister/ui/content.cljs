@@ -25,7 +25,7 @@
     (sine 442)) ; What happens if the two frequencies are closer together? Why?
   (gain 0.1))"]
    :envelope
-   ["The sound cuts off too abruptly. In order to shape it into a real note, we need what's called an envelope. The simplest example of an envelope is a percussive envelope. A percussive envelope is defined by an attack - how long it takes the note to get to maximum loundness, and a decay - how long it takes the note to die away. We use the envelope by connecting the sine waves to it."
+   ["The sound cuts off too abruptly. In order to shape it into a real note, we need what's called an envelope. The simplest example of an envelope is a percussive envelope. A percussive envelope is defined by an attack - how long it takes the note to get to maximum loundness, and a decay - how long it takes the note to die away. We use the envelope by adding it to our chain of connected synthesis nodes."
     "(connect->
   (add
     (sine 440)
