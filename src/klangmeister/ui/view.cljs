@@ -10,9 +10,30 @@
           :alt "Fork me on GitHub"
           :data-canonical-src "https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"}]])
 
+(defn tabs []
+   [:div
+    [:ul
+    [:li [:a {:href "/synthesis"} "Synthesis"]]
+    [:li [:a {:href "/jam"} "Jam"]]]])
+
 (defn render [handle! state-atom]
   [:div
    [:h1 "Klangmeister"]
+   [tabs]
    [content/render handle! state-atom]
    [jam/render handle! state-atom]
+   [ribbon]])
+
+(defn jam [handle! state-atom]
+  [:div
+   [:h1 "Klangmeister"]
+   [tabs]
+   [jam/render handle! state-atom]
+   [ribbon]])
+
+(defn content [handle! state-atom]
+  [:div
+   [:h1 "Klangmeister"]
+   [tabs]
+   [content/render handle! state-atom]
    [ribbon]])

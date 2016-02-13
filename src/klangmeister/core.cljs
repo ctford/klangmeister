@@ -31,13 +31,22 @@
   (let [handle! (framework/handler-for state-atom)]
     [view/render handle! state-atom]))
 
-(def synthesis-page home-page)
+(defn synthesis-page []
+  (let [handle! (framework/handler-for state-atom)]
+    [view/content handle! state-atom]))
+
+(defn jam-page []
+  (let [handle! (framework/handler-for state-atom)]
+    [view/jam handle! state-atom]))
 
 (secretary/defroute "/" []
   (session/put! :current-page #'home-page))
 
 (secretary/defroute "/synthesis" []
   (session/put! :current-page #'synthesis-page))
+
+(secretary/defroute "/jam" []
+  (session/put! :current-page #'jam-page))
 
 (defn current-page []
   [(session/get :current-page)])
