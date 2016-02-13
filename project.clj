@@ -28,6 +28,7 @@
                         :compiler {:main "klangmeister.core"
                                    :optimizations :none
                                    :pretty-print true
+                                   :parallel-build true
                                    :output-to "resources/public/js/compiled/app.js"
                                    :output-dir "resources/public/js/compiled"
                                    :asset-path "js/compiled"}}
