@@ -4,7 +4,7 @@
 
 (defonce context (js/window.AudioContext.))
 
-(defn play-on! [notes]
+(defn play! [notes]
   (doseq [{:keys [time duration instrument] :as note} notes]
     (let [at (+ time (.-currentTime context))
           synth-instance (-> note

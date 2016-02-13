@@ -27,13 +27,13 @@
   action/PlayOnce
   (process [{pane :target :as this} handle! state]
     (let [{:keys [value]} (pane state)]
-      (music/play-on! value)
+      (music/play! value)
       state))
 
   action/Test
   (process [{pane :target :as this} handle! state]
     (let [{:keys [value]} (pane state)]
-      (music/play-on! [{:time 0 :duration 1 :instrument (constantly value)}])
+      (music/play! [{:time 0 :duration 1 :instrument (constantly value)}])
       state))
 
   action/Loop
@@ -41,7 +41,7 @@
     (let [{:keys [value looping?]} (pane state)
           start (Date.now)]
       (if looping?
-        (do (music/play-on! value)
+        (do (music/play! value)
             (js/setTimeout #(handle! this) (* 1000 (melody/duration value)))
             (assoc-in state [pane :sync] start))
         (assoc-in state [pane :sync] nil)))))
