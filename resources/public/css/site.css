@@ -15,9 +15,15 @@ h1, h2, h3 {
   color: #000;
 }
 
+@font-face {
+  font-family: AlteSchwabacher;
+  src: url(AlteSchwabacher.ttf);
+}
+
 h1 {
   font-size: 2em;
-  text-align: center
+  text-align: center;
+  font-family: AlteSchwabacher;
 }
 
 h2 {
