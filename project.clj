@@ -3,7 +3,10 @@
   :license {:name "MIT" }
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [reagent "0.5.1"]
+                 [reagent-utils "0.1.7"]
                  [quil "2.3.0"]
+                 [secretary "1.2.3"]
+                 [venantius/accountant "0.1.6"]
                  [org.clojure/clojurescript "1.7.170"]
                  [org.clojure/tools.namespace "0.3.0-alpha3"]
                  [org.clojure/tools.reader "1.0.0-alpha2"]
