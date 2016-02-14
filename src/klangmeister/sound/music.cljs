@@ -2,7 +2,7 @@
   (:require [leipzig.temperament :as temperament]
             [klangmeister.sound.synthesis :as synthesis]))
 
-(defonce context ((or js/window.AudioContext. js/window.webkitAudioContext.)))
+(defonce context (if js/window.AudioContext. (js/window.AudioContext.) (js/window.webkitAudioContext.)))
 
 (defn play! [notes]
   (doseq [{:keys [time duration instrument] :as note} notes]
