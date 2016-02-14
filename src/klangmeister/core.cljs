@@ -36,7 +36,8 @@
     [view/performance handle! state-atom]))
 
 (defn about-page []
-  [view/about])
+  (let [handle! (framework/handler-for state-atom)]
+    [view/about handle! state-atom]))
 
 (def home-page about-page)
 

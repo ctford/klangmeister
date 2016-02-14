@@ -2,6 +2,7 @@
   (:require
     [klangmeister.ui.jam :as jam]
     [klangmeister.ui.music-tutorial :as music]
+    [klangmeister.ui.about :as about]
     [klangmeister.ui.synthesis-tutorial :as synthesis]))
 
 (defn ribbon []
@@ -32,13 +33,8 @@
 (defn synthesis [handle! state-atom]
   (frame [synthesis/render handle! state-atom]))
 
-(defn about []
-  (frame
-    [:div
-     [:p "Klangmeister is a live coding environment for the browser. It lets you design synthesisers and compose music using
-         computer code - without having to install anything on your own computer. Klangmeister works best in Chrome, because
-         the synthesis features that it relies on have patchy support across the other browsers."]
-     [:p [:a {:href "https://twitter.com/ctford"} "I"] " recommend starting with the " [:a {:href "/synthesis"} "synthesis tutorial"] "."]]))
+(defn about [handle! state-atom]
+  (frame [about/render handle! state-atom]))
 
 (defn music [handle! state-atom]
   (frame [music/render handle! state-atom]))
