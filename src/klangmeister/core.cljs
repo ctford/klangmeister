@@ -27,10 +27,6 @@
 (defn reload! []
   (swap! state-atom identity))
 
-(defn home-page []
-  (let [handle! (framework/handler-for state-atom)]
-    [view/render handle! state-atom]))
-
 (defn synthesis-page []
   (let [handle! (framework/handler-for state-atom)]
     [view/content handle! state-atom]))
@@ -40,7 +36,9 @@
     [view/jam handle! state-atom]))
 
 (defn about-page []
-  [:p "Coming soon"])
+  [view/about])
+
+(def home-page about-page)
 
 (defn music-page []
   [:p "Coming soon"])
