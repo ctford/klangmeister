@@ -26,9 +26,6 @@
    content
    [ribbon]])
 
-(defn render [handle! state-atom]
-  (frame [content/render handle! state-atom]))
-
 (defn performance [handle! state-atom]
   (frame [jam/render handle! state-atom]))
 
