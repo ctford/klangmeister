@@ -1,6 +1,6 @@
 (defn synth [note]
   (connect->
-    (add (square (* 1.01 (:pitch note))) (triangle (:pitch note)))
+    (add (square (* 1.01 (:pitch note))) (sawtooth (:pitch note)))
     (low-pass 600)
     (adsr 0.001 0.4 0.5 0.1)
     (gain 0.1)))
