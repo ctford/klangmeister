@@ -15,7 +15,7 @@
    [:ul
     [:li [:a {:href "/synthesis"} "Synthesis"]]
     [:li [:a {:href "/music"} "Music"]]
-    [:li [:a {:href "/jam"} "Jamming"]]
+    [:li [:a {:href "/performance"} "Performance"]]
     [:li [:a {:href "/about"} "About"]]]])
 
 (defn frame [content]
@@ -28,7 +28,7 @@
 (defn render [handle! state-atom]
   (frame [content/render handle! state-atom]))
 
-(defn jam [handle! state-atom]
+(defn performance [handle! state-atom]
   (frame [jam/render handle! state-atom]))
 
 (defn content [handle! state-atom]

@@ -31,9 +31,9 @@
   (let [handle! (framework/handler-for state-atom)]
     [view/content handle! state-atom]))
 
-(defn jam-page []
+(defn performance-page []
   (let [handle! (framework/handler-for state-atom)]
-    [view/jam handle! state-atom]))
+    [view/performance handle! state-atom]))
 
 (defn about-page []
   [view/about])
@@ -49,8 +49,8 @@
 (secretary/defroute "/synthesis" []
   (session/put! :current-page #'synthesis-page))
 
-(secretary/defroute "/jam" []
-  (session/put! :current-page #'jam-page))
+(secretary/defroute "/performance" []
+  (session/put! :current-page #'performance-page))
 
 (secretary/defroute "/music" []
   (session/put! :current-page #'music-page))
