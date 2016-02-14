@@ -77,4 +77,6 @@
    [render-one :envelope handle! state-atom]
    [render-one :oscillators handle! state-atom]
    [render-one :filters handle! state-atom]
-   [render-one :sustain handle! state-atom]])
+   [render-one :sustain handle! state-atom]
+   [:div
+    [:p "Now that you know how to design synthesisers, try " [:a {:href "/music"} "composing melodies"] "."]]])

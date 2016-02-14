@@ -12,7 +12,9 @@
 
 (defn render [handle! state-atom]
   [:div
-   [:p "Now we know the basics of synthesis, we can play melodies or even whole songs. To make the experience more interactive, lets graph the notes we're playing, and loop them over and over again as we edit the synth and music."]
+   [:p "Now we know how to make both instruments and melodies, we can create whole songs. To make the experience more interactive, lets graph the notes we're playing, and loop them over and over again as we edit the synth and music."]
    [graph/render handle! state-atom]
    [editor/render :main (-> @state-atom :main :text) handle! @state-atom]
-   [controls handle! @state-atom]])
+   [controls handle! @state-atom]
+   [:div
+    [:p "If you find anything confusing, refer back to the " [:a {:href "/synthesis"} "synthesis tutorial"] " or the " [:a {:href "/music"} " music tutorial"] "."]]])
