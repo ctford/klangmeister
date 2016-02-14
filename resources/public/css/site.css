@@ -1,5 +1,5 @@
 body {
-  font-family: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
+  font-family: Georgia, Times, serif;
   max-width: 800px;
   margin: 0 auto;
   padding-top: 12px;
@@ -21,9 +21,10 @@ h1, h2, h3 {
 }
 
 h1 {
-  font-size: 2em;
+  font-size: 3em;
   text-align: center;
   font-family: AlteSchwabacher;
+  padding-top: 0.5em;
 }
 
 h1 a {
@@ -41,6 +42,10 @@ a {
   margin: 0;
   white-space: nowrap;
   list-style-type: none;
+}
+
+#menu ul {
+  padding-left: 0;
 }
 
 #menu li {
