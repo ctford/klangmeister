@@ -65,12 +65,12 @@
 (defn mount-root []
   (let [handle! (framework/handler-for state-atom)]
     (handle! (action/->Refresh (macro/text "src/klangmeister/live.cljs.txt") :main))
-    (session/put! :current-page #'home-page)
     (reagent/render
       [current-page]
       js/document.body)))
 
 (defn main []
+  (session/put! :current-page #'home-page)
   (accountant/configure-navigation!)
   (accountant/dispatch-current!)
   (mount-root))

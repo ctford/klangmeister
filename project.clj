@@ -33,7 +33,8 @@
                                    :asset-path "js/compiled"}}
                        {:id "prod"
                         :source-paths ["src"]
-                        :compiler {:optimizations :simple
+                        :compiler {:main "klangmeister.core"
+                                   :optimizations :simple
                                    :pretty-print false
                                    :optimize-constants true
                                    :static-fns true
