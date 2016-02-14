@@ -36,7 +36,8 @@
   (frame
     [:div
      [:p "Klangmeister is a live coding environment for the browser. It lets you design synthesisers and compose music using
-         computer code - without having to install anything on your own computer."]
+         computer code - without having to install anything on your own computer. Klangmeister works best in Chrome, because
+         the synthesis features that it relies on have patchy support across the other browsers."]
      [:p [:a {:href "https://twitter.com/ctford"} "I"] " recommend starting with the " [:a {:href "/synthesis"} "synthesis tutorial"] "."]]))
 
 (defn music [handle! state-atom]
