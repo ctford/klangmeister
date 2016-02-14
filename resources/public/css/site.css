@@ -42,15 +42,16 @@ a {
   padding: 0;
   margin: 0;
   white-space: nowrap;
-  list-style-type: none;
+}
+
+@media (min-width: 40em) {
+  #menu li {
+    display: inline;
+  }
 }
 
 #menu ul {
   padding-left: 0;
-}
-
-#menu li {
-  display: inline;
 }
 
 #menu li a {
