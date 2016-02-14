@@ -33,7 +33,7 @@ h1 a {
 }
 
 a {
-  color: #F89;
+  color: #D33682;
 }
 
 #menu {
@@ -73,7 +73,7 @@ button {
 .error {
   border-style: dashed;
   border-width: 3px;
-  border-color: #F89;
+  border-color: #D33682;
 }
 
 .cheatsheet {
