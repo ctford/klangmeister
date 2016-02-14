@@ -40,3 +40,8 @@
      [:p "Klangmeister is a live coding environment for the browser. It lets you design synthesisers and compose music using
          computer code - without having to install anything on your own computer."]
      [:p "I recommend starting with the " [:a {:href "/synthesis"} "synthesis tutorial"] "."]]))
+
+(defn music []
+  (frame
+    [:div
+     [:p "Coming soon - Klangmeister lets you compose melodies."]]))

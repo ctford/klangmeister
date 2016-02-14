@@ -41,7 +41,7 @@
 (def home-page about-page)
 
 (defn music-page []
-  [:p "Coming soon"])
+  [view/music])
 
 (secretary/defroute "/" []
   (session/put! :current-page #'home-page))
