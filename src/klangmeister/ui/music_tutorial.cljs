@@ -78,4 +78,4 @@
    [render-one :bpm handle! state-atom]
    [render-one :key handle! state-atom]
    [:div
-    [:p "Now that you know how to design synthesisers and compose melodies, " [:a {:href "/performance"} "putting the two together"] "."]]])
+    [:p "Now that you know how to design synthesisers and compose melodies, try " [:a {:href "/performance"} "putting the two together"] "."]]])
