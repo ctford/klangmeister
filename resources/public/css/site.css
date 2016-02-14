@@ -9,6 +9,7 @@ body {
   font-size: 1.125em;
   color: #333;
   line-height: 1.5em;
+  text-align: justify;
 }
 
 h1, h2, h3 {
