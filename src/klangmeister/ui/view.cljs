@@ -14,9 +14,9 @@
   [:div {:id "menu"}
    [:ul
     [:li [:a {:href "/synthesis"} "Synthesis"]]
-    [:li [:a {:href "/jam"} "Jam"]]
-    [:li [:a {:href "/about"} "About"]]
-    [:li [:a {:href "/music"} "Music"]]]])
+    [:li [:a {:href "/music"} "Music"]]
+    [:li [:a {:href "/jam"} "Jamming"]]
+    [:li [:a {:href "/about"} "About"]]]])
 
 (defn frame [content]
   [:div
