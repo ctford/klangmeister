@@ -2,7 +2,7 @@
   (:require
     [klangmeister.ui.jam :as jam]
     [klangmeister.ui.music-tutorial :as music]
-    [klangmeister.ui.content :as content]))
+    [klangmeister.ui.synthesis-tutorial :as synthesis]))
 
 (defn ribbon []
   [:a {:href "https://github.com/ctford/klangmeister"}
@@ -32,8 +32,8 @@
 (defn performance [handle! state-atom]
   (frame [jam/render handle! state-atom]))
 
-(defn content [handle! state-atom]
-  (frame [content/render handle! state-atom]))
+(defn synthesis [handle! state-atom]
+  (frame [synthesis/render handle! state-atom]))
 
 (defn about []
   (frame

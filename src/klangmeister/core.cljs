@@ -29,7 +29,7 @@
 
 (defn synthesis-page []
   (let [handle! (framework/handler-for state-atom)]
-    [view/content handle! state-atom]))
+    [view/synthesis handle! state-atom]))
 
 (defn performance-page []
   (let [handle! (framework/handler-for state-atom)]

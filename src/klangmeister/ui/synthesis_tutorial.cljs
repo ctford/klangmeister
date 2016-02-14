@@ -1,4 +1,4 @@
-(ns klangmeister.ui.content
+(ns klangmeister.ui.synthesis-tutorial
   (:require [klangmeister.ui.editor :as editor]
             [klangmeister.actions :as action]))
 
