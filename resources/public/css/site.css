@@ -26,17 +26,24 @@ h1 {
   font-family: AlteSchwabacher;
 }
 
-h2 {
-  font-size: 1.5em
-}
-
 a {
-  text-decoration: none;
-  color: #09f;
+  color: #F89;
 }
 
-a:hover {
-  text-decoration: underline;
+#menu {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
+  list-style-type: none;
+}
+
+#menu li {
+  display: inline;
+}
+
+#menu li a {
+  padding: 0.2em 1em;
 }
 
 button {

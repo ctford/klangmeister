@@ -11,7 +11,7 @@
           :data-canonical-src "https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"}]])
 
 (defn tabs []
-   [:div
+   [:div {:id "menu"}
     [:ul
     [:li [:a {:href "/synthesis"} "Synthesis"]]
     [:li [:a {:href "/jam"} "Jam"]]]])
