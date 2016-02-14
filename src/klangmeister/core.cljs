@@ -39,6 +39,12 @@
   (let [handle! (framework/handler-for state-atom)]
     [view/jam handle! state-atom]))
 
+(defn about-page []
+  [:p "Coming soon"])
+
+(defn music-page []
+  [:p "Coming soon"])
+
 (secretary/defroute "/" []
   (session/put! :current-page #'home-page))
 
@@ -47,6 +53,12 @@
 
 (secretary/defroute "/jam" []
   (session/put! :current-page #'jam-page))
+
+(secretary/defroute "/music" []
+  (session/put! :current-page #'music-page))
+
+(secretary/defroute "/about" []
+  (session/put! :current-page #'about-page))
 
 (defn current-page []
   [(session/get :current-page)])

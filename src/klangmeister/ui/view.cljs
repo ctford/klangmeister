@@ -14,11 +14,13 @@
   [:div {:id "menu"}
    [:ul
     [:li [:a {:href "/synthesis"} "Synthesis"]]
-    [:li [:a {:href "/jam"} "Jam"]]]])
+    [:li [:a {:href "/jam"} "Jam"]]
+    [:li [:a {:href "/about"} "About"]]
+    [:li [:a {:href "/music"} "Music"]]]])
 
 (defn frame [content]
   [:div
-   [:h1 "Klangmeister"]
+   [:h1 [:a {:href "/"} "Klangmeister"]]
    [tabs]
    content
    [ribbon]])
