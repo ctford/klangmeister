@@ -11,29 +11,23 @@
           :data-canonical-src "https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"}]])
 
 (defn tabs []
-   [:div {:id "menu"}
-    [:ul
+  [:div {:id "menu"}
+   [:ul
     [:li [:a {:href "/synthesis"} "Synthesis"]]
     [:li [:a {:href "/jam"} "Jam"]]]])
 
-(defn render [handle! state-atom]
+(defn frame [content]
   [:div
    [:h1 "Klangmeister"]
    [tabs]
-   [content/render handle! state-atom]
-   [jam/render handle! state-atom]
+   content
    [ribbon]])
+
+(defn render [handle! state-atom]
+  (frame [content/render handle! state-atom]))
 
 (defn jam [handle! state-atom]
-  [:div
-   [:h1 "Klangmeister"]
-   [tabs]
-   [jam/render handle! state-atom]
-   [ribbon]])
+  (frame [jam/render handle! state-atom]))
 
 (defn content [handle! state-atom]
-  [:div
-   [:h1 "Klangmeister"]
-   [tabs]
-   [content/render handle! state-atom]
-   [ribbon]])
+  (frame [content/render handle! state-atom]))
