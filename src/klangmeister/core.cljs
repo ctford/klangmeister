@@ -41,7 +41,8 @@
 (def home-page about-page)
 
 (defn music-page []
-  [view/music])
+  (let [handle! (framework/handler-for state-atom)]
+    [view/music handle! state-atom]))
 
 (secretary/defroute "/" []
   (session/put! :current-page #'home-page))

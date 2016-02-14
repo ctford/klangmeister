@@ -1,6 +1,7 @@
 (ns klangmeister.ui.view
   (:require
     [klangmeister.ui.jam :as jam]
+    [klangmeister.ui.music-tutorial :as music]
     [klangmeister.ui.content :as content]))
 
 (defn ribbon []
@@ -41,7 +42,5 @@
          computer code - without having to install anything on your own computer."]
      [:p [:a {:href "https://twitter.com/ctford"} "I"] " recommend starting with the " [:a {:href "/synthesis"} "synthesis tutorial"] "."]]))
 
-(defn music []
-  (frame
-    [:div
-     [:p "Coming soon - Klangmeister lets you compose melodies."]]))
+(defn music [handle! state-atom]
+  (frame [music/render handle! state-atom]))

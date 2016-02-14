@@ -2,6 +2,7 @@
   (:require
     [klangmeister.compile.eval :as eval]
     [klangmeister.sound.music :as music]
+    [klangmeister.sound.instruments :as instrument]
     [klangmeister.actions :as action]
     [klangmeister.framework :as framework]
     [leipzig.melody :as melody]))
@@ -27,7 +28,9 @@
   action/PlayOnce
   (process [{pane :target :as this} handle! state]
     (let [{:keys [value]} (pane state)]
-      (music/play! value)
+      (->> value
+           (melody/wherever (comp not :instrument), :instrument (melody/is instrument/bell))
+           music/play!)
       state))
 
   action/Test
