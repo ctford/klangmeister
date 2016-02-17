@@ -96,17 +96,14 @@
 ; Oscillators
 
 (defn oscillator
-  ([type freq detune]
-   (fn [context at duration]
-     (doto (-> (oscillator type freq) (run-with context at duration))
-       (-> .-frequency (plug detune context at duration)))))
-  ([type freq]
-   (fn [context at duration]
-     (doto (.createOscillator context)
-       (-> .-frequency .-value (set! freq))
-       (-> .-type (set! type))
-       (.start at)
-       (.stop (+ at duration 1.0))))))
+  [type freq]
+  (fn [context at duration]
+    (doto (.createOscillator context)
+      (-> .-frequency .-value (set! 0))
+      (-> .-frequency (plug freq context at duration))
+      (-> .-type (set! type))
+      (.start at)
+      (.stop (+ at duration 1.0)))))
 
 (def sine (partial oscillator "sine"))
 (def sawtooth (partial oscillator "sawtooth"))
