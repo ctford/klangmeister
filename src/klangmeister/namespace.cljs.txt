@@ -6,7 +6,7 @@
        high-pass low-pass      ; Frequency filters
 
        sawtooth sine square    ; Signal generators
-       triangle
+       triangle white-noise
 
        adsr gain percussive    ; Signal shapers
        adshr envelope
