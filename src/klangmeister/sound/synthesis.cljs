@@ -74,7 +74,7 @@
 
 ; Noise
 
-(defn noise [generate-bit! duration]
+(defn noise [generate-bit!]
   (fn [context at duration]
     (let [sample-rate 44100
           frame-count (* sample-rate duration)
@@ -88,8 +88,10 @@
 
 (def white-noise
   (let [white #(-> (js/Math.random) (* 2.0) (- 1.0))]
-    (partial noise white)))
+    (noise white)))
 
+(defn constant [x]
+  (noise (constantly x)))
 
 ; Oscillators
 

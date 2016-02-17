@@ -7,6 +7,7 @@
 
        sawtooth sine square    ; Signal generators
        triangle white-noise
+       constant
 
        adsr gain percussive    ; Signal shapers
        adshr envelope
