@@ -29,7 +29,7 @@
   [& corners]
   (fn [context at duration]
     (let [audio-node (.createGain context)]
-      (-> audio-node .-gain (.setValueAtTime 0.0 at))
+      (-> audio-node .-gain (.setValueAtTime 0 at))
       (reduce
         (fn [x [dx y]]
           (-> audio-node .-gain (.linearRampToValueAtTime y (+ x dx)))
@@ -121,6 +121,7 @@
   ([type freq]
    (fn [context at duration]
      (doto (.createBiquadFilter context)
+       (-> .-frequency .-value (set! 0))
        (-> .-frequency (plug freq context at duration))
        (-> .-type (set! type))))))
 
