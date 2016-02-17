@@ -29,7 +29,7 @@
   [& corners]
   (fn [context at duration]
     (let [audio-node (.createGain context)]
-      (-> audio-node .-gain (set! 0))
+      (-> audio-node .-gain (.setValueAtTime 0.0 at))
       (reduce
         (fn [x [dx y]]
           (-> audio-node .-gain (.linearRampToValueAtTime y (+ x dx)))
