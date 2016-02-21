@@ -16,7 +16,9 @@
        delay-line]]
 
     [klangmeister.sound.instruments :refer
-      [bell]]                  ; An imitation bell
+      [bell                    ; An imitation bell
+       open-hat closed-hat     ; Percussion
+       kick]]
 
     [leipzig.scale :refer
       [A B C D E F G           ; Keys
