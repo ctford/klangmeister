@@ -15,14 +15,14 @@
 (defn tabs []
   [:div {:id "menu"}
    [:ul
-    [:li [:a {:href "/synthesis"} "Synthesis"]]
-    [:li [:a {:href "/music"} "Music"]]
-    [:li [:a {:href "/performance"} "Performance"]]
-    [:li [:a {:href "/about"} "About"]]]])
+    [:li [:a {:href "synthesis"} "Synthesis"]]
+    [:li [:a {:href "music"} "Music"]]
+    [:li [:a {:href "performance"} "Performance"]]
+    [:li [:a {:href "about"} "About"]]]])
 
 (defn frame [content]
   [:div
-   [:h1 [:a {:href "/"} "Klangmeister"]]
+   [:h1 [:a {:href "/klangmeister"} "Klangmeister"]]
    [tabs]
    content
    [ribbon]])

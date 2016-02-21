@@ -16,7 +16,7 @@
   :plugins [[lein-cljsbuild "1.1.1"]
             [lein-figwheel "0.5.0-2"]]
 
-  :clean-targets ^{:protect false} ["resources/public/js/compiled"
+  :clean-targets ^{:protect false} ["resources/public/klangmeister/js/compiled"
                                     "target"]
 
   :source-paths ["src"]
@@ -28,8 +28,8 @@
                         :compiler {:main "klangmeister.core"
                                    :optimizations :none
                                    :pretty-print true
-                                   :output-to "resources/public/js/compiled/app.js"
-                                   :output-dir "resources/public/js/compiled"
+                                   :output-to "resources/public/klangmeister/js/compiled/app.js"
+                                   :output-dir "resources/public/klangmeister/js/compiled"
                                    :asset-path "js/compiled"}}
                        {:id "prod"
                         :source-paths ["src"]
@@ -38,7 +38,7 @@
                                    :pretty-print false
                                    :optimize-constants true
                                    :static-fns true
-                                   :output-to "resources/public/js/compiled/app.js"
+                                   :output-to "resources/public/klangmeister/js/compiled/app.js"
                                    :asset-path "js/compiled"}}]}
 
-  :figwheel {:css-dirs ["resources/public/css"]})
+  :figwheel {:css-dirs ["resources/public/klangmeister/css"]})

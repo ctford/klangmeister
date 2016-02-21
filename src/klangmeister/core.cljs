@@ -45,19 +45,19 @@
   (let [handle! (framework/handler-for state-atom)]
     [view/music handle! state-atom]))
 
-(secretary/defroute "/" []
+(secretary/defroute "/klangmeister/" []
   (session/put! :current-page #'home-page))
 
-(secretary/defroute "/synthesis" []
+(secretary/defroute "/klangmeister/synthesis" []
   (session/put! :current-page #'synthesis-page))
 
-(secretary/defroute "/performance" []
+(secretary/defroute "/klangmeister/performance" []
   (session/put! :current-page #'performance-page))
 
-(secretary/defroute "/music" []
+(secretary/defroute "/klangmeister/music" []
   (session/put! :current-page #'music-page))
 
-(secretary/defroute "/about" []
+(secretary/defroute "/klangmeister/about" []
   (session/put! :current-page #'about-page))
 
 (defn current-page []
