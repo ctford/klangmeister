@@ -1,7 +1,7 @@
 (ns klangmeister.sound.instruments
   (:require
     [klangmeister.sound.synthesis :refer
-     [connect-> percussive adsr sine square add gain high-pass low-pass white-noise
+     [connect-> percussive adsr adshr sine square add gain high-pass low-pass white-noise
       triangle constant envelope]]))
 
 (defn bell
@@ -45,4 +45,10 @@
     (add (sine (* 0.5 (:pitch note))) (triangle (:pitch note)))
     (low-pass (* 4 (:pitch note)) (connect-> (sine 3) (gain 3)))
     (adsr 0.1 0 1 0.3)
+    (gain 0.1)))
+
+(defn marimba [{:keys [pitch]}]
+  (connect->
+    (add (sine pitch) (sine (inc pitch)) (sine (* 2 pitch)))
+    (adshr 0.01 0.2 0.2 0.2 0.3)
     (gain 0.1)))
