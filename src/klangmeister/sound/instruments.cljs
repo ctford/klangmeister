@@ -1,7 +1,7 @@
 (ns klangmeister.sound.instruments
   (:require
     [klangmeister.sound.synthesis :refer
-     [connect-> percussive sine add gain high-pass low-pass white-noise
+     [connect-> percussive adsr sine square add gain high-pass low-pass white-noise
       triangle constant envelope]]))
 
 (defn bell
@@ -39,3 +39,10 @@
       (gain 0.2))))
 
 (def kick (tom 50 0.2))
+
+(defn organ [note]
+  (connect->
+    (add (sine (* 0.5 (:pitch note))) (triangle (:pitch note)))
+    (low-pass (* 4 (:pitch note)) (connect-> (sine 3) (gain 3)))
+    (adsr 0.1 0 1 0.3)
+    (gain 0.1)))
