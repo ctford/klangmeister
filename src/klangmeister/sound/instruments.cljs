@@ -25,8 +25,8 @@
       (low-pass 4500)
       (gain 0.2))))
 
-(def open-hat 0.4)
-(def closed-hat 0.1)
+(def open-hat (high-hat 0.4))
+(def closed-hat (high-hat 0.05))
 
 (defn tom [pitch decay]
   (fn [_]
