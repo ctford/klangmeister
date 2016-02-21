@@ -1,7 +1,7 @@
 (ns klangmeister.sound.instruments
   (:require
     [klangmeister.sound.synthesis :refer
-     [connect-> percussive adsr adshr sine square add gain high-pass low-pass white-noise
+     [connect-> percussive adsr adshr sine square sawtooth add gain high-pass low-pass white-noise
       triangle constant envelope]]))
 
 (defn bell
@@ -51,4 +51,14 @@
   (connect->
     (add (sine pitch) (sine (inc pitch)) (sine (* 2 pitch)))
     (adshr 0.01 0.2 0.2 0.2 0.3)
+    (gain 0.1)))
+
+(defn wah [{:keys [pitch]}]
+  (connect->
+    (sawtooth pitch)
+    (low-pass
+      (connect->
+        (constant (* 4 pitch))
+        (adsr 0.1 0.2 0.4 0.3)) 5)
+    (adsr 0.3 0.5 0.8 0.3)
     (gain 0.1)))

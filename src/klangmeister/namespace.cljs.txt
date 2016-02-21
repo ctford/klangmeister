@@ -19,6 +19,7 @@
       [bell                    ; An imitation bell
        organ                   ; A simple organ synth
        marimba                 ; A simple plucked sound
+       wah
        open-hat closed-hat     ; Percussion
        kick]]
 

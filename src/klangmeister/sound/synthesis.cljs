@@ -77,7 +77,7 @@
 (defn noise [generate-bit!]
   (fn [context at duration]
     (let [sample-rate 44100
-          frame-count (* sample-rate duration)
+          frame-count (* sample-rate (+ duration 1.0)) ; Give a bit of extra for the release.
           buffer (.createBuffer context 1 frame-count sample-rate)
           data (.getChannelData buffer 0)]
       (doseq [i (range sample-rate)]
@@ -103,7 +103,7 @@
       (-> .-frequency (plug freq context at duration))
       (-> .-type (set! type))
       (.start at)
-      (.stop (+ at duration 1.0)))))
+      (.stop (+ at duration 1.0))))) ; Give a bit extra for the release
 
 (def sine (partial oscillator "sine"))
 (def sawtooth (partial oscillator "sawtooth"))
