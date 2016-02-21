@@ -91,6 +91,6 @@ button {
 }
 
 .CodeMirror-scroll {
-  max-height: 650px;
+  max-height: 900px;
   height: auto;
 }

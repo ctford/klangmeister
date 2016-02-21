@@ -36,7 +36,7 @@
         (triangle (connect-> (constant pitch) (envelope [0 1] [0.5 0.5]))))
       (low-pass (* 3 pitch))
       (percussive 0.01 decay)
-      (gain 0.2))))
+      (gain 0.15))))
 
 (def kick (tom 50 0.2))
 
@@ -45,7 +45,7 @@
     (add (sine (* 0.5 (:pitch note))) (triangle (:pitch note)))
     (low-pass (* 4 (:pitch note)) (connect-> (sine 3) (gain 3)))
     (adsr 0.1 0 1 0.3)
-    (gain 0.1)))
+    (gain 0.2)))
 
 (defn marimba [{:keys [pitch]}]
   (connect->
@@ -61,4 +61,4 @@
         (constant (* 4 pitch))
         (adsr 0.1 0.2 0.4 0.3)) 5)
     (adsr 0.3 0.5 0.8 0.3)
-    (gain 0.1)))
+    (gain 0.3)))
