@@ -30,5 +30,5 @@
 
     [leipzig.melody :refer
       [phrase then times with  ; Melody makers
-       rhythm
+       rhythm having
        all bpm tempo where]])) ; Melody modifiers
