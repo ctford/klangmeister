@@ -20,10 +20,10 @@
   (fn [_]
     (connect->
       white-noise
-      (percussive 0.01 0.4)
+      (percussive 0.01 decay)
       (high-pass 3000)
       (low-pass 4500)
-      (gain 0.2))))
+      (gain 0.1))))
 
 (def open-hat (high-hat 0.4))
 (def closed-hat (high-hat 0.05))
@@ -32,13 +32,13 @@
   (fn [_]
     (connect->
       (add
-        (sine pitch)
-        (triangle (connect-> (constant pitch) (envelope [0 1] [0.5 0.5]))))
-      (low-pass (* 3 pitch))
-      (percussive 0.01 decay)
-      (gain 0.15))))
+        (sawtooth pitch)
+        (sawtooth (connect-> (constant pitch) (envelope [0 1] [0.5 0.5]))))
+      (low-pass (* 4 pitch))
+      (percussive 0.005 decay)
+      (gain 0.3))))
 
-(def kick (tom 50 0.2))
+(def kick (tom 55 0.1))
 
 (defn organ [note]
   (connect->

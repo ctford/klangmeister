@@ -20,8 +20,8 @@
        organ                   ; A simple organ synth
        marimba                 ; A simple plucked sound
        wah
-       open-hat closed-hat     ; Percussion
-       kick]]
+       high-hat open-hat
+       closed-hat tom kick]]   ; Percussion
 
     [leipzig.scale :refer
       [A B C D E F G           ; Keys
