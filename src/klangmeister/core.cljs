@@ -45,7 +45,12 @@
   (let [handle! (framework/handler-for state-atom)]
     [view/music handle! state-atom]))
 
-(secretary/defroute "/klangmeister/" []
+(secretary/defroute "/klangmeister/" [query-params]
+  (session/put! :gist (:gist query-params))
+  (session/put! :current-page #'home-page))
+
+(secretary/defroute "/klangmeister/index.html" [query-params]
+  (session/put! :gist (:gist query-params))
   (session/put! :current-page #'home-page))
 
 (secretary/defroute "/klangmeister/synthesis" []
@@ -65,7 +70,9 @@
 
 (defn mount-root []
   (let [handle! (framework/handler-for state-atom)]
-    (handle! (action/->Refresh (macro/text "src/klangmeister/live.cljs.txt") :main))
+    (if-let [gist (session/get :gist)]
+      (handle! (action/->Import gist :main))
+      (handle! (action/->Refresh (macro/text "src/klangmeister/live.cljs.txt") :main)))
     (reagent/render
       [current-page]
       js/document.body)))

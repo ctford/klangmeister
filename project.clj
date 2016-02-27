@@ -6,6 +6,7 @@
                  [reagent-utils "0.1.7"]
                  [quil "2.3.0"]
                  [secretary "1.2.3"]
+                 [cljs-ajax "0.5.3"]
                  [venantius/accountant "0.1.6"]
                  [org.clojure/clojurescript "1.7.170"]
                  [org.clojure/tools.namespace "0.3.0-alpha3"]

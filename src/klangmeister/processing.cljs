@@ -5,6 +5,7 @@
     [klangmeister.sound.instruments :as instrument]
     [klangmeister.actions :as action]
     [klangmeister.framework :as framework]
+    [ajax.core :as ajax]
     [leipzig.melody :as melody]))
 
 (extend-protocol framework/Action
@@ -16,6 +17,14 @@
           (assoc-in [pane :error] error)
           (assoc-in [pane :text] expr-str)
           (assoc-in [pane :value] value))))
+
+  action/Import
+  (process [{gist :gist pane :target} handle! state]
+    (let [refresh #(handle! (action/->Refresh % pane))
+          handler #(-> % :files vals first :content refresh)
+          uri (str "https://api.github.com/gists/" gist)]
+      (ajax/GET uri {:handler handler :response-format :json :keywords? true})
+      state))
 
   action/Stop
   (process [{pane :target} handle! state]
