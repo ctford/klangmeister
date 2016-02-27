@@ -69,10 +69,9 @@
   [(session/get :current-page)])
 
 (defn mount-root []
-  (let [handle! (framework/handler-for state-atom)]
-    (if-let [gist (session/get :gist)]
-      (handle! (action/->Import gist :main))
-      (handle! (action/->Refresh (macro/text "src/klangmeister/live.cljs.txt") :main)))
+  (let [handle! (framework/handler-for state-atom)
+        default (or (session/get :gist) "4b04fd7f2d361c6604c4")]
+    (handle! (action/->Import default :main))
     (reagent/render
       [current-page]
       js/document.body)))
