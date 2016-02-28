@@ -1,3 +1,2 @@
-sudo: false
 language: clojure
 script: lein cljsbuild once prod
