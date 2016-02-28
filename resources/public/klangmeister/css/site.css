@@ -78,12 +78,26 @@ button {
   border-color: #D33682;
 }
 
-.cheatsheet {
-  padding-top: 0.5cm;
+.reference {
+  text-align: left;
+  width: 90%;
+  background: #EEE;
+  border: 1px solid black;
 }
 
-.cheatsheet .code {
+.reference th, td {
+  border-bottom: 1px solid #DDD;
+}
+
+.reference .name {
   font-family: monospace;
+  width: 9em;
+}
+
+.reference .usage {
+  font-family: monospace;
+  width: 15em;
+  white-space: pre-wrap;
 }
 
 .CodeMirror {
