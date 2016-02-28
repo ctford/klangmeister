@@ -17,4 +17,4 @@
    [controls handle! @state-atom]
    [:div
     [:p "Now we know how to make both instruments and melodies, we can create whole songs. To make the experience more interactive, lets graph the notes we're playing, and loop them over and over again as we edit the synthesiser and the composition."] 
-    [:p "If you find anything confusing, refer back to the " [:a {:href "/klangmeister/synthesis"} "synthesis tutorial"] " or the " [:a {:href "/klangmeister/composition"} " composition tutorial"] "."]]])
+    [:p "If you find anything confusing, refer back to the " [:a {:href "/klangmeister/synthesis"} "synthesis tutorial"] " or the " [:a {:href "/klangmeister/composition"} " composition tutorial"] ". There is a list of available functions in the " [:a {:href "/klangmeister/reference"} "reference"] "."]]])
