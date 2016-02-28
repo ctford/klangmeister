@@ -13,14 +13,16 @@
           :alt "Fork me on GitHub"
           :data-canonical-src "https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"}]])
 
+(defn link [href title] [:a {:href href} title])
+
 (defn tabs []
   [:div {:id "menu"}
    [:ul
-    [:li [:a {:href "synthesis"} "Synthesis"]]
-    [:li [:a {:href "composition"} "Composition"]]
-    [:li [:a {:href "performance"} "Performance"]]
-    [:li [:a {:href "reference"} "Reference"]]
-    [:li [:a {:href "about"} "About"]]]])
+    [:li (link "synthesis" "Synthesis")]
+    [:li (link "composition" "Composition")]
+    [:li (link "performance" "Performance")]
+    [:li (link "reference" "Reference")]
+    [:li (link "about" "About")]]])
 
 (defn frame [content]
   [:div
