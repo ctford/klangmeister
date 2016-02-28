@@ -54,7 +54,8 @@ a {
   padding-left: 0;
 }
 
-#menu li a {
+#menu li {
+  color: #D33682;
   padding: 0.2em 1em;
 }
 

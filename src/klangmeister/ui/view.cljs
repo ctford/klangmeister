@@ -13,35 +13,38 @@
           :alt "Fork me on GitHub"
           :data-canonical-src "https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"}]])
 
-(defn link [href title] [:a {:href href} title])
+(defn link [current this href title]
+  (if (= current this)
+    title
+    [:a {:href href} title]))
 
-(defn tabs []
+(defn tabs [current]
   [:div {:id "menu"}
    [:ul
-    [:li (link "synthesis" "Synthesis")]
-    [:li (link "composition" "Composition")]
-    [:li (link "performance" "Performance")]
-    [:li (link "reference" "Reference")]
-    [:li (link "about" "About")]]])
+    [:li (link current :synthesis "/klangmeister/synthesis" "Synthesis")]
+    [:li (link current :composition "/klangmeister/composition" "Composition")]
+    [:li (link current :performance "/klangmeister/performance" "Performance")]
+    [:li (link current :reference "/klangmeister/reference" "Reference")]
+    [:li (link current :about "/klangmeister/about" "About")]]])
 
-(defn frame [content]
+(defn frame [current content]
   [:div
    [:h1 [:a {:href "/klangmeister/"} "Klangmeister"]]
-   [tabs]
+   [tabs current]
    content
    [ribbon]])
 
 (defn performance [handle! state-atom]
-  (frame [jam/render handle! state-atom]))
+  (frame :performance [jam/render handle! state-atom]))
 
 (defn synthesis [handle! state-atom]
-  (frame [synthesis/render handle! state-atom]))
+  (frame :synthesis [synthesis/render handle! state-atom]))
 
 (defn about [handle! state-atom]
-  (frame [about/render handle! state-atom]))
+  (frame :about [about/render handle! state-atom]))
 
 (defn composition [handle! state-atom]
-  (frame [composition/render handle! state-atom]))
+  (frame :composition [composition/render handle! state-atom]))
 
 (defn reference [handle! state-atom]
-  (frame [reference/render handle! state-atom]))
+  (frame :reference [reference/render handle! state-atom]))
