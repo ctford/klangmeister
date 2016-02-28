@@ -80,4 +80,11 @@
      (where :pitch (comp D minor)))"]
            ["tempo" "Puts a melody in a tempo at a particular beats-per-minute."
 "(->> piece
-     (tempo (bpm 120))"]])])
+     (tempo (bpm 120))"]])
+    [:h2 "Instruments"]
+    [:p "These instruments are available by default."]
+   (table [["bell" "An approximate bell sound." ""]
+           ["kick" "A kick drum." ""]
+           ["open-hat, closed-hat" "High hat sounds." ""]
+           ["marimba" "A pure, percussive sound like a marimba." ""]
+           ["wah" "A synth with a wah sound made by a filter." ""]])])
