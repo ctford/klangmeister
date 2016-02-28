@@ -17,4 +17,4 @@
    [editor/render :main (-> @state-atom :main :text) handle! @state-atom]
    [controls handle! @state-atom]
    [:div
-    [:p "If you find anything confusing, refer back to the " [:a {:href "/synthesis"} "synthesis tutorial"] " or the " [:a {:href "/music"} " music tutorial"] "."]]])
+    [:p "If you find anything confusing, refer back to the " [:a {:href "/klangmeister/synthesis"} "synthesis tutorial"] " or the " [:a {:href "/klangmeister/music"} " music tutorial"] "."]]])

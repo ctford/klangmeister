@@ -22,7 +22,7 @@
 
 (defn frame [content]
   [:div
-   [:h1 [:a {:href "/klangmeister"} "Klangmeister"]]
+   [:h1 [:a {:href "/klangmeister/"} "Klangmeister"]]
    [tabs]
    content
    [ribbon]])

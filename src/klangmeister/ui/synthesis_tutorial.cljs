@@ -79,4 +79,4 @@
    [render-one :filters handle! state-atom]
    [render-one :sustain handle! state-atom]
    [:div
-    [:p "Now that you know how to design synthesisers, try " [:a {:href "/music"} "composing melodies"] "."]]])
+    [:p "Now that you know how to design synthesisers, try " [:a {:href "/klangmeister/music"} "composing melodies"] "."]]])
