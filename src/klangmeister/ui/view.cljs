@@ -1,7 +1,7 @@
 (ns klangmeister.ui.view
   (:require
     [klangmeister.ui.jam :as jam]
-    [klangmeister.ui.music-tutorial :as music]
+    [klangmeister.ui.composition :as composition]
     [klangmeister.ui.about :as about]
     [klangmeister.ui.synthesis-tutorial :as synthesis]))
 
@@ -16,7 +16,7 @@
   [:div {:id "menu"}
    [:ul
     [:li [:a {:href "synthesis"} "Synthesis"]]
-    [:li [:a {:href "music"} "Music"]]
+    [:li [:a {:href "composition"} "Composition"]]
     [:li [:a {:href "performance"} "Performance"]]
     [:li [:a {:href "about"} "About"]]]])
 
@@ -36,5 +36,5 @@
 (defn about [handle! state-atom]
   (frame [about/render handle! state-atom]))
 
-(defn music [handle! state-atom]
-  (frame [music/render handle! state-atom]))
+(defn composition [handle! state-atom]
+  (frame [composition/render handle! state-atom]))

@@ -41,9 +41,9 @@
 
 (def home-page about-page)
 
-(defn music-page []
+(defn composition-page []
   (let [handle! (framework/handler-for state-atom)]
-    [view/music handle! state-atom]))
+    [view/composition handle! state-atom]))
 
 (secretary/defroute "/klangmeister/" [query-params]
   (session/put! :gist (:gist query-params))
@@ -59,8 +59,8 @@
 (secretary/defroute "/klangmeister/performance" []
   (session/put! :current-page #'performance-page))
 
-(secretary/defroute "/klangmeister/music" []
-  (session/put! :current-page #'music-page))
+(secretary/defroute "/klangmeister/composition" []
+  (session/put! :current-page #'composition-page))
 
 (secretary/defroute "/klangmeister/about" []
   (session/put! :current-page #'about-page))
