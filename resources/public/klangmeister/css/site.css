@@ -44,7 +44,7 @@ a {
   white-space: nowrap;
 }
 
-@media (min-width: 40em) {
+@media (min-width: 45em) {
   #menu li {
     display: inline;
   }

@@ -39,6 +39,10 @@
   (let [handle! (framework/handler-for state-atom)]
     [view/about handle! state-atom]))
 
+(defn reference-page []
+  (let [handle! (framework/handler-for state-atom)]
+    [view/reference handle! state-atom]))
+
 (def home-page about-page)
 
 (defn composition-page []
@@ -61,6 +65,9 @@
 
 (secretary/defroute "/klangmeister/composition" []
   (session/put! :current-page #'composition-page))
+
+(secretary/defroute "/klangmeister/reference" []
+  (session/put! :current-page #'reference-page))
 
 (secretary/defroute "/klangmeister/about" []
   (session/put! :current-page #'about-page))

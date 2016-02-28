@@ -2,6 +2,7 @@
   (:require
     [klangmeister.ui.jam :as jam]
     [klangmeister.ui.composition :as composition]
+    [klangmeister.ui.reference :as reference]
     [klangmeister.ui.about :as about]
     [klangmeister.ui.synthesis-tutorial :as synthesis]))
 
@@ -18,6 +19,7 @@
     [:li [:a {:href "synthesis"} "Synthesis"]]
     [:li [:a {:href "composition"} "Composition"]]
     [:li [:a {:href "performance"} "Performance"]]
+    [:li [:a {:href "reference"} "Reference"]]
     [:li [:a {:href "about"} "About"]]]])
 
 (defn frame [content]
@@ -38,3 +40,6 @@
 
 (defn composition [handle! state-atom]
   (frame [composition/render handle! state-atom]))
+
+(defn reference [handle! state-atom]
+  (frame [reference/render handle! state-atom]))
