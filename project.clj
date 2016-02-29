@@ -16,7 +16,7 @@
 
   :min-lein-version "2.5.0"
 
-  :plugins [[lein-cljsbuild "1.1.1"]
+  :plugins [[lein-cljsbuild "1.1.2"]
             [lein-figwheel "0.5.0-2"]]
 
   :clean-targets ^{:protect false} ["resources/public/klangmeister/js/compiled"
