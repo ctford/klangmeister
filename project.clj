@@ -10,7 +10,7 @@
                  [venantius/accountant "0.1.6"]
                  [org.clojure/clojurescript "1.7.228"]
                  [org.clojure/tools.namespace "0.3.0-alpha3"]
-                 [org.clojure/tools.reader "1.0.0-alpha2"]
+                 [org.clojure/tools.reader "1.0.0-alpha3"]
                  [org.clojure/java.classpath "0.2.3"]
                  [leipzig "0.10.0-SNAPSHOT"]]
 
