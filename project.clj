@@ -14,6 +14,8 @@
                  [org.clojure/java.classpath "0.2.3"]
                  [leipzig "0.10.0-SNAPSHOT"]]
 
+  :min-lein-version "2.5.0"
+
   :plugins [[lein-cljsbuild "1.1.1"]
             [lein-figwheel "0.5.0-2"]]
 
