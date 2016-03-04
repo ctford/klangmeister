@@ -17,13 +17,17 @@
   :min-lein-version "2.5.0"
 
   :plugins [[lein-cljsbuild "1.1.2"]
-            [lein-figwheel "0.5.0-2"]]
+            [lein-figwheel "0.5.0-2"]
+            [lein-doo "0.1.6"]]
 
   :clean-targets ^{:protect false} ["resources/public/klangmeister/js/compiled"
-                                    "target"]
+                                    "target"
+                                    "out"]
 
   :source-paths ["src"]
   :resource-paths ["resources" "target/cljsbuild"]
+
+  :doo {:verbose true :debug true}
 
   :cljsbuild {:builds [{:id "dev"
                         :source-paths ["src"]
@@ -42,6 +46,11 @@
                                    :optimize-constants true
                                    :static-fns true
                                    :output-to "resources/public/klangmeister/js/compiled/app.js"
-                                   :asset-path "js/compiled"}}]}
-
+                                   :asset-path "js/compiled"}}
+                       {:id "test"
+                        :source-paths ["src" "test"]
+                        :compiler {:output-to "out/testable.js"
+                                   :output-dir "out"
+                                   :optimizations :simple
+                                   :main klangmeister.runner}}]}
   :figwheel {:css-dirs ["resources/public/klangmeister/css"]})
