@@ -19,7 +19,10 @@
 
 (defn empty-state []
   (reagent/atom
-    {:main nothing
+    {:audiocontext (if js/window.AudioContext.
+                     (js/window.AudioContext.)
+                     (js/window.webkitAudioContext.))
+     :main nothing
      :synth nothing}))
 
 (defonce state-atom (empty-state))

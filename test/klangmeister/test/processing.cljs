@@ -1,5 +1,13 @@
 (ns klangmeister.test.processing
-  (:require [cljs.test :refer-macros [deftest is]]))
+  (:require [cljs.test :refer-macros [deftest is]]
+            [klangmeister.processing :as processing]
+            [klangmeister.framework :as framework]
+            [klangmeister.actions :as action]))
 
-(deftest example
-  (is (= 1 1)))
+(def ignore! (constantly nil))
+
+(deftest stopping
+  (is
+    (=
+     (framework/process (action/->Stop :foo) ignore! {:foo {:looping? true}})
+     {:foo {:looping? false}})))

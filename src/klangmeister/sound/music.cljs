@@ -2,14 +2,12 @@
   (:require [leipzig.temperament :as temperament]
             [klangmeister.sound.synthesis :as synthesis]))
 
-(defonce context (if js/window.AudioContext. (js/window.AudioContext.) (js/window.webkitAudioContext.)))
-
-(defn play! [notes]
+(defn play! [audiocontext notes]
   (doseq [{:keys [time duration instrument] :as note} notes]
-    (let [at (+ time (.-currentTime context))
+    (let [at (+ time (.-currentTime audiocontext))
           synth-instance (-> note
                              (update :pitch temperament/equal)
                              (dissoc :time)
                              instrument)
           connected-instance (synthesis/connect synth-instance synthesis/destination)]
-      (connected-instance context at duration))))
+      (connected-instance audiocontext at duration))))
