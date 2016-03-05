@@ -27,8 +27,6 @@
   :source-paths ["src"]
   :resource-paths ["resources" "target/cljsbuild"]
 
-  :doo {:verbose true :debug true}
-
   :cljsbuild {:builds [{:id "dev"
                         :source-paths ["src"]
                         :figwheel true
