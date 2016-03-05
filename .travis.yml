@@ -1,3 +1,2 @@
-sudo: required
 language: clojure
 script: lein doo test once
