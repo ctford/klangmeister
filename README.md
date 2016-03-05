@@ -3,9 +3,9 @@ Klangmeister
 
 A musical scratchpad.
 
-Unfortunately, the TravisCI build is failing, though not reliably.
-
 [![Build Status](https://travis-ci.org/ctford/klangmeister.png)](https://travis-ci.org/ctford/klangmeister)
+
+The TravisCI build has recently intermittently failed for what appears to be resource exhaustion e.g. memory. :-(
 
 Playing
 -------
