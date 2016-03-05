@@ -39,6 +39,7 @@
                        {:id "prod"
                         :source-paths ["src"]
                         :compiler {:main "klangmeister.core"
+                                   :static-fns true
                                    :optimizations :simple
                                    :pretty-print false
                                    :optimize-constants true
