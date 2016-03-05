@@ -43,7 +43,6 @@
                                    :optimizations :simple
                                    :pretty-print false
                                    :optimize-constants true
-                                   :static-fns true
                                    :output-to "resources/public/klangmeister/js/compiled/app.js"
                                    :asset-path "js/compiled"}}
                        {:id "test"
