@@ -49,6 +49,7 @@
                         :source-paths ["src" "test"]
                         :compiler {:output-to "out/testable.js"
                                    :output-dir "out"
+                                   :static-fns true
                                    :optimizations :simple
                                    :main klangmeister.test.runner}}]}
   :figwheel {:css-dirs ["resources/public/klangmeister/css"]})
