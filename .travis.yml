@@ -1,2 +1,2 @@
 language: clojure
-script: lein doo test once
+script: lein doo phantom test once
