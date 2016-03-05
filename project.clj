@@ -50,5 +50,5 @@
                         :compiler {:output-to "out/testable.js"
                                    :output-dir "out"
                                    :optimizations :simple
-                                   :main klangmeister.runner}}]}
+                                   :main klangmeister.test.runner}}]}
   :figwheel {:css-dirs ["resources/public/klangmeister/css"]})

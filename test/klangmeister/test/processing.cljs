@@ -1,4 +1,4 @@
-(ns klangmeister.example
+(ns klangmeister.test.processing
   (:require [cljs.test :refer-macros [deftest is]]))
 
 (deftest example

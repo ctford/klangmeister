@@ -1,6 +1,6 @@
-(ns klangmeister.runner
+(ns klangmeister.test.runner
   (:require [doo.runner :refer-macros [doo-all-tests]]
-            [klangmeister.example :refer []]))
+            [klangmeister.test.processing]))
 
 (enable-console-print!)
 
