@@ -18,9 +18,9 @@
        (framework/process (action/->Stop :foo) ignore! {:foo {:looping? false}})
        {:foo {:looping? false}}))))
 
-(deftest evaluating
+(deftest refreshing
   (testing
     (is
       (=
-       (eval/uate "(inc 7)")
-       {:ns 'klangmeister.live :value 8}))))
+       (framework/process (action/->Refresh "[{:time 0 :duration 1}]" :foo) ignore! {})
+       {:foo {:value [{:time 0 :duration 1}] :text "[{:time 0 :duration 1}]" :error nil}}))))
