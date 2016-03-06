@@ -28,6 +28,10 @@
        flat high low sharp     ; Key modifiers
        major minor]]           ; Scales
 
+    [leipzig.chord :refer
+      [triad seventh ninth     ; Chords
+       inversion root augment]]; Chord modifiers
+
     [leipzig.melody :refer
       [phrase then times with  ; Melody makers
        rhythm having
