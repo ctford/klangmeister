@@ -60,7 +60,7 @@
             [  2   1   2   3   4]))
   (times 2)
   (tempo (bpm 90))
-  (where :pitch (comp C major))) ; How does minor sound different to major?"]})
+  (where :pitch (comp high C major))) ; How does minor sound different to major?"]})
 
 (defn render-one [k handle! state-atom]
   (let [[text code] (steps k)]
