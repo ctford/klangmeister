@@ -27,30 +27,27 @@
 
 (defonce state-atom (empty-state))
 
+(def handle! (framework/handler-for state-atom))
+
 (defn reload! []
   (swap! state-atom identity))
 
 (defn synthesis-page []
-  (let [handle! (framework/handler-for state-atom)]
-    [view/synthesis handle! state-atom]))
+  [view/synthesis handle! state-atom])
 
 (defn performance-page []
-  (let [handle! (framework/handler-for state-atom)]
-    [view/performance handle! state-atom]))
+  [view/performance handle! state-atom])
 
 (defn about-page []
-  (let [handle! (framework/handler-for state-atom)]
-    [view/about handle! state-atom]))
+  [view/about handle! state-atom])
 
 (defn reference-page []
-  (let [handle! (framework/handler-for state-atom)]
-    [view/reference handle! state-atom]))
+  [view/reference handle! state-atom])
 
 (def home-page about-page)
 
 (defn composition-page []
-  (let [handle! (framework/handler-for state-atom)]
-    [view/composition handle! state-atom]))
+  [view/composition handle! state-atom])
 
 (secretary/defroute "/klangmeister/" [query-params]
   (session/put! :gist (:gist query-params))
@@ -79,8 +76,7 @@
   [(session/get :current-page)])
 
 (defn mount-root []
-  (let [handle! (framework/handler-for state-atom)
-        default (or (session/get :gist) "4b04fd7f2d361c6604c4")]
+  (let [default (or (session/get :gist) "4b04fd7f2d361c6604c4")]
     (handle! (action/->Import default :main))
     (reagent/render
       [current-page]
