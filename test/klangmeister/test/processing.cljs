@@ -26,4 +26,10 @@
        {:foo {:value [{:time 0 :pitch 69 :duration 1}] :text "(phrase [1] [69])" :error nil}}))
     (is
       ((comp :error :foo)
-       (framework/process (action/->Refresh "(phrase [1] [6" :foo) ignore! {})))))
+       (framework/process (action/->Refresh "(phrase [1] [6" :foo) ignore! {})))
+    (is
+      (=
+       (-> (framework/process (action/->Refresh "(phrase [1] [6" :foo) ignore! {:foo {:value [{:time 0 :pitch 69 :duration 1}]}})
+           :foo
+           :value)
+       [{:time 0 :pitch 69 :duration 1}]))))
