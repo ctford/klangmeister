@@ -22,5 +22,5 @@
   (testing
     (is
       (=
-       (framework/process (action/->Refresh "[{:time 0 :duration 1}]" :foo) ignore! {})
-       {:foo {:value [{:time 0 :duration 1}] :text "[{:time 0 :duration 1}]" :error nil}}))))
+       (framework/process (action/->Refresh "(phrase [1] [69])" :foo) ignore! {})
+       {:foo {:value [{:time 0 :pitch 69 :duration 1}] :text "(phrase [1] [69])" :error nil}}))))
