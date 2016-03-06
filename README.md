@@ -5,7 +5,7 @@ A musical scratchpad.
 
 [![Build Status](https://travis-ci.org/ctford/klangmeister.png)](https://travis-ci.org/ctford/klangmeister)
 
-The TravisCI build has recently intermittently failed for what appears to be resource exhaustion e.g. memory. :-(
+The TravisCI build has recently intermittently failed for what appears to be resource exhaustion e.g. memory. The solution appears to be to require sudo, perhaps because it causes the build to run on infrastructure with different resource limits. 
 
 Playing
 -------
