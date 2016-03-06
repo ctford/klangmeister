@@ -11,19 +11,11 @@
   (:require-macros
     [klangmeister.compile.macros :as macro]))
 
-(def nothing
-  {:looping? false
-   :error nil
-   :text ""
-   :value []})
-
 (defn empty-state []
   (reagent/atom
     {:audiocontext (if js/window.AudioContext.
                      (js/window.AudioContext.)
-                     (js/window.webkitAudioContext.))
-     :main nothing
-     :synth nothing}))
+                     (js/window.webkitAudioContext.))}))
 
 (defonce state-atom (empty-state))
 
