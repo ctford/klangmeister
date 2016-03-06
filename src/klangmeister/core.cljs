@@ -32,48 +32,31 @@
 (defn reload! []
   (swap! state-atom identity))
 
-(defn synthesis-page []
-  [view/synthesis handle! state-atom])
-
-(defn performance-page []
-  [view/performance handle! state-atom])
-
-(defn about-page []
-  [view/about handle! state-atom])
-
-(defn reference-page []
-  [view/reference handle! state-atom])
-
-(def home-page about-page)
-
-(defn composition-page []
-  [view/composition handle! state-atom])
-
 (secretary/defroute "/klangmeister/" [query-params]
   (session/put! :gist (:gist query-params))
-  (session/put! :current-page #'home-page))
+  (session/put! :current-page view/about))
 
 (secretary/defroute "/klangmeister/index.html" [query-params]
   (session/put! :gist (:gist query-params))
-  (session/put! :current-page #'home-page))
+  (session/put! :current-page view/about))
 
 (secretary/defroute "/klangmeister/synthesis" []
-  (session/put! :current-page #'synthesis-page))
+  (session/put! :current-page view/synthesis))
 
 (secretary/defroute "/klangmeister/performance" []
-  (session/put! :current-page #'performance-page))
+  (session/put! :current-page view/performance))
 
 (secretary/defroute "/klangmeister/composition" []
-  (session/put! :current-page #'composition-page))
+  (session/put! :current-page view/composition))
 
 (secretary/defroute "/klangmeister/reference" []
-  (session/put! :current-page #'reference-page))
+  (session/put! :current-page view/reference))
 
 (secretary/defroute "/klangmeister/about" []
-  (session/put! :current-page #'about-page))
+  (session/put! :current-page view/about))
 
 (defn current-page []
-  [(session/get :current-page)])
+  [(session/get :current-page) handle! state-atom])
 
 (defn mount-root []
   (let [default (or (session/get :gist) "4b04fd7f2d361c6604c4")]
@@ -83,7 +66,6 @@
       js/document.body)))
 
 (defn main []
-  (session/put! :current-page #'home-page)
   (accountant/configure-navigation!)
   (accountant/dispatch-current!)
   (mount-root))
