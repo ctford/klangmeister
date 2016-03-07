@@ -22,28 +22,17 @@
 (defn reload! []
   (swap! state-atom identity))
 
-(secretary/defroute "/klangmeister/" [query-params]
-  (session/put! :gist (:gist query-params))
-  (session/put! :current-page view/about))
+(secretary/defroute "/klangmeister/"            [query-params] (session/put! :gist (:gist query-params))
+                                                               (session/put! :current-page view/about))
 
-(secretary/defroute "/klangmeister/index.html" [query-params]
-  (session/put! :gist (:gist query-params))
-  (session/put! :current-page view/about))
+(secretary/defroute "/klangmeister/index.html"  [query-params] (session/put! :gist (:gist query-params))
+                                                               (session/put! :current-page view/about))
 
-(secretary/defroute "/klangmeister/synthesis" []
-  (session/put! :current-page view/synthesis))
-
-(secretary/defroute "/klangmeister/performance" []
-  (session/put! :current-page view/performance))
-
-(secretary/defroute "/klangmeister/composition" []
-  (session/put! :current-page view/composition))
-
-(secretary/defroute "/klangmeister/reference" []
-  (session/put! :current-page view/reference))
-
-(secretary/defroute "/klangmeister/about" []
-  (session/put! :current-page view/about))
+(secretary/defroute "/klangmeister/synthesis"   [] (session/put! :current-page view/synthesis))
+(secretary/defroute "/klangmeister/performance" [] (session/put! :current-page view/performance))
+(secretary/defroute "/klangmeister/composition" [] (session/put! :current-page view/composition))
+(secretary/defroute "/klangmeister/reference"   [] (session/put! :current-page view/reference))
+(secretary/defroute "/klangmeister/about"       [] (session/put! :current-page view/about))
 
 (defn current-page []
   [(session/get :current-page) handle! state-atom])
