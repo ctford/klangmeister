@@ -16,7 +16,9 @@
                          [1.0 0.6 0.4 0.3 0.2])      ; Higher harmonics are weaker.
            (apply add))))
 
-(defn high-hat [decay]
+(defn high-hat
+  "An imitation high-hat, made with white noise."
+  [decay]
   (fn [_]
     (connect->
       white-noise
