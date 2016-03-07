@@ -7,9 +7,7 @@
     [reagent.core :as reagent]
     [reagent.session :as session]
     [accountant.core :as accountant]
-    [secretary.core :as secretary :include-macros true])
-  (:require-macros
-    [klangmeister.compile.macros :as macro]))
+    [secretary.core :as secretary :include-macros true]))
 
 (defn empty-state []
   (reagent/atom
