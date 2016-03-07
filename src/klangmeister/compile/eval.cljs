@@ -53,11 +53,9 @@
 (def dependencies
   "A bundle of dependencies."
   (macro/sources
-    leipzig.canon
     leipzig.chord
     leipzig.melody
     leipzig.scale
-    leipzig.temperament
     klangmeister.sound.synthesis
     klangmeister.sound.instruments))
 
