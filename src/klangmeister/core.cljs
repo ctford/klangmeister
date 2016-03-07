@@ -19,9 +19,6 @@
 
 (def handle! (framework/handler-for state-atom))
 
-(defn reload! []
-  (swap! state-atom identity))
-
 (secretary/defroute "/klangmeister/"            [query-params] (session/put! :gist (:gist query-params))
                                                                (session/put! :current-page view/about))
 
