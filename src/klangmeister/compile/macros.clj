@@ -28,8 +28,12 @@
          (filter relevant?)
          collate)))
 
-(defmacro sources [& names]
+(defmacro sources
+  "Make a map of namespace name to source, looking for files on the classpath and in jars."
+  [& names]
   (sources* names))
 
-(defmacro literally [expr]
+(defmacro literally
+  "Convert an expression into a string. Useful to allow syntax highlighting of inline CLJS."
+  [expr]
   (str expr))

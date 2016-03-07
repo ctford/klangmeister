@@ -2,7 +2,9 @@
   (:require [leipzig.temperament :as temperament]
             [klangmeister.sound.synthesis :as synthesis]))
 
-(defn play! [audiocontext notes]
+(defn play!
+  "Take a sequence of notes and play them in an audiocontext."
+  [audiocontext notes]
   (doseq [{:keys [time duration instrument] :as note} notes]
     (let [at (+ time (.-currentTime audiocontext))
           synth-instance (-> note

@@ -55,16 +55,21 @@
 ; Combinators
 
 (defn connect
+  "Use the output of one node as the input to another."
   [node1 node2]
   (fn [context at duration]
     (let [sink (-> node2 (run-with context at duration))]
       (-> node1 (run-with context at duration) (.connect sink))
       sink)))
 
-(defn connect-> [& nodes]
+(defn connect->
+  "Connect nodes in series."
+  [& nodes]
   (reduce connect nodes))
 
-(defn add [& nodes]
+(defn add
+  "Add together nodes by connecting them all to the same gain."
+  [& nodes]
   (fn [context at duration]
     (let [sink (-> (gain 1.0) (run-with context at duration))]
       (doseq [node nodes]
@@ -74,7 +79,9 @@
 
 ; Noise
 
-(defn noise [generate-bit!]
+(defn noise
+  "Make noise according to the supplied strategy for creating bits."
+  [generate-bit!]
   (fn [context at duration]
     (let [sample-rate 44100
           frame-count (* sample-rate (+ duration 1.0)) ; Give a bit of extra for the release.
@@ -90,7 +97,9 @@
   (let [white #(-> (js/Math.random) (* 2.0) (- 1.0))]
     (noise white)))
 
-(defn constant [x]
+(defn constant
+  "Make a constant value by creating noise with a fixed value."
+  [x]
   (noise (constantly x)))
 
 ; Oscillators
