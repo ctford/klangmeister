@@ -31,5 +31,5 @@
 (defmacro sources [& names]
   (sources* names))
 
-(defmacro text [filename]
-  (slurp filename))
+(defmacro literally [expr]
+  (str expr))
