@@ -151,3 +151,26 @@
     (let [maximum 5]
       (doto (.createDelay context maximum)
         (-> .-delayTime (plug time context at duration))))))
+
+; FIXME: Unify with noise.
+(defn convolver
+  [generate-bit!]
+  (fn [context at duration]
+    (let [sample-rate 44100
+          frame-count (* sample-rate (+ duration 1.0)) ; Give a bit of extra for the release.
+          buffer (.createBuffer context 1 frame-count sample-rate)
+          data (.getChannelData buffer 0)]
+      (doseq [i (range sample-rate)]
+        (aset data i (generate-bit! i)))
+      (doto (.createConvolver context)
+        (-> .-buffer (set! buffer))))))
+
+(def reverb
+  (let [duration 5
+        decay 3
+        sample-rate 44100
+        length (* sample-rate (+ duration 1.0))
+        logarithmic-decay (fn [i]
+                            (* (-> i (js/Math.random) (* 2.0) (- 1.0))
+                               (Math/pow (- 1 (/ i length)) decay)))]
+    (convolver logarithmic-decay)))

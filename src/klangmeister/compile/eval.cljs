@@ -20,7 +20,7 @@
           adsr gain percussive    ; Signal shapers
           adshr envelope
 
-          stereo-panner           ; Effects
+          stereo-panner reverb    ; Effects
           delay-line]]
 
         [klangmeister.sound.instruments :refer
