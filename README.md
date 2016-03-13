@@ -14,6 +14,27 @@ See it in action [here](http://ctford.github.io/klangmeister/). I've been develo
 
 Edit the code and see and hear your changes.
 
+Clojurescript
+-------------
+
+Klangmeister uses bootstrapped Clojurescript compiled in the browser, so any valid Clojurescript is usable in defining music. One exception to this is importing namespaces. Because everything is evaluated in the browser, only namespaces that Klangmeister exposes can be used - you can't use your own.
+
+Bear in mind that the synthesis functions aren't actually side effecting - they just return a synthesiser definition, so if you create two synthesisers in the body of a function, only the one you return will do anything. Same goes for the music - it just returns a note data structure.
+
+Overtone
+--------
+
+Klangmeister is not built on [Overtone](https://overtone.github.io/), though it is heavily influenced by it.
+
+Overtone is a Clojure API for the Supercollider synthesis server. Klangmeister uses the Web Audio API provided by browsers. This has different trade-offs. A good thing is that you can use ordinary Clojurescript at runtime, whereas Overtone can't as it needs to define its synthdefs in advance. A bad thing is that the browser isn't as tuned for high performance synthesis as Supercollider is, so Klangmeister may not be able to match the industrial strength synthesis that Overtone can.
+
+Leipzig
+-------
+
+[Leipzig](https://github.com/ctford/leipzig) is a music theory library that I wrote to make it easier to compose melodies and use keys/chords etc. Klangmeister uses Leipzig for all of its music composition.
+
+Anything that Leipzig offers can be used in Klangmeister, with the exception of Leipzig's `live` namespace, which provides features like `jam` that are built on top of Overtone.
+
 Building
 --------
 
