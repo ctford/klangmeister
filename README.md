@@ -35,6 +35,10 @@ Leipzig
 
 Anything that Leipzig offers can be used in Klangmeister, with the exception of Leipzig's `live` namespace, which provides features like `jam` that are built on top of Overtone.
 
+[Documentation for Leipzig](http://ctford.github.io/leipzig/) is also available. The only difference with how Leipzig works in
+Klangmeister is that notes have an `:instrument` key, rather than relying on the `play-note` multimethod as with Overtone Leipzig
+examples.
+
 Building
 --------
 
@@ -54,6 +58,8 @@ There are many other excellent live-coding platforms, like [Sonic Pi](http://son
 
 References
 ----------
-Klangmeister is based on a talk called [Functional Composition](https://www.youtube.com/watch?v=Mfsnlbd-4xQ) and a music theory library called [Leipzig](https://github.com/ctford/leipzig).
+Klangmeister is based on a talk called [Functional Composition](https://www.youtube.com/watch?v=Mfsnlbd-4xQ).
 
-It is built on [Clojurescript](https://github.com/clojure/clojurescript) and the [Web Audio API](https://www.w3.org/TR/webaudio/).
+It is built with [Clojurescript](https://github.com/clojure/clojurescript), the [Web Audio API](https://www.w3.org/TR/webaudio/),
+the [React](https://facebook.github.io/react/) web framework [Reagent](https://github.com/reagent-project/reagent)
+and the music theory library [Leipzig](https://github.com/ctford/leipzig).
