@@ -46,6 +46,8 @@ Run `lein figwheel` for a hot-reloading development mode, or `lein cljsbuild onc
 
 Then browse to `resources/klangmeister/index.html`.
 
+To run the unit tests, run `lein doo phantom test once`.
+
 Goals
 -----
 My aims for Klangmeister are:
