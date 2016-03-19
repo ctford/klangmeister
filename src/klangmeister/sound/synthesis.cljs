@@ -180,7 +180,7 @@
         (doto (.createConvolver context)
           (-> .-buffer (set! buffer)))))))
 
-(def reverb
+(def wet
   (let [duration 5
         decay 3
         sample-rate 44100
@@ -189,3 +189,13 @@
                             (* (-> i (js/Math.random) (* 2.0) (- 1.0))
                                (Math/pow (- 1 (/ i length)) decay)))]
     (convolver logarithmic-decay)))
+
+(def reverb
+  (fn [context at duration]
+    (let [{upstream-input :input upstream-output :output} (-> (gain 1.0) (run-with context at duration))
+          {downstream-input :input downstream-output :output} (-> (gain 1.0) (run-with context at duration))
+          {wet-input :input wet-output :output} (-> wet (run-with context at duration))]
+      (-> upstream-output (.connect wet-input))
+      (-> wet-output (.connect downstream-input))
+      (-> upstream-output (.connect downstream-input))
+      (section upstream-input downstream-output))))
