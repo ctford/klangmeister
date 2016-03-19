@@ -1,25 +1,31 @@
 (ns klangmeister.sound.synthesis)
 
+; A synth is a function that returns a section.
+(defn section
+  ([input output] {:input input :output output})
+  ([singleton] (section singleton singleton)))
+
 ; Plumbing
 
 (defn run-with
-  "Convert a node (actually a reader fn) into a concrete audio node by supplying context and timing."
-  [node context at duration]
-  (node context at duration))
+  "Convert a synth (actually a reader fn) into a concrete section by supplying context and timing."
+  [synth context at duration]
+  (synth context at duration))
 
 (defn destination [context at duration]
-  (.-destination context))
+  (section (.-destination context)))
 
 (defn plug [param input context at duration]
-  "Plug an input into an audio parameter, accepting both numbers and nodes."
+  "Plug an input into an audio parameter, accepting both numbers and synths."
   (if (number? input)
     (.setValueAtTime param input at)
-    (-> input (run-with context at duration) (.connect param))))
+    (-> input (run-with context at duration) :output (.connect param))))
 
 (defn gain [level]
   (fn [context at duration]
-    (doto (.createGain context)
-      (-> .-gain (plug level context at duration)))))
+    (section
+      (doto (.createGain context)
+        (-> .-gain (plug level context at duration))))))
 
 
 ; Envelopes
@@ -36,7 +42,7 @@
           (+ dx x))
         at
         corners)
-      audio-node)))
+      (section audio-node))))
 
 (defn adshr [attack decay sustain hold release]
   (envelope [attack 1.0] [decay sustain] [hold sustain] [release 0]))
@@ -55,26 +61,28 @@
 ; Combinators
 
 (defn connect
-  "Use the output of one node as the input to another."
-  [node1 node2]
+  "Use the output of one synth as the input to another."
+  [upstream-synth downstream-synth]
   (fn [context at duration]
-    (let [sink (-> node2 (run-with context at duration))]
-      (-> node1 (run-with context at duration) (.connect sink))
-      sink)))
+    (let [{downstream-input :input downstream-output :output} (-> downstream-synth (run-with context at duration))
+          {upstream-input :input upstream-output :output} (-> upstream-synth (run-with context at duration))]
+      (-> upstream-output (.connect downstream-input))
+      (section upstream-input downstream-output))))
 
 (defn connect->
-  "Connect nodes in series."
+  "Connect synths in series."
   [& nodes]
   (reduce connect nodes))
 
 (defn add
-  "Add together nodes by connecting them all to the same gain."
-  [& nodes]
+  "Add together synths by connecting them all to the same gain."
+  [& synths]
   (fn [context at duration]
-    (let [sink (-> (gain 1.0) (run-with context at duration))]
-      (doseq [node nodes]
-        (-> node (run-with context at duration) (.connect sink)))
-      sink)))
+    (let [{downstream-input :input downstream-output :output} (-> (gain 1.0) (run-with context at duration))]
+      (doseq [synth synths]
+        (let [{:keys [input output]} (-> synth (run-with context at duration))]
+          (-> output (.connect downstream-input))))
+      (section downstream-input downstream-output))))
 
 
 ; Noise
@@ -89,9 +97,10 @@
           data (.getChannelData buffer 0)]
       (doseq [i (range sample-rate)]
         (aset data i (generate-bit!)))
-      (doto (.createBufferSource context)
-        (-> .-buffer (set! buffer))
-        (.start at)))))
+      (section
+        (doto (.createBufferSource context)
+          (-> .-buffer (set! buffer))
+          (.start at))))))
 
 (def white-noise
   (let [white #(-> (js/Math.random) (* 2.0) (- 1.0))]
@@ -107,12 +116,13 @@
 (defn oscillator
   [type freq]
   (fn [context at duration]
-    (doto (.createOscillator context)
-      (-> .-frequency .-value (set! 0))
-      (-> .-frequency (plug freq context at duration))
-      (-> .-type (set! type))
-      (.start at)
-      (.stop (+ at duration 1.0))))) ; Give a bit extra for the release
+    (section
+      (doto (.createOscillator context)
+        (-> .-frequency .-value (set! 0))
+        (-> .-frequency (plug freq context at duration))
+        (-> .-type (set! type))
+        (.start at)
+        (.stop (+ at duration 1.0)))))) ; Give a bit extra for the release
 
 (def sine (partial oscillator "sine"))
 (def sawtooth (partial oscillator "sawtooth"))
@@ -125,14 +135,16 @@
 (defn biquad-filter
   ([type freq q]
    (fn [context at duration]
-     (doto (-> (biquad-filter type freq) (run-with context at duration))
-       (-> .-Q (plug q context at duration)))))
+     (section
+       (doto (-> (biquad-filter type freq) (run-with context at duration) :output)
+         (-> .-Q (plug q context at duration))))))
   ([type freq]
    (fn [context at duration]
-     (doto (.createBiquadFilter context)
-       (-> .-frequency .-value (set! 0))
-       (-> .-frequency (plug freq context at duration))
-       (-> .-type (set! type))))))
+     (section
+       (doto (.createBiquadFilter context)
+         (-> .-frequency .-value (set! 0))
+         (-> .-frequency (plug freq context at duration))
+         (-> .-type (set! type)))))))
 
 (def low-pass (partial biquad-filter "lowpass"))
 (def high-pass (partial biquad-filter "highpass"))
@@ -142,15 +154,17 @@
 
 (defn stereo-panner [pan]
   (fn [context at duration]
-    (doto (.createStereoPanner context)
-      (-> .-pan (plug pan context at duration)))))
+    (section
+      (doto (.createStereoPanner context)
+        (-> .-pan (plug pan context at duration))))))
 
 (defn delay-line
   [time]
   (fn [context at duration]
     (let [maximum 5]
-      (doto (.createDelay context maximum)
-        (-> .-delayTime (plug time context at duration))))))
+      (section
+        (doto (.createDelay context maximum)
+          (-> .-delayTime (plug time context at duration)))))))
 
 ; FIXME: Unify with noise.
 (defn convolver
@@ -162,8 +176,9 @@
           data (.getChannelData buffer 0)]
       (doseq [i (range sample-rate)]
         (aset data i (generate-bit! i)))
-      (doto (.createConvolver context)
-        (-> .-buffer (set! buffer))))))
+      (section
+        (doto (.createConvolver context)
+          (-> .-buffer (set! buffer)))))))
 
 (def reverb
   (let [duration 5
