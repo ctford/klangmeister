@@ -190,12 +190,14 @@
                                (Math/pow (- 1 (/ i length)) decay)))]
     (convolver logarithmic-decay)))
 
-(def reverb
-  (fn [context at duration]
-    (let [{upstream-input :input upstream-output :output} (-> (gain 1.0) (run-with context at duration))
-          {downstream-input :input downstream-output :output} (-> (gain 1.0) (run-with context at duration))
-          {wet-input :input wet-output :output} (-> wet (run-with context at duration))]
-      (-> upstream-output (.connect wet-input))
-      (-> wet-output (.connect downstream-input))
-      (-> upstream-output (.connect downstream-input))
-      (section upstream-input downstream-output))))
+(defn reverb
+  ([] (reverb 0.3))
+  ([wetness]
+   (fn [context at duration]
+     (let [{upstream-input :input upstream-output :output} (-> (gain 1.0) (run-with context at duration))
+           {downstream-input :input downstream-output :output} (-> (gain 1.0) (run-with context at duration))
+           {wet-input :input wet-output :output} (-> (connect-> wet (gain wetness)) (run-with context at duration))]
+       (-> upstream-output (.connect wet-input))
+       (-> wet-output (.connect downstream-input))
+       (-> upstream-output (.connect downstream-input))
+       (section upstream-input downstream-output)))))
