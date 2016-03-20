@@ -97,17 +97,17 @@
   (reduce connect nodes))
 
 (defn add
-  "Add together synths by connecting them all to the same gain."
+  "Add together synths by connecting them all to the same upstream and downstream gains."
   [& synths]
   (fn [context at duration]
-    (let [{upstream-input :input upstream-output :output} (-> pass-through (run-with context at duration))
-          {downstream-input :input downstream-output :output} (-> pass-through (run-with context at duration))]
+    (let [upstream (-> pass-through (run-with context at duration))
+          downstream (-> pass-through (run-with context at duration))]
       (doseq [synth synths]
-        (let [{:keys [input output]} (-> synth (run-with context at duration))]
-          (-> output (.connect downstream-input))
-          (when input
-            (-> upstream-output (.connect input)))))
-      (section upstream-input downstream-output))))
+        (let [graph (-> synth (run-with context at duration))]
+          (.connect (:output graph) (:input downstream))
+          (when (:input graph)
+            (.connect (:output upstream) (:input graph)))))
+      (section (:input upstream) (:output downstream)))))
 
 
 ; Noise
