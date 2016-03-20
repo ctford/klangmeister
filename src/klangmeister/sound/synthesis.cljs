@@ -38,6 +38,8 @@
       (doto (.createGain context)
         (-> .-gain (plug level context at duration))))))
 
+(def pass-through (gain 1.0))
+
 
 ; Envelopes
 
@@ -89,8 +91,8 @@
   "Add together synths by connecting them all to the same gain."
   [& synths]
   (fn [context at duration]
-    (let [{upstream-input :input upstream-output :output} (-> (gain 1.0) (run-with context at duration))
-          {downstream-input :input downstream-output :output} (-> (gain 1.0) (run-with context at duration))]
+    (let [{upstream-input :input upstream-output :output} (-> pass-through (run-with context at duration))
+          {downstream-input :input downstream-output :output} (-> pass-through (run-with context at duration))]
       (doseq [synth synths]
         (let [{:keys [input output]} (-> synth (run-with context at duration))]
           (-> output (.connect downstream-input))
@@ -208,4 +210,4 @@
   ([]
    (reverb 0.3))
   ([wetness]
-   (add (gain 1.0) (connect-> wet (gain wetness)))))
+   (add pass-through (connect-> wet (gain wetness)))))
