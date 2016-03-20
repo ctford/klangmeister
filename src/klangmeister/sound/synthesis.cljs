@@ -110,7 +110,7 @@
         buffer (.createBuffer context 1 frame-count sample-rate)
         data (.getChannelData buffer 0)]
     (doseq [i (range sample-rate)]
-      (aset data i (generate-bit!)))
+      (aset data i (generate-bit! i)))
     buffer))
 
 (defn noise
@@ -123,7 +123,7 @@
         (.start at)))))
 
 (def white-noise
-  (let [white #(-> (js/Math.random) (* 2.0) (- 1.0))]
+  (let [white (fn [_] (-> (js/Math.random) (* 2.0) (- 1.0)))]
     (noise white)))
 
 (defn constant
@@ -186,19 +186,12 @@
         (doto (.createDelay context maximum)
           (-> .-delayTime (plug time context at duration)))))))
 
-; FIXME: Unify with noise.
 (defn convolver
   [generate-bit!]
   (fn [context at duration]
-    (let [sample-rate 44100
-          frame-count (* sample-rate (+ duration 1.0)) ; Give a bit of extra for the release.
-          buffer (.createBuffer context 1 frame-count sample-rate)
-          data (.getChannelData buffer 0)]
-      (doseq [i (range sample-rate)]
-        (aset data i (generate-bit! i)))
-      (section
-        (doto (.createConvolver context)
-          (-> .-buffer (set! buffer)))))))
+    (section
+      (doto (.createConvolver context)
+        (-> .-buffer (set! (buffer generate-bit! context (+ duration 1.0))))))))
 
 (def wet
   (let [duration 5
