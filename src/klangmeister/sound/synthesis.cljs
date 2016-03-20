@@ -193,7 +193,7 @@
       (doto (.createConvolver context)
         (-> .-buffer (set! (buffer generate-bit! context (+ duration 1.0))))))))
 
-(def wet
+(def reverb
   (let [duration 5
         decay 3
         sample-rate 44100
@@ -203,8 +203,7 @@
                                (Math/pow (- 1 (/ i length)) decay)))]
     (convolver logarithmic-decay)))
 
-(defn reverb
-  ([]
-   (reverb 0.3))
-  ([wetness]
-   (add pass-through (connect-> wet (gain wetness)))))
+(defn enhance
+  "Mix the original signal with one with the effect applied."
+  [effect level]
+  (add pass-through (connect-> effect (gain level))))

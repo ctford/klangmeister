@@ -21,7 +21,7 @@
           adshr envelope
 
           stereo-panner reverb    ; Effects
-          delay-line]]
+          delay-line enhance]]
 
         [klangmeister.sound.instruments :refer
          [bell                    ; An imitation bell
