@@ -89,11 +89,14 @@
   "Add together synths by connecting them all to the same gain."
   [& synths]
   (fn [context at duration]
-    (let [{downstream-input :input downstream-output :output} (-> (gain 1.0) (run-with context at duration))]
+    (let [{upstream-input :input upstream-output :output} (-> (gain 1.0) (run-with context at duration))
+          {downstream-input :input downstream-output :output} (-> (gain 1.0) (run-with context at duration))]
       (doseq [synth synths]
         (let [{:keys [input output]} (-> synth (run-with context at duration))]
-          (-> output (.connect downstream-input))))
-      (section downstream-input downstream-output))))
+          (-> output (.connect downstream-input))
+          (when input
+            (-> upstream-output (.connect input)))))
+      (section upstream-input downstream-output))))
 
 
 ; Noise
@@ -202,13 +205,7 @@
     (convolver logarithmic-decay)))
 
 (defn reverb
-  ([] (reverb 0.3))
+  ([]
+   (reverb 0.3))
   ([wetness]
-   (fn [context at duration]
-     (let [{upstream-input :input upstream-output :output} (-> (gain 1.0) (run-with context at duration))
-           {downstream-input :input downstream-output :output} (-> (gain 1.0) (run-with context at duration))
-           {wet-input :input wet-output :output} (-> (connect-> wet (gain wetness)) (run-with context at duration))]
-       (-> upstream-output (.connect wet-input))
-       (-> wet-output (.connect downstream-input))
-       (-> upstream-output (.connect downstream-input))
-       (section upstream-input downstream-output)))))
+   (add (gain 1.0) (connect-> wet (gain wetness)))))
