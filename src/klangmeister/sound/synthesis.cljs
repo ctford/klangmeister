@@ -103,20 +103,24 @@
 
 ; Noise
 
+(defn buffer
+  [generate-bit! context duration]
+  (let [sample-rate 44100
+        frame-count (* sample-rate duration)
+        buffer (.createBuffer context 1 frame-count sample-rate)
+        data (.getChannelData buffer 0)]
+    (doseq [i (range sample-rate)]
+      (aset data i (generate-bit!)))
+    buffer))
+
 (defn noise
   "Make noise according to the supplied strategy for creating bits."
   [generate-bit!]
   (fn [context at duration]
-    (let [sample-rate 44100
-          frame-count (* sample-rate (+ duration 1.0)) ; Give a bit of extra for the release.
-          buffer (.createBuffer context 1 frame-count sample-rate)
-          data (.getChannelData buffer 0)]
-      (doseq [i (range sample-rate)]
-        (aset data i (generate-bit!)))
-      (generator
-        (doto (.createBufferSource context)
-          (-> .-buffer (set! buffer))
-          (.start at))))))
+    (generator
+      (doto (.createBufferSource context)
+        (-> .-buffer (set! (buffer generate-bit! context (+ duration 1.0))))
+        (.start at)))))
 
 (def white-noise
   (let [white #(-> (js/Math.random) (* 2.0) (- 1.0))]
