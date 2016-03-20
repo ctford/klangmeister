@@ -190,8 +190,8 @@
 (defn delay-line
   [time]
   (fn [context at duration]
-    (let [maximum 5]
-      (section
+    (section
+      (let [maximum 5]
         (doto (.createDelay context maximum)
           (-> .-delayTime (plug time context at duration)))))))
 
