@@ -6,7 +6,7 @@
   ([input output] {:input input :output output})
   ([singleton] (section singleton singleton)))
 
-(defn generator
+(defn source
   "A graph of synthesis nodes without an input, so another graph can't connect to it."
   [node]
   (section nil node))
@@ -126,7 +126,7 @@
   "Make noise according to the supplied strategy for creating bits."
   [generate-bit!]
   (fn [context at duration]
-    (generator
+    (source
       (doto (.createBufferSource context)
         (-> .-buffer (set! (buffer generate-bit! context (+ duration 1.0))))
         (.start at)))))
@@ -145,7 +145,7 @@
 (defn oscillator
   [type freq]
   (fn [context at duration]
-    (generator
+    (source
       (doto (.createOscillator context)
         (-> .-frequency .-value (set! 0))
         (-> .-frequency (plug freq context at duration))
