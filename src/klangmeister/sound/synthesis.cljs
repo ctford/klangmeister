@@ -1,9 +1,20 @@
 (ns klangmeister.sound.synthesis)
 
-; A synth is a function that returns a section.
+; Definitions
+
 (defn section
   ([input output] {:input input :output output})
   ([singleton] (section singleton singleton)))
+
+(defn generator
+  "A graph of synthesis nodes without an input, so another graph can't connect to it."
+  [node]
+  (section nil node))
+
+(defn sink
+  "A graph of synthesis nodes without an output, so it can't connect to another graph."
+  [node]
+  (section node nil))
 
 ; Plumbing
 
@@ -13,7 +24,7 @@
   (synth context at duration))
 
 (defn destination [context at duration]
-  (section (.-destination context)))
+  (sink (.-destination context)))
 
 (defn plug [param input context at duration]
   "Plug an input into an audio parameter, accepting both numbers and synths."
@@ -97,7 +108,7 @@
           data (.getChannelData buffer 0)]
       (doseq [i (range sample-rate)]
         (aset data i (generate-bit!)))
-      (section
+      (generator
         (doto (.createBufferSource context)
           (-> .-buffer (set! buffer))
           (.start at))))))
@@ -116,7 +127,7 @@
 (defn oscillator
   [type freq]
   (fn [context at duration]
-    (section
+    (generator
       (doto (.createOscillator context)
         (-> .-frequency .-value (set! 0))
         (-> .-frequency (plug freq context at duration))
