@@ -2,24 +2,24 @@
 
 ; Definitions
 
-(defn section
+(defn subgraph
   ([input output] {:input input :output output})
-  ([singleton] (section singleton singleton)))
+  ([singleton] (subgraph singleton singleton)))
 
 (defn source
   "A graph of synthesis nodes without an input, so another graph can't connect to it."
   [node]
-  (section nil node))
+  (subgraph nil node))
 
 (defn sink
   "A graph of synthesis nodes without an output, so it can't connect to another graph."
   [node]
-  (section node nil))
+  (subgraph node nil))
 
 ; Plumbing
 
 (defn run-with
-  "Convert a synth (actually a reader fn) into a concrete section by supplying context and timing."
+  "Convert a synth (actually a reader fn) into a concrete subgraph by supplying context and timing."
   [synth context at duration]
   (synth context at duration))
 
@@ -34,7 +34,7 @@
 
 (defn gain [level]
   (fn [context at duration]
-    (section
+    (subgraph
       (doto (.createGain context)
         (-> .-gain (plug level context at duration))))))
 
@@ -55,7 +55,7 @@
           (+ dx x))
         at
         corners)
-      (section audio-node))))
+      (subgraph audio-node))))
 
 (defn adshr [attack decay sustain hold release]
   (envelope [attack 1.0] [decay sustain] [hold sustain] [release 0]))
@@ -87,7 +87,7 @@
   (fapply
     (fn [graph1 graph2]
       (.connect (:output graph1) (:input graph2))
-      (section (:input graph1) (:output graph2)))
+      (subgraph (:input graph1) (:output graph2)))
     upstream-synth
     downstream-synth))
 
@@ -107,7 +107,7 @@
           (.connect (:output graph) (:input downstream))
           (when (:input graph)
             (.connect (:output upstream) (:input graph)))))
-      (section (:input upstream) (:output downstream)))))
+      (subgraph (:input upstream) (:output downstream)))))
 
 
 ; Noise
@@ -164,12 +164,12 @@
 (defn biquad-filter
   ([type freq q]
    (fn [context at duration]
-     (section
+     (subgraph
        (doto (-> (biquad-filter type freq) (run-with context at duration) :output)
          (-> .-Q (plug q context at duration))))))
   ([type freq]
    (fn [context at duration]
-     (section
+     (subgraph
        (doto (.createBiquadFilter context)
          (-> .-frequency .-value (set! 0))
          (-> .-frequency (plug freq context at duration))
@@ -183,14 +183,14 @@
 
 (defn stereo-panner [pan]
   (fn [context at duration]
-    (section
+    (subgraph
       (doto (.createStereoPanner context)
         (-> .-pan (plug pan context at duration))))))
 
 (defn delay-line
   [time]
   (fn [context at duration]
-    (section
+    (subgraph
       (let [maximum 5]
         (doto (.createDelay context maximum)
           (-> .-delayTime (plug time context at duration)))))))
@@ -198,7 +198,7 @@
 (defn convolver
   [generate-bit!]
   (fn [context at duration]
-    (section
+    (subgraph
       (doto (.createConvolver context)
         (-> .-buffer (set! (buffer generate-bit! context (+ duration 1.0))))))))
 
