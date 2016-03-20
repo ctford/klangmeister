@@ -73,14 +73,23 @@
 
 ; Combinators
 
+(defn fapply
+  "Apply a function within the (applicative) context of a synth."
+  [f synth1 synth2]
+  (fn [context at duration]
+    (let [graph1 (-> synth1 (run-with context at duration))
+          graph2 (-> synth2 (run-with context at duration))]
+      (f graph1 graph2))))
+
 (defn connect
   "Use the output of one synth as the input to another."
   [upstream-synth downstream-synth]
-  (fn [context at duration]
-    (let [{downstream-input :input downstream-output :output} (-> downstream-synth (run-with context at duration))
-          {upstream-input :input upstream-output :output} (-> upstream-synth (run-with context at duration))]
-      (-> upstream-output (.connect downstream-input))
-      (section upstream-input downstream-output))))
+  (fapply
+    (fn [graph1 graph2]
+      (-> (:output graph1) (.connect (:input graph2)))
+      (section (:input graph1) (:output graph2)))
+    upstream-synth
+    downstream-synth))
 
 (defn connect->
   "Connect synths in series."
