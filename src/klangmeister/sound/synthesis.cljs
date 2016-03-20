@@ -86,7 +86,7 @@
   [upstream-synth downstream-synth]
   (fapply
     (fn [graph1 graph2]
-      (-> (:output graph1) (.connect (:input graph2)))
+      (.connect (:output graph1) (:input graph2))
       (section (:input graph1) (:output graph2)))
     upstream-synth
     downstream-synth))
