@@ -75,11 +75,11 @@
 
 (defn fapply
   "Apply a function within the (applicative) context of a synth."
-  [f synth1 synth2]
+  [f & synths]
   (fn [context at duration]
-    (let [graph1 (-> synth1 (run-with context at duration))
-          graph2 (-> synth2 (run-with context at duration))]
-      (f graph1 graph2))))
+    (->> synths
+         (map #(run-with % context at duration))
+         (apply f))))
 
 (defn connect
   "Use the output of one synth as the input to another."
