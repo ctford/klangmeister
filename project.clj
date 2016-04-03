@@ -12,7 +12,7 @@
                  [org.clojure/tools.namespace "0.3.0-alpha3"]
                  [org.clojure/tools.reader "1.0.0-alpha3"]
                  [org.clojure/java.classpath "0.2.3"]
-                 [leipzig "0.10.0-SNAPSHOT"]]
+                 [leipzig "0.10.0"]]
 
   :min-lein-version "2.5.0"
 
