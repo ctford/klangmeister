@@ -6,17 +6,11 @@
     [klangmeister.framework :as framework]
     [reagent.core :as reagent]
     [reagent.session :as session]
+    [cljs-bach.synthesis :as synthesis]
     [accountant.core :as accountant]
     [secretary.core :as secretary :include-macros true]))
 
-(defn audio-context
-  "Construct an audio context in a way that works even if it's prefixed."
-  []
-  (if js/window.AudioContext. ; Some browsers e.g. Safari don't use the unprefixed version yet.
-    (js/window.AudioContext.)
-    (js/window.webkitAudioContext.)))
-
-(defonce state-atom (reagent/atom {:audiocontext (audio-context)}))
+(defonce state-atom (reagent/atom {:audiocontext (synthesis/audio-context)}))
 
 (secretary/defroute "/klangmeister/"            [query-params] (session/put! :gist (:gist query-params))
                                                                (session/put! :current-page view/about))
