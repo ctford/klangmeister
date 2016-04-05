@@ -8,7 +8,7 @@
   (macro/literally
     (ns klangmeister.live
       (:require
-        [klangmeister.sound.synthesis :refer
+        [cljs-bach.synthesis :refer
          [connect-> add           ; Synth connectors
 
           high-pass low-pass      ; Frequency filters
@@ -56,7 +56,7 @@
     leipzig.chord
     leipzig.melody
     leipzig.scale
-    klangmeister.sound.synthesis
+    cljs-bach.synthesis
     klangmeister.sound.instruments))
 
 (defn loader

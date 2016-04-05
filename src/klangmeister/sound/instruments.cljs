@@ -1,6 +1,6 @@
 (ns klangmeister.sound.instruments
   (:require
-    [klangmeister.sound.synthesis :refer
+    [cljs-bach.synthesis :refer
      [connect-> percussive adsr adshr sine square sawtooth add gain high-pass low-pass white-noise
       triangle constant envelope]]))
 

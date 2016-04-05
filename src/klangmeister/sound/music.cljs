@@ -1,6 +1,6 @@
 (ns klangmeister.sound.music
   (:require [leipzig.temperament :as temperament]
-            [klangmeister.sound.synthesis :as synthesis]))
+            [cljs-bach.synthesis :as synthesis]))
 
 (defn play!
   "Take a sequence of notes and play them in an audiocontext."
