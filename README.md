@@ -39,6 +39,12 @@ Anything that Leipzig offers can be used in Klangmeister, with the exception of 
 Klangmeister is that notes have an `:instrument` key, rather than relying on the `play-note` multimethod as with Overtone Leipzig
 examples.
 
+CLJS Bach
+---------
+
+[CLJS Bach](https://github.com/ctford/cljs-bach) provides the synthesis capability for Klangmeister. It was originally just
+a namespace within Klangmeister, but has since been extracted.
+
 Building
 --------
 
