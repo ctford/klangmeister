@@ -8,15 +8,21 @@
     [ajax.core :as ajax]
     [leipzig.melody :as melody]))
 
+(defn safety-cutoff
+  "Cutoff evaluation to prevent infinite seqs breaking everything."
+  [notes]
+  (let [max-notes 200]
+    (->> notes (take max-notes))))
+
 (extend-protocol framework/Action
   action/Refresh
   (process [{expr-str :text pane :target} _ state]
     (let [{:keys [value error]} (eval/uate expr-str)
-          value (or value (get-in state [pane :value]) )]
+          value (some-> value safety-cutoff)]
       (-> state
           (assoc-in [pane :error] error)
           (assoc-in [pane :text] expr-str)
-          (assoc-in [pane :value] value))))
+          (update-in [pane :value] #(or value %)))))
 
   action/Import
   (process [{gist :gist pane :target} handle! state]
