@@ -36,8 +36,11 @@
 (defn mount-root []
   (accountant/configure-navigation!)
   (accountant/dispatch-current!)
-  (let [default (or (session/get :gist) "4b04fd7f2d361c6604c4")]
-    (handle! (action/->Import default :main)) ; Pull in the content of the main code pane.
+  (let [user-specified-gist (session/get :gist)
+        gist (or user-specified-gist "4b04fd7f2d361c6604c4")]
+    (if user-specified-gist
+      (accountant/navigate! "/klangmeister/performance"))
+    (handle! (action/->Import gist :main)) ; Pull in the content of the main code pane.
     (reagent/render [current-page] js/document.body)))
 
 (mount-root)
