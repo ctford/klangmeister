@@ -11,7 +11,14 @@
   (let [maximum (apply max values)
         minimum (apply min values)
         spread (- maximum minimum)]
-    (fn [x] (-> x (- minimum) (/ spread) (* to)))))
+    (fn [x] (-> x (/ spread) (* to)))))
+
+(defn translater-for [to values]
+  (let [minimum (apply min values)]
+    (fn [x] (-> x (- minimum)))))
+
+(defn fitter-for [to values]
+  (comp (scaler-for to values) (translater-for to values)))
 
 (def guide-frequencies (range 0 128 2))
 
@@ -26,8 +33,8 @@
                                                 (melody/wherever
                                                   #(and looping? (<= (:time %) relative-time))
                                                   :played? (melody/is true)))
-                                    scale-pitch (scaler-for (- height dot-height) (map :pitch value))
-                                    scale-time (scaler-for (- width dot-width) (map :time value))
+                                    scale-pitch (fitter-for (- height dot-height) (map :pitch value))
+                                    scale-time (fitter-for (- width dot-width) (map :time value))
                                     half (partial * 0.5)
                                     scaled (->> marked
                                                 (melody/where :pitch scale-pitch)
