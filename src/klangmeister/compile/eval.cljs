@@ -48,7 +48,7 @@
          [phrase then times with  ; Melody makers
           rhythm having
           all bpm tempo where     ; Melody modifiers
-          wherever]]))))
+          after wherever]]))))
 
 (def dependencies
   "A bundle of dependencies."
