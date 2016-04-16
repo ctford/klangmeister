@@ -53,6 +53,7 @@
 (def dependencies
   "A bundle of dependencies."
   (macro/sources
+    clojure.set
     leipzig.chord
     leipzig.melody
     leipzig.scale
