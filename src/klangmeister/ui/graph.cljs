@@ -18,13 +18,14 @@
     (fn [x] (-> x (- minimum)))))
 
 (defn fitter-for [to values]
-  (comp (scaler-for to values) (translater-for to values)))
+  (comp inc (scaler-for to values) (translater-for to values)))
 
 (def guide-frequencies (range 0 128 2))
 
 (defn draw-graph [state-atom]
   (let [[height width] [120 800]
-        [dot-height dot-width] [15 20]]
+        dot-ratio 1.618
+        raw-dot-height 15]
     (quil/sketch :draw (fn [_]
                          (try (quil/background 255)
                               (let [{:keys [value sync looping?]} (:main @state-atom)
@@ -33,13 +34,16 @@
                                                 (melody/wherever
                                                   #(and looping? (<= (:time %) relative-time))
                                                   :played? (melody/is true)))
-                                    scale-pitch (fitter-for (- height dot-height) (map :pitch value))
-                                    scale-time (fitter-for (- width dot-width) (map :time value))
+                                    scale-dot (scaler-for (- height raw-dot-height) (map :pitch value))
+                                    dot-height (scale-dot 2)
+                                    dot-width (* dot-height 1.618)
+                                    fit-pitch (fitter-for (- height dot-height 2) (map :pitch value))
+                                    fit-time (fitter-for (- width dot-width 2) (map :time value))
                                     half (partial * 0.5)
                                     scaled (->> marked
-                                                (melody/where :pitch scale-pitch)
-                                                (melody/where :time scale-time))]
-                                (doseq [pitch (map scale-pitch guide-frequencies)]
+                                                (melody/where :pitch fit-pitch)
+                                                (melody/where :time fit-time))]
+                                (doseq [pitch (map fit-pitch guide-frequencies)]
                                   (let [y (+ height (- (+ pitch (half dot-height))))]
                                     (quil/stroke 230)
                                     (quil/line 0 y width y)))
