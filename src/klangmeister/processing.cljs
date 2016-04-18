@@ -16,15 +16,18 @@
       (->> notes (take max-notes)))
     notes))
 
-(extend-protocol framework/Action
-  action/Refresh
-  (process [{expr-str :text pane :target} _ state]
+(defn refresh [{expr-str :text pane :target} _ state]
     (let [{:keys [value error]} (eval/uate expr-str)
           value (some-> value safety-cutoff)]
       (-> state
           (assoc-in [pane :error] error)
           (assoc-in [pane :text] expr-str)
           (update-in [pane :value] #(or value %)))))
+
+(extend-protocol framework/Action
+  action/Refresh
+  (process [this handle! state]
+    (refresh this handle! state))
 
   action/Import
   (process [{gist :gist pane :target} handle! state]
