@@ -8,21 +8,25 @@
     [ajax.core :as ajax]
     [leipzig.melody :as melody]))
 
-(defn safety-cutoff
-  "Cutoff evaluation to prevent infinite seqs breaking everything."
-  [notes]
-  (if (seq? notes)
-    (let [max-notes 1000]
-      (->> notes (take max-notes)))
-    notes))
+(defn too-many? [value]
+  (when (and (seq? value) (->> value (drop 1000) first))
+    "Too many notes - Klangmeister can't handle more than 1000."))
+
+(defn check [{:keys [value error] :as return} ok?]
+  (if error
+    return
+    (assoc return :error (ok? value))))
 
 (defn refresh [{expr-str :text pane :target} _ state]
-    (let [{:keys [value error]} (eval/uate expr-str)
-          value (some-> value safety-cutoff)]
+  (let [{:keys [value error]} (-> expr-str eval/uate (check too-many?))]
+    (if error
       (-> state
           (assoc-in [pane :error] error)
-          (assoc-in [pane :text] expr-str)
-          (update-in [pane :value] #(or value %)))))
+          (assoc-in [pane :text] expr-str))
+      (-> state
+          (assoc-in [pane :error] nil)
+          (assoc-in [pane :value] value)
+          (assoc-in [pane :text] expr-str)))))
 
 (extend-protocol framework/Action
   action/Refresh
