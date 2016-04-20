@@ -12,13 +12,21 @@
   (when (and (seq? value) (->> value (drop 1000) first))
     "Too many notes - Klangmeister can't handle more than 1000."))
 
+(defn well-formed? [value]
+  (letfn [(ok? [{:keys [time duration]}] (and time duration))]
+    (when (and (seq? value) (not-every? ok? value))
+      "All notes must have a time and a duration.")))
+
 (defn check [{:keys [value error] :as return} ok?]
   (if error
     return
     (assoc return :error (ok? value))))
 
 (defn refresh [{expr-str :text pane :target} _ state]
-  (let [{:keys [value error]} (-> expr-str eval/uate (check too-many?))]
+  (let [{:keys [value error]} (-> expr-str
+                                  eval/uate
+                                  (check too-many?)
+                                  (check well-formed?))]
     (if error
       (-> state
           (assoc-in [pane :error] error)
