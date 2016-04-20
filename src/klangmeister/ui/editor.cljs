@@ -31,4 +31,4 @@
     [:div
      {:class (str "editor" (if error " error" ""))}
      [editor target text handle!]
-     [:div (some-> error .-cause .-message)]]))
+     [:div error]]))

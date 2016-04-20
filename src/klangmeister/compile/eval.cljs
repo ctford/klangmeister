@@ -78,6 +78,9 @@
 
 (set-print-err-fn! #(js/console.log))
 
+(defn normalise [result]
+  (update result :error #(some-> % .-cause .-message)))
+
 (defn uate
   "Evaluate a string of Clojurescript, with synthesis and music namespaces available."
   [expr-str]
@@ -87,4 +90,4 @@
     nil
     {:eval cljs/js-eval
      :load loader}
-    identity))
+    normalise))
