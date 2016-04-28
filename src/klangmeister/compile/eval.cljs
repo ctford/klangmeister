@@ -66,11 +66,9 @@
   (let [str-name (.-str name)
         source (dependencies str-name)]
     (if source
-      (do (js/console.log (str "Loading " str-name "."))
-          (callback {:lang :clj :source source}))
-      (do
-        (js/console.log (str "Unable to load " str-name "."))
-        (callback {:lang :clj :source ""})))))
+      (js/console.log (str "Loading " str-name "."))
+      (js/console.log (str "Unable to load " str-name ".")))
+    (callback {:lang :clj :source (str source)})))
 
 (def state
   "A compiler state, which is shared across compilations."
