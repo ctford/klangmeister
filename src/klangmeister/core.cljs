@@ -13,9 +13,11 @@
 (defonce state-atom (reagent/atom {:audiocontext (synthesis/audio-context)}))
 
 (secretary/defroute "/klangmeister/"            [query-params] (session/put! :gist (:gist query-params))
+                                                               (session/put! :uri (:uri query-params))
                                                                (session/put! :current-page view/about))
 
 (secretary/defroute "/klangmeister/index.html"  [query-params] (session/put! :gist (:gist query-params))
+                                                               (session/put! :uri (:uri query-params))
                                                                (session/put! :current-page view/about))
 
 (secretary/defroute "/klangmeister/synthesis"   [] (session/put! :current-page view/synthesis))
@@ -33,13 +35,15 @@
   []
   [(session/get :current-page) handle! state-atom])
 
+(def gist-uri (partial str "https://api.github.com/gists/"))
+
 (defn mount-root []
   (accountant/configure-navigation!)
   (accountant/dispatch-current!)
-  (let [user-specified-gist (session/get :gist)
-        gist (or user-specified-gist "4b04fd7f2d361c6604c4")
-        uri (str "https://api.github.com/gists/" gist)]
-    (if user-specified-gist
+  (let [user-specified-uri (session/get :uri)
+        user-specified-gist (session/get :gist)
+        uri (or user-specified-uri (gist-uri (or user-specified-gist "4b04fd7f2d361c6604c4")))]
+    (if (or user-specified-uri user-specified-gist)
       (accountant/navigate! "/klangmeister/performance"))
     (handle! (action/->Import uri :main)) ; Pull in the content of the main code pane.
     (reagent/render [current-page] js/document.body)))
