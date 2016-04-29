@@ -37,10 +37,11 @@
   (accountant/configure-navigation!)
   (accountant/dispatch-current!)
   (let [user-specified-gist (session/get :gist)
-        gist (or user-specified-gist "4b04fd7f2d361c6604c4")]
+        gist (or user-specified-gist "4b04fd7f2d361c6604c4")
+        uri (str "https://api.github.com/gists/" gist)]
     (if user-specified-gist
       (accountant/navigate! "/klangmeister/performance"))
-    (handle! (action/->Import gist :main)) ; Pull in the content of the main code pane.
+    (handle! (action/->Import uri :main)) ; Pull in the content of the main code pane.
     (reagent/render [current-page] js/document.body)))
 
 (mount-root)

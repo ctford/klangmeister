@@ -42,10 +42,9 @@
     (refresh this handle! state))
 
   action/Import
-  (process [{gist :gist pane :target} handle! state]
+  (process [{uri :uri pane :target} handle! state]
     (let [refresh #(handle! (action/->Refresh % pane))
-          handler #(-> % :files vals first :content refresh)
-          uri (str "https://api.github.com/gists/" gist)]
+          handler #(-> % :files vals first :content refresh)]
       (ajax/GET uri {:handler handler :response-format :json :keywords? true})
       state))
 
