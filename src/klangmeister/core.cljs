@@ -35,17 +35,19 @@
   []
   [(session/get :current-page) handle! state-atom])
 
-(def gist-uri (partial str "https://api.github.com/gists/"))
-
 (defn mount-root []
   (accountant/configure-navigation!)
   (accountant/dispatch-current!)
   (let [user-specified-uri (session/get :uri)
         user-specified-gist (session/get :gist)
-        uri (or user-specified-uri (gist-uri (or user-specified-gist "4b04fd7f2d361c6604c4")))]
+        gist (or user-specified-gist "4b04fd7f2d361c6604c4")]
     (if (or user-specified-uri user-specified-gist)
       (accountant/navigate! "/klangmeister/performance"))
-    (handle! (action/->Import uri :main)) ; Pull in the content of the main code pane.
+    (handle!
+      ; Pull in the content of the main code pane.
+      (if user-specified-uri
+        (action/->Import user-specified-uri :main)
+        (action/->Gist gist :main)))
     (reagent/render [current-page] js/document.body)))
 
 (mount-root)

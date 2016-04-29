@@ -36,16 +36,24 @@
           (assoc-in [pane :value] value)
           (assoc-in [pane :text] expr-str)))))
 
+(def gist-uri (partial str "https://api.github.com/gists/"))
+
 (extend-protocol framework/Action
   action/Refresh
   (process [this handle! state]
     (refresh this handle! state))
 
-  action/Import
-  (process [{uri :uri pane :target} handle! state]
+  action/Gist
+  (process [{gist :gist pane :target} handle! state]
     (let [refresh #(handle! (action/->Refresh % pane))
           handler #(-> % :files vals first :content refresh)]
-      (ajax/GET uri {:handler handler :response-format :json :keywords? true})
+      (ajax/GET (gist-uri gist) {:handler handler :response-format :json :keywords? true})
+      state))
+
+  action/Import
+  (process [{uri :uri pane :target} handle! state]
+    (let [refresh #(handle! (action/->Refresh % pane))]
+      (ajax/GET uri {:handler refresh})
       state))
 
   action/Stop
