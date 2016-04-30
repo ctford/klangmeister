@@ -62,20 +62,20 @@
   (tempo (bpm 90))
   (where :pitch (comp high C major))) ; How does minor sound different to major?"]})
 
-(defn render-one [k handle! state-atom]
+(defn render-one [k handle! state]
   (let [[text code] (steps k)]
     [:div
      [:p text]
-     [editor/render k code handle! @state-atom]
-     [controls k handle! @state-atom]]))
+     [editor/render k code handle! state]
+     [controls k handle! state]]))
 
-(defn render [handle! state-atom]
+(defn render [handle! state]
   [:div
-   [render-one :phrase handle! state-atom]
-   [render-one :then handle! state-atom]
-   [render-one :with handle! state-atom]
-   [render-one :times handle! state-atom]
-   [render-one :bpm handle! state-atom]
-   [render-one :key handle! state-atom]
+   [render-one :phrase handle! state]
+   [render-one :then handle! state]
+   [render-one :with handle! state]
+   [render-one :times handle! state]
+   [render-one :bpm handle! state]
+   [render-one :key handle! state]
    [:div
     [:p "Now that you know how to design synthesisers and compose melodies, try " [:a {:href "/klangmeister/performance"} "putting the two together"] "."]]])
