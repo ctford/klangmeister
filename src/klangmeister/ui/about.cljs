@@ -6,7 +6,7 @@
   (let [play [:button {:on-click #(handle! (action/->PlayOnce k))} "Play"]]
     [:div {:class "controls"} play]))
 
-(defn render [handle! state-atom]
+(defn render [handle! state]
   (let [code "(->> (phrase (repeat 1/16) [0 2 4 7 9 11 14 16 18 21])
      (where :pitch (comp C major)))"]
     [:div
@@ -14,5 +14,5 @@
          computer code - without having to install anything on your own computer. Klangmeister works best in Chrome, because
          the synthesis features that it relies on have patchy support across the other browsers."]
      [:p [:a {:href "https://twitter.com/ctford"} "I"] " recommend starting with the " [:a {:href "/klangmeister/synthesis"} "synthesis tutorial"] "."]
-     [editor/render :about code handle! @state-atom]
-     [controls :about handle! @state-atom]]))
+     [editor/render :about code handle! state]
+     [controls :about handle! state]]))
