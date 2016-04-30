@@ -16,7 +16,7 @@
          [:td {:class "usage"} usage]])
       defs)]])
 
-(defn render [handle! state-atom]
+(defn render [handle! state]
   [:div
    [:h2 "Synthesis"]
    [:p "These functions are used to generate signals that can then be shaped or combined with other signals."]

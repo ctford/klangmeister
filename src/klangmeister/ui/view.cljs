@@ -47,4 +47,4 @@
   (frame :composition [composition/render handle! @state-atom]))
 
 (defn reference [handle! state-atom]
-  (frame :reference [reference/render handle! state-atom]))
+  (frame :reference [reference/render handle! @state-atom]))
