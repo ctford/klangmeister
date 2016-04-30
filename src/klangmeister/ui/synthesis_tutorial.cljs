@@ -62,21 +62,21 @@
   (adsr 0.001 0.4 0.5 0.1) ; How does a longer attack sound?
   (gain 0.1))"]})
 
-(defn render-one [k handle! state-atom]
+(defn render-one [k handle! state]
   (let [[text code] (steps k)]
     [:div
      [:p text]
-     [editor/render k code handle! @state-atom]
-     [controls k handle! @state-atom]]))
+     [editor/render k code handle! state]
+     [controls k handle! state]]))
 
-(defn render [handle! state-atom]
+(defn render [handle! state]
   [:div
-   [render-one :sine handle! state-atom]
-   [render-one :gain handle! state-atom]
-   [render-one :interference handle! state-atom]
-   [render-one :envelope handle! state-atom]
-   [render-one :oscillators handle! state-atom]
-   [render-one :filters handle! state-atom]
-   [render-one :sustain handle! state-atom]
+   [render-one :sine handle! state]
+   [render-one :gain handle! state]
+   [render-one :interference handle! state]
+   [render-one :envelope handle! state]
+   [render-one :oscillators handle! state]
+   [render-one :filters handle! state]
+   [render-one :sustain handle! state]
    [:div
     [:p "Now that you know how to design synthesisers, try " [:a {:href "/klangmeister/composition"} "composing melodies"] "."]]])

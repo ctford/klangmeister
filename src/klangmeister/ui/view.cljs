@@ -38,7 +38,7 @@
   (frame :performance [jam/render handle! state-atom]))
 
 (defn synthesis [handle! state-atom]
-  (frame :synthesis [synthesis/render handle! state-atom]))
+  (frame :synthesis [synthesis/render handle! @state-atom]))
 
 (defn about [handle! state-atom]
   (frame :about [about/render handle! state-atom]))
