@@ -11,8 +11,9 @@
      (where :pitch (comp C major)))"]
     [:div
      [:p "Klangmeister is a live coding environment for the browser. It lets you design synthesisers and compose music using
-         computer code - without having to install anything on your own computer. Klangmeister works best in Chrome, because
-         the synthesis features that it relies on have patchy support across the other browsers."]
+         computer code - without having to install anything on your own computer."]
+     [:p "Klangmeister works best in Chrome, because the other browsers have less stable implementations of the synthesis features
+          that Klangmeister relies on. They're working on it though."]
      [:p [:a {:href "https://twitter.com/ctford"} "I"] " recommend starting with the " [:a {:href "/klangmeister/synthesis"} "synthesis tutorial"] "."]
      [editor/render :about code handle! state]
      [controls :about handle! state]]))
