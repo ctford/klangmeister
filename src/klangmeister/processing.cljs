@@ -62,7 +62,9 @@
 
   action/Play
   (process [{pane :target :as this} handle! state]
-    (framework/process (action/->Loop pane) handle! (assoc-in state [pane :looping?] true)))
+    (if-not (< (Date.now) (get-in state [pane :sync]))
+      (framework/process (action/->Loop pane) handle! (assoc-in state [pane :looping?] true))
+      state))
 
   action/PlayOnce
   (process [{pane :target :as this} handle! {:keys [audiocontext] :as state}]
@@ -81,9 +83,10 @@
   action/Loop
   (process [{pane :target :as this} handle! {:keys [audiocontext] :as state}]
     (let [{:keys [value looping?]} (pane state)
-          start (Date.now)]
+          duration (* 1000 (melody/duration value))
+          finish (+ (Date.now) duration)]
       (if looping?
         (do (music/play! audiocontext value)
-            (js/setTimeout #(handle! this) (* 1000 (melody/duration value)))
-            (assoc-in state [pane :sync] start))
+            (js/setTimeout #(handle! this) duration)
+            (assoc-in state [pane :sync] finish))
         (assoc-in state [pane :sync] nil)))))
