@@ -1,18 +1,9 @@
 Klangmeister
 ============
 
-A musical scratchpad.
+A musical scratchpad. [See it in action](http://ctford.github.io/klangmeister/).
 
 [![Build Status](https://travis-ci.org/ctford/klangmeister.png)](https://travis-ci.org/ctford/klangmeister)
-
-The TravisCI build has recently intermittently failed for what appears to be resource exhaustion e.g. memory. The solution appears to be to require sudo, perhaps because it causes the build to run on infrastructure with different resource limits. 
-
-Playing
--------
-
-See it in action [here](http://ctford.github.io/klangmeister/). I've been developing in Chrome. Other browsers may or may not work.
-
-Edit the code and see and hear your changes.
 
 Clojurescript
 -------------
