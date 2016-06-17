@@ -1,7 +1,13 @@
 (ns klangmeister.ui.editor
   (:require
     [klangmeister.actions :as action]
+    [klangmeister.compile.eval :as eval]
     [reagent.core :as reagent]))
+
+(defn current-token [editor]
+  (-> editor
+      (.getTokenAt (.getCursor editor))
+      .-string))
 
 (defn editor-did-mount [target text handle!]
   (fn [this]
@@ -16,6 +22,7 @@
                       :lineWrapping true
                       :viewportMargin js/Infinity})]
       (.on pane "change" #(-> % .getValue (action/->Refresh target) handle!))
+      (.on pane "cursorActivity" #(-> % current-token (action/->Doc target) handle!))
       (-> text (action/->Refresh target) handle!))))
 
 (defn editor [target text handle!]
@@ -27,8 +34,9 @@
      :component-did-mount (editor-did-mount target text handle!)}))
 
 (defn render [target text handle! state]
-  (let [{:keys [error]} (target state)]
+  (let [{:keys [error doc]} (target state)]
     [:div
      {:class (str "editor" (if error " error" ""))}
      [editor target text handle!]
+     [:div {:class "doc"} doc]
      [:div error]]))

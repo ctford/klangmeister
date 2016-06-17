@@ -16,6 +16,28 @@
          [:td {:class "usage"} usage]])
       defs)]])
 
+(def signals
+  {"sawtooth" "A waveform with prominent harmonics."
+   "sine" "A simple sine wave."
+   "square" "A wave containing only odd harmonics."
+   "triangle" "A wave with subtle harmonics."
+   "white-noise" "Random noise."})
+
+(def shapers
+  {"gain" "Multiply a signal by the given factor."
+   "high-pass" "Cut out low frequencies."
+   "low-pass" "Cut out high frequencies."})
+
+(def envelopes
+  {"adsr" "An envelope with attack, decay, sustain and release."
+   "percussive" "A simple envelope with just attack and decay"})
+
+(def combinators
+  {"add" "Add two or more signals together."
+   "connect->" "Connect two or more signal processors together"})
+
+(def all (merge signals shapers envelopes combinators))
+
 (defn render [handle! state]
   [:div
    [:h2 "Synthesis"]

@@ -1,6 +1,7 @@
 (ns klangmeister.processing
   (:require
     [klangmeister.compile.eval :as eval]
+    [klangmeister.ui.reference :as reference]
     [klangmeister.sound.music :as music]
     [klangmeister.sound.instruments :as instrument]
     [klangmeister.actions :as action]
@@ -73,6 +74,11 @@
            (melody/wherever (comp not :instrument), :instrument (melody/is instrument/bell))
            (music/play! audiocontext))
       state))
+
+  action/Doc
+  (process [{pane :target doc :string} handle! state]
+    (-> state
+        (assoc-in [pane :doc] (reference/all doc))))
 
   action/Test
   (process [{pane :target :as this} handle! {:keys [audiocontext] :as state}]

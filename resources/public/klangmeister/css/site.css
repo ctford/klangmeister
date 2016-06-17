@@ -101,6 +101,12 @@ button {
   white-space: pre-wrap;
 }
 
+.doc {
+  font-family: monospace;
+  text-align: center;
+  color: #D33682;
+}
+
 .CodeMirror {
   height: auto;
 }
