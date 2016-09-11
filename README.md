@@ -41,7 +41,7 @@ Building
 
 Run `lein figwheel` for a hot-reloading development mode, or `lein cljsbuild once prod` to aggregate the javascript ready for deployment to a static fileserver.
 
-Then browse to `resources/klangmeister/index.html`.
+Then browse to [Figwheel's local server](http://localhost:3449/klangmeister/index.html) if you're using Figwheel or start a static HTTP server in the `resources/public/klangmeister/` directory e.g. `python -m SimpleHTTPServer 8000 resources/public/klangmeister/`.
 
 To run the unit tests, run `lein doo phantom test once`.
 
