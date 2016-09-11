@@ -39,10 +39,25 @@ a namespace within Klangmeister, but has since been extracted.
 Building
 --------
 
-Run `lein figwheel` for a hot-reloading development mode, or `lein cljsbuild once prod` to aggregate the javascript ready for deployment to a static fileserver.
+### Figwheel
+Run `lein figwheel` for a hot-reloading development mode.
 
-Then browse to [Figwheel's local server](http://localhost:3449/klangmeister/index.html) if you're using Figwheel or start a static HTTP server in the `resources/public/klangmeister/` directory e.g. `python -m SimpleHTTPServer 8000 resources/public/klangmeister/`.
+Then browse to [Figwheel's local server](http://localhost:3449/klangmeister/index.html).
 
+Currently there is an error which appears only with Figwheel - `Namespace "cljs_bach.synthesis" already declared`. Make any change in the code window to trigger a new compilation and it will vanish.
+
+### Production build
+
+This is the method used to build files for pushing to Github pages:
+
+    lein clean
+    lein cljsbuild once prod
+    cd resources/public/
+    python -m SimpleHTTPServer 8000
+
+Then browse to [SimpleHTTPServer's local server](http://localhost:8000/klangmeister/index.html).
+
+### Tests
 To run the unit tests, run `lein doo phantom test once`.
 
 Goals
