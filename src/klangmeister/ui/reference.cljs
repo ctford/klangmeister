@@ -17,11 +17,11 @@
       defs)]])
 
 (def signals
-  {"sawtooth" "A waveform with prominent harmonics."
-   "sine" "A simple sine wave."
-   "square" "A wave containing only odd harmonics."
-   "triangle" "A wave with subtle harmonics."
-   "white-noise" "Random noise."})
+  {"sawtooth" ["A waveform with prominent harmonics" "(sawtooth 440)"]
+   "sine" ["A simple sine wave" "(sawtooth 440)"]
+   "square" ["A wave containing only odd harmonics" "(square 440)"]
+   "triangle" ["A wave with subtle harmonics" "(triangle 440)"]
+   "white-noise" ["Random noise" "white-noise"]})
 
 (def shapers
   {"gain" "Multiply a signal by the given factor."
