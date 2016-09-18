@@ -16,6 +16,22 @@
          [:td {:class "usage"} usage]])
       defs)]])
 
+(defn table* [defs]
+  [:table {:class "reference"}
+   [:thead
+    [:tr
+     [:th ""]
+     [:th "Description"]
+     [:th "Usage"]]]
+   [:tbody
+    (map
+      (fn [[name [description usage]]]
+        [:tr
+         [:td {:class "name"} name]
+         [:td description]
+         [:td {:class "usage"} usage]])
+      (sort-by first defs))]])
+
 (def signals
   {"sawtooth" ["A waveform with prominent harmonics" "(sawtooth 440)"]
    "sine" ["A simple sine wave" "(sawtooth 440)"]
@@ -24,17 +40,27 @@
    "white-noise" ["Random noise" "white-noise"]})
 
 (def shapers
-  {"gain" "Multiply a signal by the given factor."
-   "high-pass" "Cut out low frequencies."
-   "low-pass" "Cut out high frequencies."})
+  {"gain" ["Multiply a signal by the given factor." "(gain 0.5)"]
+   "high-pass" ["Cut out low frequencies." "(high-pass 500)"]
+   "low-pass" ["Cut out high frequencies." "(low-pass 1000)"]})
 
 (def envelopes
-  {"adsr" "An envelope with attack, decay, sustain and release."
-   "percussive" "A simple envelope with just attack and decay"})
+  {"adsr" ["An envelope with attack, decay, sustain and release." "(adsr 0.1 0.2 0.5 0.1)"]
+   "percussive" ["A simple envelope with just attack and decay" "(percussive 0.1 0.3)"]})
 
 (def combinators
-  {"add" "Add two or more signals together."
-   "connect->" "Connect two or more signal processors together"})
+  {"add" ["Add two or more signals together." "(add
+  (sine 440)
+  (sine 660))"]
+   "connect->" ["Connect two or more signal processors together" "(connect->
+  (sawtooth 440)
+  (low-pass 800))"]})
+
+(def melody-builders
+  {"phrase" ["Turns a list of durations and a list of pitches into a melody."
+             "(phrase
+    [1 1 2/3 1/3 1]
+    [0 0   0   2 3])"]})
 
 (def all (merge signals shapers envelopes combinators))
 
@@ -42,34 +68,16 @@
   [:div
    [:h2 "Synthesis"]
    [:p "These functions are used to generate signals that can then be shaped or combined with other signals."]
-   (table [["sawtooth" "Produces a wave with prominent harmonics." "(sawtooth 440)"]
-           ["sine" "Produces a simple sine wave." "(sine 440)"]
-           ["square" "Produces a wave containing only odd harmonics." "(square 440)"]
-           ["triangle" "Produces a wave with subtle harmonics." "(triangle 440)"]
-           ["white-noise" "Generates random noise." "white-noise"]])
+   (table* signals)
    [:p "These functions are used to shape other signals."]
-   (table [["gain" "Multiplies a signal by the given factor." "(gain 0.5)"]
-           ["high-pass" "Cuts out low frequencies." "(low-pass 500)"]
-           ["low-pass" "Cuts out high frequencies." "(low-pass 1000)"]])
+   (table* shapers)
    [:p "These functions define the shape of a note."]
-   (table [["adsr" "Defines an envelope with attack, decay, sustain and release." "(adsr 0.1 0.2 0.5 0.1)"]
-           ["percussive" "Defines a simple envelope with just attack and decay" "(percussive 0.1 0.3)"]])
+   (table* envelopes)
    [:p "These functions combine signals together."]
-   (table [["add" "Adds two or more signals together."
-"(add
-  (sine 440)
-  (sine 660))"]
-           ["connect->" "Connects two or more signal processors together"
-"(connect->
-  (sawtooth 440)
-  (low-pass 800))"]])
+   (table* combinators)
    [:h2 "Composition"]
    [:p "These functions are used to build melodies."]
-   (table [["phrase" "Turns a list of durations and a list of pitches into a melody."
-"(phrase
-  [1 1 2/3 1/3 1]
-  [0 0   0   2 3])"]
-           ])
+   (table* melody-builders)
    [:p "These functions are used to combine melodies."]
    (table [["then" "Sequences two melodies together."
 "(->> intro
