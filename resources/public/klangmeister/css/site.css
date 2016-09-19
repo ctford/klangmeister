@@ -77,6 +77,9 @@ button {
   border-style: dashed;
   border-width: 3px;
   border-color: #D33682;
+  background: #EEE;
+  font-style: bold;
+  font-family: monospace;
 }
 
 .reference {
