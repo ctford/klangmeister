@@ -34,9 +34,11 @@
      :component-did-mount (editor-did-mount target text handle!)}))
 
 (defn render [target text handle! state]
-  (let [{:keys [error doc]} (target state)]
+  (let [{:keys [error doc]} (target state)
+        [function docstring example] doc
+        ]
     [:div
      {:class (str "editor" (if error " error" ""))}
      [editor target text handle!]
-     [:div {:class "doc"} (when doc (concat (first doc) " e.g. " (second doc)))]
+     [:div {:class "doc"} (when doc (concat function ": " docstring " e.g. " example))]
      [:div error]]))

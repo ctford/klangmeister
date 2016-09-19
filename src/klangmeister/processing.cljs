@@ -78,7 +78,9 @@
   action/Doc
   (process [{pane :target doc :string} handle! state]
     (-> state
-        (assoc-in [pane :doc] (reference/all doc))))
+        (assoc-in [pane :doc]
+                  (when-let [documentation (reference/all doc)]
+                    (cons doc documentation)))))
 
   action/Test
   (process [{pane :target :as this} handle! {:keys [audiocontext] :as state}]
