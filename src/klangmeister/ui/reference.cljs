@@ -41,19 +41,19 @@
   (low-pass 800))"]})
 
 (def melody-builders
-  {"phrase" ["Turns a list of durations and a list of pitches into a melody."
+  {"phrase" ["Turn a list of durations and a list of pitches into a melody."
              "(phrase
     [1 1 2/3 1/3 1]
     [0 0   0   2 3])"]})
 
 (def melody-combinators
-  {"then" ["Sequences two melodies together."
+  {"then" ["Sequence two melodies together."
            "(->> intro
            (then verse))"]
-   "times" ["Repeats a melody."
+   "times" ["Repeat a melody."
             "(->> chorus
             (times 4))"]
-   "with" ["Overlays two melodies."
+   "with" ["Overlay two melodies."
            "(->> bass
            (with drums))"]})
 

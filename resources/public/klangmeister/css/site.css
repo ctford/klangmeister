@@ -108,6 +108,10 @@ button {
   background: #EEE;
 }
 
+.doc .example {
+  font-style: italic;
+}
+
 .CodeMirror {
   height: auto;
 }

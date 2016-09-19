@@ -40,5 +40,8 @@
     [:div
      {:class (str "editor" (if error " error" ""))}
      [editor target text handle!]
-     [:div {:class "doc"} (when doc (concat function ": " docstring " e.g. " example))]
+     [:div {:class "doc"}
+      (when doc [:div (concat function ": " docstring)])
+      (when doc [:div {:class "example"} example])
+                            ]
      [:div error]]))
