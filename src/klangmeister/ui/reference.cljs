@@ -43,51 +43,58 @@
 (def melody-builders
   {"phrase" ["Turn a list of durations and a list of pitches into a melody."
              "(phrase
-    [1 1 2/3 1/3 1]
-    [0 0   0   2 3])"]})
+  [1 1 2/3 1/3 1]
+  [0 0   0   2 3])"]})
 
 (def melody-combinators
   {"then" ["Sequence two melodies together."
            "(->> intro
-           (then verse))"]
+  (then verse))"]
    "times" ["Repeat a melody."
             "(->> chorus
-            (times 4))"]
+  (times 4))"]
    "with" ["Overlay two melodies."
            "(->> bass
-           (with drums))"]})
+  (with drums))"]})
 
 (def scalars
   {"A..G" ["The different musical keys."
 "(->> piece
-     (where :pitch (comp C major)))"]
-           "all" ["Sets a property of every note in a melody."
+  (where :pitch
+    (comp C major)))"]
+           "all" ["Set a property of every note in a melody."
 "(->> solo
-     (all :instrument guitar))"]
+  (all :instrument horn))"]
            "bpm" ["Specify a beats-per-minute tempo."
-"(->> solo
-     (all :instrument guitar))"]
+                  "(->> piece
+  (tempo (bpm 120)))"]
            "flat" ["Lower a scale by a semitone"
 "(->> piece
-     (where :pitch (comp B flat major)))"]
+  (where :pitch
+    (comp B flat major)))"]
            "sharp" ["Raise a scale by a semitone"
 "(->> piece
-     (where :pitch (comp B flat major)))"]
+  (where :pitch
+    (comp B flat major)))"]
            "high" ["Raise a scale by an octave."
 "(->> piece
-     (where :pitch (comp low C major)))"]
+  (where :pitch
+    (comp low C major)))"]
            "low" ["Lower a scale by an octave."
 "(->> piece
-     (where :pitch (comp low C major)))"]
+  (where :pitch
+    (comp low C major)))"]
            "major" ["A happy-sounding scale."
 "(->> piece
-     (where :pitch (comp C major)))"]
+  (where :pitch
+    (comp C major)))"]
            "minor" ["A sad-sounding scale."
 "(->> piece
-     (where :pitch (comp D minor)))"]
-           "tempo" ["Puts a melody in a tempo at a particular beats-per-minute."
-"->> piece
-     (tempo (bpm 120))"]})
+  (where :pitch
+    (comp D minor)))"]
+           "tempo" ["Put a melody in a tempo at a particular beats-per-minute."
+"(->> piece
+  (tempo (bpm 120)))"]})
 
 (def various-keys
   (->> "ABCDEFG"
