@@ -89,7 +89,13 @@
 "->> piece
      (tempo (bpm 120))"]})
 
-(def all (merge signals shapers envelopes combinators melody-builders melody-combinators scalars))
+(def various-keys
+  (->> "ABCDEFG"
+       (map (fn [k]
+              [(str k) ["A musical key." (str "(->> piece (where :pitch (comp " k " major)))")]]))
+       (reduce conj {})))
+
+(def all (merge signals shapers envelopes combinators melody-builders melody-combinators scalars various-keys))
 
 (defn render [handle! state]
   [:div
