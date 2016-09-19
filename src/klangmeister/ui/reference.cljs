@@ -9,22 +9,6 @@
      [:th "Usage"]]]
    [:tbody
     (map
-      (fn [[name description usage]]
-        [:tr
-         [:td {:class "name"} name]
-         [:td description]
-         [:td {:class "usage"} usage]])
-      defs)]])
-
-(defn table* [defs]
-  [:table {:class "reference"}
-   [:thead
-    [:tr
-     [:th ""]
-     [:th "Description"]
-     [:th "Usage"]]]
-   [:tbody
-    (map
       (fn [[name [description usage]]]
         [:tr
          [:td {:class "name"} name]
@@ -62,59 +46,66 @@
     [1 1 2/3 1/3 1]
     [0 0   0   2 3])"]})
 
-(def all (merge signals shapers envelopes combinators))
+(def melody-combinators
+  {"then" ["Sequences two melodies together."
+           "(->> intro
+           (then verse))"]
+   "times" ["Repeats a melody."
+            "(->> chorus
+            (times 4))"]
+   "with" ["Overlays two melodies."
+           "(->> bass
+           (with drums))"]})
+
+(def scalars
+  {"A..G" ["The different musical keys."
+"(->> piece
+     (where :pitch (comp C major)))"]
+           "all" ["Sets a property of every note in a melody."
+"(->> solo
+     (all :instrument guitar))"]
+           "bpm" ["Specify a beats-per-minute tempo."
+"(->> solo
+     (all :instrument guitar))"]
+           "flat" ["Lower a scale by a semitone"
+"(->> piece
+     (where :pitch (comp B flat major)))"]
+           "sharp" ["Raise a scale by a semitone"
+"(->> piece
+     (where :pitch (comp B flat major)))"]
+           "high" ["Raise a scale by an octave."
+"(->> piece
+     (where :pitch (comp low C major)))"]
+           "low" ["Lower a scale by an octave."
+"(->> piece
+     (where :pitch (comp low C major)))"]
+           "major" ["A happy-sounding scale."
+"(->> piece
+     (where :pitch (comp C major)))"]
+           "minor" ["A sad-sounding scale."
+"(->> piece
+     (where :pitch (comp D minor)))"]
+           "tempo" ["Puts a melody in a tempo at a particular beats-per-minute."
+"->> piece
+     (tempo (bpm 120))"]})
+
+(def all (merge signals shapers envelopes combinators melody-builders melody-combinators scalars))
 
 (defn render [handle! state]
   [:div
    [:h2 "Synthesis"]
    [:p "These functions are used to generate signals that can then be shaped or combined with other signals."]
-   (table* signals)
+   (table signals)
    [:p "These functions are used to shape other signals."]
-   (table* shapers)
+   (table shapers)
    [:p "These functions define the shape of a note."]
-   (table* envelopes)
+   (table envelopes)
    [:p "These functions combine signals together."]
-   (table* combinators)
+   (table combinators)
    [:h2 "Composition"]
    [:p "These functions are used to build melodies."]
-   (table* melody-builders)
+   (table melody-builders)
    [:p "These functions are used to combine melodies."]
-   (table [["then" "Sequences two melodies together."
-"(->> intro
-     (then verse))"]
-           ["times" "Repeats a melody."
-"(->> chorus
-     (times 4))"]
-           ["with" "Overlays two melodies."
-"(->> bass
-     (with drums))"] ])
+   (table melody-combinators)
    [:p "These functions are used to put melodies into specific keys and tempos."]
-   (table [
-           ["A..G" "The different musical keys."
-"(->> piece
-     (where :pitch (comp C major)))"]
-           ["all" "Sets a property of every note in a melody."
-"(->> solo
-     (all :instrument guitar))"]
-           ["flat, sharp" "Raise or lower a scale by a semitone"
-"(->> piece
-     (where :pitch (comp B flat major)))"]
-           ["high, low" "Raise or lower a scale by an octave."
-"(->> piece
-     (where :pitch (comp low C major)))"]
-           ["major" "A happy-sounding scale."
-"(->> piece
-     (where :pitch (comp C major)))"]
-           ["minor" "A sad-sounding scale."
-"(->> piece
-     (where :pitch (comp D minor)))"]
-           ["tempo" "Puts a melody in a tempo at a particular beats-per-minute."
-"(->> piece
-     (tempo (bpm 120))"]])
-    [:h2 "Instruments"]
-    [:p "These instruments are available by default."]
-   (table [["bell" "An approximate bell sound." ""]
-           ["kick" "A kick drum." ""]
-           ["open-hat, closed-hat" "High hat sounds." ""]
-           ["marimba" "A pure, percussive sound like a marimba." ""]
-           ["wah" "A synth with a wah sound made by a filter." ""]])])
+   (table scalars)])
