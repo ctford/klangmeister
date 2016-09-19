@@ -77,6 +77,9 @@ button {
   border-style: dashed;
   border-width: 3px;
   border-color: #D33682;
+  background: #EEE;
+  font-style: bold;
+  font-family: monospace;
 }
 
 .reference {
@@ -99,6 +102,17 @@ button {
   font-family: monospace;
   width: 15em;
   white-space: pre-wrap;
+}
+
+.doc {
+  font-family: monospace;
+  text-align: center;
+  color: #D33682;
+  background: #EEE;
+}
+
+.doc .example {
+  font-style: italic;
 }
 
 .CodeMirror {
