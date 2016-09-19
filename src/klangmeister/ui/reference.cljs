@@ -92,6 +92,10 @@
 "(->> piece
   (where :pitch
     (comp D minor)))"]
+           "where" ["Update a particular attribute of each note in a melody."
+"(->> piece
+  (where :pitch
+    (comp D minor)))"]
            "tempo" ["Put a melody in a tempo at a particular beats-per-minute."
 "(->> piece
   (tempo (bpm 120)))"]})
@@ -102,7 +106,12 @@
               [(str k) ["A musical key." (str "(->> piece (where :pitch (comp " k " major)))")]]))
        (reduce conj {})))
 
-(def all (merge signals shapers envelopes combinators melody-builders melody-combinators scalars various-keys))
+(def core-fns
+  {"comp" ["Compose two or more functions together" "comp not even?"]
+   "comment" ["Comment out code." "(comment This won't be evaluated."]
+   "->>" ["Thread together seveal operations on a sequence." "(->> (range 0 10) (map inc))"]})
+
+(def all (merge signals shapers envelopes combinators melody-builders melody-combinators scalars various-keys core-fns))
 
 (defn render [handle! state]
   [:div
