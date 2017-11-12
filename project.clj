@@ -19,7 +19,7 @@
 
   :plugins [[lein-cljsbuild "1.1.2"]
             [lein-figwheel "0.5.0-2"]
-            [lein-doo "0.1.6"]]
+            [lein-doo "0.1.8"]]
 
   :clean-targets ^{:protect false} ["resources/public/klangmeister/js/compiled"
                                     "target"
