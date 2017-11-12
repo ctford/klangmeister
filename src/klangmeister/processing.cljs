@@ -90,11 +90,15 @@
 
   action/Loop
   (process [{pane :target :as this} handle! {:keys [audiocontext] :as state}]
-    (let [{:keys [value looping?]} (pane state)
-          duration (* 1000 (melody/duration value))
-          finish (+ (Date.now) duration)]
+    (let [{:keys [value looping? audio-sync]} (pane state)
+          audio-sync (or audio-sync (.-currentTime audiocontext))
+          milli (partial * 1000)
+          duration (melody/duration value)
+          finish (+ (Date.now) (milli duration))]
       (if looping?
-        (do (music/play! audiocontext value)
-            (js/setTimeout #(handle! this) duration)
-            (assoc-in state [pane :sync] finish))
+        (do (music/play-from! audiocontext audio-sync value)
+            (js/setTimeout #(handle! this) (- (milli duration) 500))
+            (-> state
+                (assoc-in [pane :sync] finish)
+                (assoc-in [pane :audio-sync] (+ audio-sync duration))))
         (assoc-in state [pane :sync] nil)))))

@@ -5,8 +5,13 @@
 (defn play!
   "Take a sequence of notes and play them in an audiocontext."
   [audiocontext notes]
+  (play-from! audiocontext (synthesis/current-time audiocontext) notes))
+
+(defn play-from!
+  "Take a sequence of notes and play them from a set point in an audiocontext."
+  [audiocontext from notes]
   (doseq [{:keys [time duration instrument] :as note} notes]
-    (let [at (+ time (.-currentTime audiocontext))
+    (let [at (+ time from)
           synth-instance (-> note
                              (update :pitch temperament/equal)
                              (dissoc :time)
