@@ -13,7 +13,7 @@
                  [org.clojure/tools.reader "1.1.1"]
                  [org.clojure/java.classpath "0.2.3"]
                  [leipzig "0.10.0"]
-                 [cljs-bach "0.2.0"]]
+                 [cljs-bach "0.3.0-SNAPSHOT"]]
 
   :min-lein-version "2.5.0"
 
