@@ -1,7 +1,7 @@
 (defproject klangmeister "0.1.0-SNAPSHOT"
   :description "A musical scratchpad."
   :license {:name "MIT" }
-  :dependencies [[org.clojure/clojure "1.7.0"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
                  [reagent "0.5.1"]
                  [reagent-utils "0.1.7"]
                  [quil "2.3.0"]
