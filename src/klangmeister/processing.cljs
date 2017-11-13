@@ -101,4 +101,6 @@
             (-> state
                 (assoc-in [pane :sync] finish)
                 (assoc-in [pane :audio-sync] (+ audio-sync duration))))
-        (assoc-in state [pane :sync] nil)))))
+        (-> state
+            (assoc-in [pane :sync] nil)
+            (assoc-in [pane :audio-sync] nil))))))
