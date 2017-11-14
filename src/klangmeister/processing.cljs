@@ -9,6 +9,23 @@
     [ajax.core :as ajax]
     [leipzig.melody :as melody]))
 
+(defn milli [n]
+  (* n 1000))
+
+(defn schedule! [callback! duration]
+  (let [margin 500]
+    (js/setTimeout callback! (- (milli duration) margin))))
+
+(defn clear-syncs [state pane]
+  (-> state
+      (update-in [pane :sync] dissoc)
+      (update-in [pane :audio-sync] dissoc)))
+
+(defn update-syncs [state pane audio-sync duration]
+  (-> state
+      (assoc-in [pane :sync] (+ (Date.now) (milli duration)))
+      (assoc-in [pane :audio-sync] (+ audio-sync duration))))
+
 (defn too-many? [value]
   (when (and (seq? value) (->> value (drop 1000) first))
     "Too many notes - Klangmeister can't handle more than 1000."))
@@ -91,15 +108,9 @@
   action/Loop
   (process [{pane :target :as this} handle! {:keys [audiocontext] :as state}]
     (let [{:keys [value looping? audio-sync] :or {audio-sync (.-currentTime audiocontext)}} (pane state)
-          milli (partial * 1000)
-          duration (melody/duration value)
-          finish (+ (Date.now) (milli duration))]
+          duration (melody/duration value)]
       (if looping?
         (do (music/play-from! audiocontext audio-sync value)
-            (js/setTimeout #(handle! this) (- (milli duration) 500))
-            (-> state
-                (assoc-in [pane :sync] finish)
-                (assoc-in [pane :audio-sync] (+ audio-sync duration))))
-        (-> state
-            (assoc-in [pane :sync] nil)
-            (assoc-in [pane :audio-sync] nil))))))
+            (schedule! #(handle! this) duration)
+            (-> state (update-syncs pane audio-sync duration)))
+        (-> state (clear-syncs pane))))))
