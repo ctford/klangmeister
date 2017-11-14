@@ -50,15 +50,14 @@ Currently there is an error which appears only with Figwheel - `Namespace "cljs_
 
 This is the method used to build files for pushing to Github pages:
 
-    lein clean
-    lein cljsbuild once prod
+    ./build
     cd resources/public/
     python -m SimpleHTTPServer 8000
 
 Then browse to [SimpleHTTPServer's local server](http://localhost:8000/klangmeister/index.html).
 
 ### Tests
-To run the unit tests, run `lein doo phantom test once`.
+To run the unit tests, run `./test.sh`.
 
 Goals
 -----
