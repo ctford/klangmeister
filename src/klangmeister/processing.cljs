@@ -13,7 +13,7 @@
   (* n 1000))
 
 (defn schedule! [callback! duration]
-  (let [margin 500]
+  (let [margin 150]
     (js/setTimeout callback! (- (milli duration) margin))))
 
 (defn clear-syncs [state pane]
