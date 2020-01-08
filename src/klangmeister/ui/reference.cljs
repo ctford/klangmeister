@@ -10,6 +10,7 @@
    [:tbody
     (map
       (fn [[name [description usage]]]
+        ^{:key name}
         [:tr
          [:td {:class "name"} name]
          [:td description]
